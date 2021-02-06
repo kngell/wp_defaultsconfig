@@ -1,0 +1,50 @@
+{
+  "name": "kngell_ecommerce",
+  "version": "1.0.0",
+  "description": "K'ngeLL e commerce",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack",
+    "prod": "cross-env NODE_ENV=production webpack",
+    "serv": "cross-env NODE_ENV=development webpack serve"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.13",
+    "@ckeditor/ckeditor5-dev-utils": "^24.1.0",
+    "@ckeditor/ckeditor5-theme-lark": "^25.0.0",
+    "assets-webpack-plugin": "^7.0.0",
+    "autoprefixer": "^10.2.4",
+    "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.0.1",
+    "css-minimizer-webpack-plugin": "^1.2.0",
+    "del-webpack-plugin": "^2.0.0",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "filemanager-plugin": "^2.5.2",
+    "html-loader": "^1.3.2",
+    "image-minimizer-webpack-plugin": "^2.2.0",
+    "mini-css-extract-plugin": "^1.3.5",
+    "postcss": "^8.2.4",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-loader": "^5.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-scss": "^3.0.4",
+    "raw-loader": "^4.0.2",
+    "sass-loader": "^11.0.0",
+    "terser-webpack-plugin": "^5.1.1",
+    "webpack": "^5.21.1",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-remove-empty-scripts": "^0.7.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "^7.12.13",
+    "sass": "^1.32.6"
+  }
+}
