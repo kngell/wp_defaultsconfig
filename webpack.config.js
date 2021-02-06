@@ -1,7 +1,7 @@
 const path = require("path");
 const wp_alias = require("./webpack.alias");
 const common_rules = require("./webpack.module");
-const { common_plugins } = require("./webpack.plugins");
+const common_plugins = require("./webpack.plugins");
 const devMode = process.env.NODE_ENV !== "production";
 const ASSET_PATH =
   process.env.ASSET_PATH ||
@@ -26,13 +26,11 @@ const FileManagerPlugin = require("filemanager-plugin").WebpackFilemanager;
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const { pathExists } = require("fs-extra");
-const fs = require("fs");
 
 //=======================================================================
 //Common config
 //=======================================================================
-const commonConfig = {
+const commonConfig = merge(common_plugins, {
   context: path.resolve(__dirname),
   mode: "development",
   devtool: false,
@@ -44,8 +42,8 @@ const commonConfig = {
     libraryTarget: "umd",
   },
   module: common_rules,
-  plugins: common_plugins,
-};
+  // plugins: [common_plugins],
+});
 //=======================================================================
 //Views config
 //=======================================================================

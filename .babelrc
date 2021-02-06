@@ -1,5 +1,6 @@
 {
   "plugins": [
+    ["@babel/plugin-syntax-class-properties"],
     [
       "@babel/plugin-transform-runtime",
       {
@@ -16,8 +17,9 @@
     [
       "@babel/preset-env",
       {
-        "debug": true,
-        "corejs": 3
+        "useBuiltIns": "usage",
+        "debug": true
+        // "corejs": 3.8
       }
     ]
   ]

@@ -1,0 +1,25 @@
+{
+  "name": "daniel/kngell",
+  "description": "K'ngell website",
+  "authors": [
+    {
+      "name": "Kngell",
+      "email": "admin@kngell.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "phpmailer/phpmailer": "^6.1",
+    "sendgrid/sendgrid": "~7"
+  },
+  "autoload": {
+    "classmap": [
+      "app/",
+      "vendor/sendgrid/"
+    ],
+    "files": []
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^5.2"
+  }
+}

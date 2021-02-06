@@ -1,0 +1,58 @@
+{
+  "Guest": {
+    "denied": {
+      "AdminController": ["*"]
+    },
+    "HomeController": ["*"],
+    "UsersController": [
+      "ajaxRegister",
+      "ajaxLogin",
+      "index",
+      "login",
+      "fblogin",
+      "register",
+      "emailVerified",
+      "forgot",
+      "ajaxresetpass",
+      "resetpass",
+      "logincookies"
+    ],
+    "NewsController": ["index", "show", "categorie", "unsuscribe"],
+    "RestrictedController": ["*"],
+    "VisitorsController": ["*"],
+    "CommentsController": ["*"],
+    "NewslettersController": ["*"],
+    "FormsController": ["showAll", "showDetails"],
+    "GuestsController": ["*"],
+    "AssetsController": ["*"]
+  },
+  "LoggedIn": {
+    "denied": {
+      "UsersController": ["login", "register"]
+    },
+    "UsersController": ["*"],
+    "MembersController": ["*"],
+    "UsersprofileController": ["*"],
+    "UsersfeedbackController": ["*"],
+    "UsersnotificationController": ["*"],
+    "FormsController": ["*"],
+    "AssocController": ["*"],
+    "CommentsController": ["*"],
+    "AssetsController": ["*"]
+  },
+  "admin": {
+    "denied": {},
+    "AdminController": ["*"],
+    "RealisationsController": ["*"],
+    "AdminnavController": ["*"],
+    "VisitorsController": ["*"]
+  },
+  "admin2": {
+    "denied": {},
+    "Admin2Controller": ["*"]
+  },
+  "assoc": {
+    "denied": {},
+    "UsersassocController": ["*"]
+  }
+}

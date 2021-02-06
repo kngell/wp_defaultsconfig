@@ -4,12 +4,13 @@
   "description": "K'ngeLL e commerce",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack",
+    "dev": "cross-env NODE_ENV=development webpack -w",
     "prod": "cross-env NODE_ENV=production webpack",
     "serv": "cross-env NODE_ENV=development webpack serve"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-transform-runtime": "^7.12.15",
     "@babel/preset-env": "^7.12.13",
     "@ckeditor/ckeditor5-dev-utils": "^24.1.0",
@@ -17,6 +18,8 @@
     "assets-webpack-plugin": "^7.0.0",
     "autoprefixer": "^10.2.4",
     "babel-loader": "^8.2.2",
+    "browser-sync": "^2.26.14",
+    "browser-sync-webpack-plugin": "^2.3.0",
     "cross-env": "^7.0.3",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.2.0",
@@ -45,6 +48,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.12.13",
+    "@babel/runtime-corejs3": "^7.12.13",
     "sass": "^1.32.6"
   }
 }
