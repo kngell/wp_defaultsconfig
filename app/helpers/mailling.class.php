@@ -16,9 +16,7 @@ class Mailling
     public $require_cookie = 0;
     public $check_referrer = 1;
     public $word_block = 1;
-    public $blocked_words = array('http://','https://','viagra');
+    public $blocked_words = array('http://', 'https://', 'viagra');
     public $gobbledegook_check = 1;
     public $identiPIC_photo_CAPTCHA = 0;
 }
-
-;

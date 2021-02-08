@@ -1,8 +1,9 @@
 <?php
 
 //start the session
-session_start();
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 //config & autoload
 require_once '../config/config.php';
 require_once VENDOR . 'autoload.php';

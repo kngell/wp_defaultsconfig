@@ -414,9 +414,9 @@ abstract class Model
     //before save
     public function beforeSave()
     {
-        if (isset(UtilisateurManager::$currentLoggedInUser->userID) && property_exists($this, 'userID')) {
+        if (isset(UsersrManager::$currentLoggedInUser->userID) && property_exists($this, 'userID')) {
             if (!isset($this->userID) || empty($this->userID) || $this->userID == null) {
-                $this->userID = UtilisateurManager::$currentLoggedInUser->userID;
+                $this->userID = UsersrManager::$currentLoggedInUser->userID;
             }
         }
         if (isset($this->msg)) {

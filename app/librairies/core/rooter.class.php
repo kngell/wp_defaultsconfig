@@ -31,7 +31,7 @@ class Rooter
         if (method_exists($this->controller, $this->method)) {
             call_user_func_array([$this->controller, $this->method], [$this->params]);
         } else {
-            self::redirect('home' . DS . 'not_found_page');
+            self::redirect('home' . DS . '');
         }
     }
 
@@ -41,6 +41,7 @@ class Rooter
 
     private function parseURL()
     {
+        dump($_GET);
         if (isset($_GET['url'])) {
             $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
             if (isset($url[0])) {

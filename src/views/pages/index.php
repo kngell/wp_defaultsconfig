@@ -10,6 +10,7 @@
 
 <body>
     <h1>This is home page</h1>
+    <p><a href="/kngell_ecommerce/home/78/78/45">test link</a></p>
 </body>
 
 </html>

@@ -42,7 +42,7 @@ class H
 
 	public static function currentUser()
 	{
-		return UtilisateurManager::$currentLoggedInUser;
+		return UsersrManager::$currentLoggedInUser;
 	}
 
 	//=======================================================================
@@ -57,31 +57,31 @@ class H
 		$time = time() - $timestamps;
 
 		switch ($time) {
-			//secondes
+				//secondes
 			case $time < 60:
 				return 'Just Now!';
 				break;
-			//minutes
+				//minutes
 			case $time >= 60 && $time < 3600:
 				return (round($time / 60) == 1) ? 'a minutes ago' : round($time / 60) . ' minutes ago';
 				break;
-			//hours
+				//hours
 			case $time >= 3600 && $time < 86400:
 				return (round($time / 3600) == 1) ? 'an hours ago' : round($time / 3600) . ' hours ago';
 				break;
-			//days
+				//days
 			case $time >= 86400 && $time < 604800:
 				return (round($time / 86400) == 1) ? 'a day ago' : round($time / 86400) . ' days ago';
 				break;
-			//weeks
+				//weeks
 			case $time >= 604800 && $time < 2600640:
 				return (round($time / 604800) == 1) ? 'a week ago' : round($time / 604800) . ' weeks ago';
 				break;
-			//month
+				//month
 			case $time >= 2600640 && $time < 31207680:
 				return (round($time / 2600640) == 1) ? 'a month ago' : round($time / 2600640) . ' months ago';
 				break;
-			//years
+				//years
 			case $time >= 31207680:
 				return (round($time / 31207680) == 1) ? 'a year ago' : round($time / 31207680) . ' years ago';
 				break;
@@ -94,14 +94,14 @@ class H
 		switch ($data) {
 			case 'feedback':
 				$cond = ['return_mode' => 'class', 'where' => ['replied' => !1]];
-			break;
+				break;
 			case 'notification':
 				$cond = ['return_mode' => 'class', 'where' => ['type' => $type]];
-			break;
+				break;
 
 			default:
 				$cond = ['return_mode' => 'class'];
-			break;
+				break;
 		}
 
 		return $cond;
@@ -112,11 +112,11 @@ class H
 		switch ($table) {
 			case 'categories':
 				return ['ecategorie' => 'categorie'];
-			break;
+				break;
 
 			default:
 				return ['epostID' => 'postID', 'etitle' => 'postTitle', 'e_postContent' => 'postContent', 'eauthor' => 'postAuthor', 'epost_img' => 'postImg', 'epost_status' => 'postStatus'];
-			break;
+				break;
 		}
 	}
 
@@ -280,7 +280,7 @@ class H
 	public static function setQueryData($by_user)
 	{
 		if ($by_user) {
-			return  ['where' => ['userID' => UtilisateurManager::currentUser()->userID], 'return_mode' => 'class'];
+			return  ['where' => ['userID' => UsersrManager::currentUser()->userID], 'return_mode' => 'class'];
 		} else {
 			return ['return_mode' => 'class'];
 		}
@@ -393,29 +393,29 @@ class H
 		switch ($m->get_tableName()) {
 			case 'candidatures':
 				return ['email' => 'remail'];
-			break;
+				break;
 			case 'formations_inscriptions':
 				return ['email' => 'femail'];
-			break;
+				break;
 			case 'newsletters':
 				if ($frm_name == 'newsletterinputSidebar-frm') {
 					return ['email' => 'emails'];
 				} else {
 					return ['email' => 'emailf'];
 				}
-			break;
+				break;
 			case 'formations_inscriptions':
 				return ['email' => 'femail'];
-			break;
+				break;
 			case 'comments':
 				// return ['message'=>'messageR'];
-			break;
+				break;
 			case 'contacts':
 				return ['email' => 'emailc'];
-			break;
+				break;
 			default:
 				return;
-			break;
+				break;
 		}
 	}
 
@@ -423,30 +423,30 @@ class H
 	public static function get_successMsg($m, $action, $method)
 	{
 		switch ($m->get_tableName()) {
-			//Home
+				//Home
 			case 'contacts':
 				return 'Votre message a été envoyé. </br> Vous recevrez une réponse sous 48h ouvrées.';
-			break;
-			//admin home
+				break;
+				//admin home
 			case 'offre_emploi':
 				return 'Votre offre d\'emploi est bien enregistrée!';
-			break;
+				break;
 			case 'candidatures':
 				return 'Votre candidature est bien enregistrée!';
-			break;
+				break;
 			case 'sessions_formations':
-				 if ($method == 'Add') {
-				 	return 'La session de formation est enregistrée';
-				 } else {
-				 	return 'La session a été mise à jour.';
-				 }
-			break;
+				if ($method == 'Add') {
+					return 'La session de formation est enregistrée';
+				} else {
+					return 'La session a été mise à jour.';
+				}
+				break;
 			case 'inscription_formation':
 				return 'Votre réservation est prise en compte. voous recevrez de plus amples informations dans les 48h.';
-			break;
+				break;
 			case 'newsletters':
 				return 'Votre email est bien eregistré!';
-			break;
+				break;
 			case 'utilisateur':
 				if ($method == 'update') {
 					if ($action == 'updateuser') {
@@ -455,41 +455,41 @@ class H
 						return 'Votre profil est bien enregistré';
 					}
 				}
-			break;
+				break;
 			case 'adherents':
 				if ($method == 'update') {
 					return 'l\'adhérent a été mis à jour avec success!';
 				} else {
 					return 'Adhérent ajouté avec success!';
 				}
-			break;
+				break;
 			case 'adherents':
 				if ($method == 'update') {
 					return 'l\'association a été mis à jour avec success!';
 				} else {
 					return 'Association ajouté avec success!';
 				}
-			break;
+				break;
 			case 'posts':
 				if ($method == 'Add') {
 					return 'Votre article est bien enregistré!';
 				} else {
 					return 'Votre article a été mis à jour!';
 				}
-			break;
+				break;
 			case 'realisations':
 				if ($method == 'Add') {
 					return 'Votre réalisation est bien enregistré!';
 				} else {
 					return 'Votre  réalisation a été mis à jour!';
 				}
-			break;
+				break;
 			case 'comments':
 				return;
-			break;
+				break;
 			default:
 				return 'Votre requête est bien prise en compte.';
-			break;
+				break;
 		}
 	}
 
@@ -499,20 +499,20 @@ class H
 		switch ($m->get_tableName()) {
 			case 'realisations':
 				return 'Il n\'y a pas de réalisations enregistrées.';
-			break;
+				break;
 			case 'programme_formation':
 				return 'Aucun programme n\'est enregistré.';
-			break;
+				break;
 			case 'sessions_formations':
 				if ($action == 'frontend') {
 					return "Aucune session de formation n'est programmée!";
 				}
 
 				return 'Aucun programme n\'est enregistré.';
-			break;
+				break;
 			default:
 				return 'Votre requête est bien prise en compte.';
-			break;
+				break;
 		}
 	}
 
@@ -522,34 +522,34 @@ class H
 		switch (true) {
 			case $item['table'] == 'comments':
 				return $model->getAll($request->getParams($_REQUEST))->get_results();
-			break;
-			// case $item['table'] == 'categories':
-			//     return $model->getAllbyIndex(0)->get_results();
-			// break;
+				break;
+				// case $item['table'] == 'categories':
+				//     return $model->getAllbyIndex(0)->get_results();
+				// break;
 			case in_array($item['table'], ['posts', 'utilisateurs', 'feedback', 'programme_formation']):
 				if ($item['method'] == 'showDetails') {
 					return (isset($item['user']) && $item['user'] == 'guest') ? $model->getDetails($request->getAll('id'))->outputProgramme($request->getAll('session_id')) : $model->getDetails($request->getAll('id'));
 				}
 
-				return !isset($item['user']) ? $model->getAllbyIndex((int)UtilisateurManager::currentUser()->userID)->get_results() : $model->getAllItem()->get_results();
-			break;
+				return !isset($item['user']) ? $model->getAllbyIndex((int)UsersrManager::currentUser()->userID)->get_results() : $model->getAllItem()->get_results();
+				break;
 			case in_array($item['table'], ['sessions_formations', 'offre_emploi']):
 				if ($item['method'] == 'showDetails') {
 					return (isset($item['user']) && $item['user'] == 'guest') ? $model->getDetails($request->getAll('id'))->outputHTML() : $model->getDetails($request->getAll('id'));
 				}
 
 				return $model->getAllItem($item)->get_results();
-			break;
+				break;
 			case in_array($item['table'], ['inscription_formation']):
 				return $model->outputInscription($item['id']);
-			break;
+				break;
 			default:
-			if (isset($item['id'])) {
-				return $model->getAllbyIndex((int)$request->getAll('id'))->get_results();
-			} else {
-				return isset($item['query']) ? $model->getAllItem($item['query'])->get_results() : $model->getAllItem()->get_results();
-			}
-			break;
+				if (isset($item['id'])) {
+					return $model->getAllbyIndex((int)$request->getAll('id'))->get_results();
+				} else {
+					return isset($item['query']) ? $model->getAllItem($item['query'])->get_results() : $model->getAllItem()->get_results();
+				}
+				break;
 		}
 	}
 }

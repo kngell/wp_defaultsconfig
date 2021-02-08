@@ -44,7 +44,7 @@ define('URLROOT', 'http://localhost' . US . 'kngell' . US);
 // -----------------------------------------------------------------------
 // SCRIPT/CSS/IMG ACCESS
 // -----------------------------------------------------------------------
-define('PROOT', '/kngell/'); // set this to '/' for a live server
+define('PROOT', '/kngell_ecommerce/'); // set this to '/' for a live server
 define('SCRIPT', dirname($_SERVER['SCRIPT_NAME']));
 define('CSS', SCRIPT . DS . 'assets' . DS . 'css' . DS);
 define('JS', SCRIPT . DS . 'assets' . DS . 'js' . DS);
