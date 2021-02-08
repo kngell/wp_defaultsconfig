@@ -30,7 +30,7 @@ set_include_path(get_include_path() . PS . implode(PS, $modules));
 // -----------------------------------------------------------------------
 // DEFAULT ITEMS
 // -----------------------------------------------------------------------
-define("DEFAULT_CONTROLLER", 'HomeController'); //default controller if there isen't one define in the url
+define("DEFAULT_CONTROLLER", 'FrontendPagesController'); //default controller if there isen't one define in the url
 define('DEFAULT_METHOD', 'index'); //Default methode for controllers
 
 define('DEBUG', true);

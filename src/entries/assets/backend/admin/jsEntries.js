@@ -3,10 +3,10 @@
 //=======================================================================
 module.exports = {
   entry: {
-    //main js
+    //Main js
     "js/main/backend/admin/main": {
       import: ["js/main/backend/admin/main.js"],
-      dependOn: "js/librairies/backend/admin/lib",
+      dependOn: "js/librairies/adminlib",
     },
   },
 };

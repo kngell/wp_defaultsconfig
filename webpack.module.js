@@ -7,7 +7,10 @@ module.exports = {
     {
       test: /\.(js|jsx)$/,
       include: [path.resolve(__dirname, "src", "assets", "js")],
-      exclude: [path.resolve(__dirname, "node_modules")],
+      exclude: [
+        path.resolve(__dirname, "node_modules"),
+        path.resolve(__dirname, "src", "assets", "plugins"),
+      ],
       enforce: "pre",
       enforce: "post",
       loader: "babel-loader",
@@ -107,7 +110,7 @@ module.exports = {
           options: {
             name: "[name].[ext]",
             outputPath: "fonts/",
-            publicPath: "/kngellecom/public/assets/fonts/",
+            publicPath: "/kngell_ecommerce/public/assets/fonts/",
           },
         },
       ],

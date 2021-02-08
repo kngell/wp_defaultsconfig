@@ -17,10 +17,7 @@ const {
   membersCssEntries,
   membersJsEntries,
 } = require("./src/entries/assets/backend/members/MembersEntries");
-const {
-  adminCssEntries,
-  adminJsEntries,
-} = require("./src/entries/assets/backend/admin/adminEntries");
+const adminEntries = require("./src/entries/assets/backend/admin/adminEntries");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 const FileManagerPlugin = require("filemanager-plugin").WebpackFilemanager;
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
@@ -125,7 +122,7 @@ var membersAssetsConfig = merge(
   }
 );
 //backend admin
-var adminAssetsConfig = merge(adminCssEntries, adminJsEntries, commonConfig, {
+var adminAssetsConfig = merge(adminEntries, commonConfig, {
   entry: {
     "css/librairies/adminlib": "./src/assets/css/lib/adminlib.scss",
     "js/librairies/adminlib": "./src/assets/js/lib/adminlib",

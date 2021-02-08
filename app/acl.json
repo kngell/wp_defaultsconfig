@@ -3,7 +3,8 @@
     "denied": {
       "AdminController": ["*"]
     },
-    "HomeController": ["*"],
+    "FrontendController": ["*"],
+    "BackendController": ["index"],
     "UsersController": [
       "ajaxRegister",
       "ajaxLogin",

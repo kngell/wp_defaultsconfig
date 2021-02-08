@@ -35,7 +35,7 @@ module.exports = {
       jQuery: "jquery",
       "window.jQuery": "jquery",
       "global.jQuery": "jquery",
-      popper: "@popperjs/core",
+      "popper.js": "popper.js",
       moment: "moment",
     }),
     new webpack.DefinePlugin({
@@ -61,6 +61,10 @@ module.exports = {
               {
                 source: path.join(__dirname, "src", "index.php"),
                 destination: "./public/",
+              },
+              {
+                source: path.join(__dirname, "src", "assets", "img", "users"),
+                destination: "./public/assets/img/",
               },
             ],
           },

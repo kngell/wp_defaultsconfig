@@ -4,7 +4,7 @@ class Rooter
     private static $_instance = null;
     private $controller = DEFAULT_CONTROLLER;
     private $method = DEFAULT_METHOD;
-    private $params = [];
+    private $params;
     private $_controller_Name;
     private $_method_Name;
 
@@ -21,8 +21,7 @@ class Rooter
         } else {
             $this->_controller_Name = $this->controller;
         }
-        $grantAccess = GrantAccess::hasAccess($this->_controller_Name, $this->_method_Name);
-        if (!$grantAccess) {
+        if (!GrantAccess::hasAccess($this->_controller_Name, $this->_method_Name)) {
             $this->_controller_Name = $this->controller = ACCESS_RESTRICTED . 'Controller';
             $this->_method_Name == '' ? $this->_method_Name = $this->method = 'index' : '';
         }
@@ -41,7 +40,6 @@ class Rooter
 
     private function parseURL()
     {
-        dump($_GET);
         if (isset($_GET['url'])) {
             $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
             if (isset($url[0])) {
@@ -62,7 +60,7 @@ class Rooter
                     break;
             }
             unset($url[0], $url[1]);
-            $this->params = $url ? array_values($url) : [];
+            $this->params = count($url) > 0 ? array_values($url) : [];
         }
     }
     //=======================================================================

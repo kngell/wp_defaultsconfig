@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><?= $this->siteTitle()?>
-    </title>
-    <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Packages -->
-    <!-------standards-------->
-    <link href="<?=$this->cssLib?>" rel="stylesheet" type="text/css">
+    <title><?= $this->siteTitle() ?>
+    </title>
 
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Main style -->
-    <link href="<?=$this->mainCssStyle?>" rel="stylesheet" type="text/css">
-
+    <link href="<?= $this->cssAdminlib ?? "" ?>" rel="stylesheet" type="text/css">
     <!-- Plugins css -->
-    <link href="<?=$this->pluginsCss?>" rel="stylesheet" type="text/css">
-    <?= $this->content('head');?>
+    <link href="<?= $this->cssAdminPlugins ?? "" ?>" rel="stylesheet" type="text/css">
+    <!-- Main style -->
+    <link href="<?= $this->cssAdminMain ?? "" ?>" rel="stylesheet" type="text/css">
+    <!-- Custom css -->
+    <?= $this->content('head'); ?>
 </head>
 
-<body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed text-sm ">
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
