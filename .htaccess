@@ -1,7 +1,4 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /kngell_ecommerce/
-RewriteRule ^(.+)/(public|vendor|files|config|app|node_modules)/(.+)$ $2/$3 [L]
-RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
-</IfModule>
 
+RewriteEngine on
+RewriteRule ^$ public/ [L]
+RewriteRule (.*) public/url=$1 [L]

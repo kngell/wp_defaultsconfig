@@ -6,7 +6,7 @@ const FileManagerPlugin = require("filemanager-plugin").WebpackFilemanager;
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const ASSET_PATH =
   process.env.ASSET_PATH ||
-  `${path.sep}kngell_ecom${path.sep}public${path.sep}assets${path.sep}`;
+  `${path.sep}kngell_ecommerce${path.sep}public${path.sep}assets${path.sep}`;
 module.exports = {
   plugins: [
     new DelWebpackPlugin({
