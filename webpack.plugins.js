@@ -43,9 +43,10 @@ module.exports = {
     }),
     new BrowserSyncPlugin({
       host: "localhost",
-      port: 3000,
-      proxy: "localhost:80/kngell_ecommerce/",
+      port: 3003,
+      proxy: "http://localhost:80",
       browser: "chrome",
+      files: ["**/*.php"],
     }),
     new webpack.SourceMapDevToolPlugin({}),
     // new CKEditorWebpackPlugin({ language: "fr" }),

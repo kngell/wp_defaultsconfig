@@ -23,5 +23,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <?= $this->content('head'); ?>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
