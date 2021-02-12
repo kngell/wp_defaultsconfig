@@ -9,15 +9,15 @@ class H_upload
     {
         $targetDir = $path[1];
         //filename
-        $filename = (pathinfo(basename($file[ 'name' ]))['filename'] == 'image') ? self::rename_image($file) : basename($file[ 'name' ]) ;
+        $filename = (pathinfo(basename($file['name']))['filename'] == 'image') ? self::rename_image($file) : basename($file['name']);
         $targetFilePath = $targetDir . DS . $filename;
         $fileType = strtoupper(pathinfo($targetFilePath, PATHINFO_EXTENSION));
         if (!empty($filename)) {
             //allow certain files format
-            $allowType = array( 'JPG', 'PNG', 'JPEG', 'GIF', 'PDF','DOC','DOCX' );
+            $allowType = array('JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX');
             if (in_array($fileType, $allowType)) {
                 //upload file in the server
-                if (move_uploaded_file($file[ 'tmp_name' ], $path[0] . $targetFilePath)) {
+                if (move_uploaded_file($file['tmp_name'], $path[0] . $targetFilePath)) {
                     return $path[2] . $targetFilePath;
                 } else {
                     return 'error';
@@ -31,7 +31,7 @@ class H_upload
     public static function rename_image($file)
     {
         $ext = pathinfo(basename($file['name']), PATHINFO_EXTENSION);
-        return md5(rand()). '.' . $ext;
+        return md5(rand()) . '.' . $ext;
     }
     //=======================================================================
     //Validate and upload
@@ -53,21 +53,21 @@ class H_upload
         $name = array_keys($file)[0] ?? false;
         if (!$name) {
             $path = '';
-            return ['success'=>true,'msg'=>self::updateModel($path, $model)];
+            return ['success' => true, 'msg' => self::updateModel($path, $model)];
         }
         if ($name && $_FILES[$name]['size'] == 0) {
             $imkKey = self::get_imageKey($model);
             $actual_Path = $model->$imkKey;
-            if ($actual_Path == US .'kngell' . US . 'public' . US . 'assets' . US . 'img' . US . 'user_profile' . US .'avatar.png' || $actual_Path == "") {
+            if ($actual_Path == US . 'kngell' . US . 'public' . US . 'assets' . US . 'img' . US . 'user_profile' . US . 'avatar.png' || $actual_Path == "") {
                 $path = self::get_path($model)[0] . 'user_profile/avatar.png';
                 $path = PROOT . 'p' . ltrim($path, ROOT);
-                return ['success'=>true,'msg'=>self::updateModel($path, $model)];
+                return ['success' => true, 'msg' => self::updateModel($path, $model)];
             } else {
-                return ['success'=>true,'msg'=>self::updateModel($actual_Path, $model)];
+                return ['success' => true, 'msg' => self::updateModel($actual_Path, $model)];
             }
         }
-        if ($file[$name]['size']>4000000) {
-            return ['success'=>false,'msg'=> FH::showMessage('danger', 'La taille du fichier ne doit pas dépasser 4000 kb')];
+        if ($file[$name]['size'] > 4000000) {
+            return ['success' => false, 'msg' => FH::showMessage('danger', 'La taille du fichier ne doit pas dépasser 4000 kb')];
         }
         $actual_Path = self::modelImageField($model);
         if ($actual_Path != null && basename($actual_Path) != 'avatar.pnp') {
@@ -75,17 +75,17 @@ class H_upload
         }
         $path = self::upload_img(self::get_path($model), $file[$name]);
         if ($path != '/kngell/error') {
-            return ['success'=>true,'msg'=>self::updateModel($path, $model)];
+            return ['success' => true, 'msg' => self::updateModel($path, $model)];
         } else {
-            return ['success'=>false,'msg'=>FH::showMessage('danger', 'le fichier doit être une image ou un pdf ')];
+            return ['success' => false, 'msg' => FH::showMessage('danger', 'le fichier doit être une image ou un pdf ')];
         }
     }
 
     //Delete Image
     private static function deleteImage($path, $m)
     {
-        if ($m->getAllbyAnyColumn([self::get_imageKey($m)=> $path])->count()<= 1) {
-            unlink(ROOT . ltrim($path, '/kngell/')) ;
+        if ($m->getAllbyAnyColumn([self::get_imageKey($m) => $path])->count() <= 1) {
+            unlink(ROOT . ltrim($path, '/kngell/'));
             return true;
         }
         return false;
@@ -97,7 +97,7 @@ class H_upload
         $file_count = count($files['name']);
         $file_keys = array_keys($files);
 
-        for ($i=0; $i < $file_count; $i++) {
+        for ($i = 0; $i < $file_count; $i++) {
             foreach ($file_keys as $key) {
                 $fileAry[$i][$key] = $files[$key][$i];
             }
@@ -110,29 +110,29 @@ class H_upload
         $table = $model->get_tableName();
         $md = $model;
         switch ($table) {
-                case 'realisations':
-                    $md->brand = $path;
+            case 'realisations':
+                $md->brand = $path;
                 break;
-                case 'utilisateur':
-                    $md->profileImage = $path;
+            case 'users':
+                $md->profileImage = $path;
                 break;
-                case 'posts':
-                    $md->postImg = $path;
+            case 'posts':
+                $md->postImg = $path;
                 break;
-                case 'candidatures':
-                    $md->cv = $path;
+            case 'candidatures':
+                $md->cv = $path;
                 break;
-                case 'formations_inscriptions':
-                    $md->cv = $path;
+            case 'formations_inscriptions':
+                $md->cv = $path;
                 break;
-                case 'post_file_url':
-                    $md->fileUrl = $path;
+            case 'post_file_url':
+                $md->fileUrl = $path;
                 break;
-    
-                default:
+
+            default:
                 # code...
                 break;
-            }
+        }
         return $md;
     }
     //Get image key
@@ -142,51 +142,51 @@ class H_upload
         switch ($table) {
             case 'realisations':
                 return 'brand';
-            break;
-            case 'utilisateur':
+                break;
+            case 'users':
                 return 'profileImage';
-            break;
+                break;
             case 'posts':
                 return 'postImg';
-            break;
+                break;
             case 'candidatures':
                 return 'cv';
-            break;
+                break;
             case 'formations_inscriptions':
-                return 'cv' ;
-            break;
+                return 'cv';
+                break;
             case 'post_file_url':
-                return 'fileUrl' ;
-            break;
+                return 'fileUrl';
+                break;
             default:
-            # code...
-            break;
-            }
+                # code...
+                break;
+        }
     }
     //get path
     private static function get_path($model)
     {
         $table = $model->get_tableName();
         switch ($table) {
-                case 'realisations':
-                    $path = [IMAGE_ROOT , 'brand',IMG];
+            case 'realisations':
+                $path = [IMAGE_ROOT, 'brand', IMG];
                 break;
-                case 'utilisateur':
-                    $path = [IMAGE_ROOT,'user_profile',IMG];
+            case 'users':
+                $path = [IMAGE_ROOT, 'user_profile', IMG];
                 break;
-                case 'posts':
-                    $path = [IMAGE_ROOT,'blog-post',IMG];
+            case 'posts':
+                $path = [IMAGE_ROOT, 'blog-post', IMG];
                 break;
-                case 'candidatures':
-                    $path = [UPLOAD_ROOT,'candidats',UPLOAD];
+            case 'candidatures':
+                $path = [UPLOAD_ROOT, 'candidats', UPLOAD];
                 break;
-                case 'post_file_url':
-                    $path = [UPLOAD_ROOT,'postsImg',UPLOAD];
+            case 'post_file_url':
+                $path = [UPLOAD_ROOT, 'postsImg', UPLOAD];
                 break;
-                default:
+            default:
                 # code...
                 break;
-            }
+        }
         return $path;
     }
     // Image field
@@ -195,23 +195,23 @@ class H_upload
         switch ($model->get_tableName()) {
             case 'realisations':
                 return $model->brand;
-            break;
-            case 'utilisateur':
+                break;
+            case 'users':
                 return $model->profileImage;
-            break;
+                break;
             case 'candidatures':
                 return $model->cv;
-            break;
+                break;
             case 'posts':
                 return $model->postImg;
-            break;
+                break;
             case 'post_file_url':
                 return $model->fileUrl;
-            break;
-            
+                break;
+
             default:
-    
-            break;
+
+                break;
         }
     }
     //upload post Url base 64
@@ -221,32 +221,32 @@ class H_upload
         libxml_use_internal_errors(true);
         $dom->loadHtml($postContent);
         $images = $dom->getElementsByTagName('img');
-        $bs64='base64';//variable to check the image is base64 or not
+        $bs64 = 'base64'; //variable to check the image is base64 or not
         foreach ($images as $k => $img) {
             $data = $img->getAttribute('src');
-            if (strpos($data, $bs64) == true) {//if the Image is base 64
+            if (strpos($data, $bs64) == true) { //if the Image is base 64
                 $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
                 $image_name = 'post_url' . time() . $k . '.png';
                 $path = UPLOAD_ROOT . 'postsImg' . DS . $image_name;
                 file_put_contents($path, $data);
                 $img->removeAttribute('src');
                 $img->setAttribute('src', $image_name);
-            } else {//put '/' to prevent lossing image  actual path
-                $image_name="/".$data;
+            } else { //put '/' to prevent lossing image  actual path
+                $image_name = "/" . $data;
                 $img->setAttribute('src', $image_name);
             }
         };
-        $editor_content_save= $dom->saveHTML();
+        $editor_content_save = $dom->saveHTML();
         return $editor_content_save;
     }
     //manage upload image un save
     public static function manage_uploadImage($lastID, $table, $data)
     {
-        if (in_array($table, ['posts','realisations']) && isset($data['imageUrlsAry'])) {
+        if (in_array($table, ['posts', 'realisations']) && isset($data['imageUrlsAry'])) {
             $imgUrlsAry = explode(',', $data['imageUrlsAry']);
             $tempUrls = (new PostFileUrlManager())->getAllbyIndex('IS NULL');
             $tempUrls->delete('imgID', $lastID . $table);
-            if ($tempUrls->count()>0) {
+            if ($tempUrls->count() > 0) {
                 foreach ($imgUrlsAry as $key => $url) {
                     foreach ($tempUrls->get_results() as $urlModel) {
                         if ($url == $urlModel->fileUrl) {
@@ -274,10 +274,10 @@ class H_upload
     //remove unused urls
     public static function removeUnusedUrls()
     {
-        $postsFiles = array_diff(scandir(UPLOAD_ROOT . 'postsImg'), [".",".."]);
+        $postsFiles = array_diff(scandir(UPLOAD_ROOT . 'postsImg'), [".", ".."]);
         $urls = (new PostFileUrlManager())->getAllItem();
         $urlsAry = array_column($urls->get_results(), 'fileUrl');
-        foreach ($postsFiles as $key =>$file) {
+        foreach ($postsFiles as $key => $file) {
             if (!in_array(UPLOAD . 'postsImg' . DS . $file, $urlsAry)) {
                 unlink(UPLOAD_ROOT . 'postsImg' . DS . $file);
                 $urls->delete('fileUrl', UPLOAD . 'postsImg' . DS . $file);

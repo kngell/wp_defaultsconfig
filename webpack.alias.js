@@ -2,8 +2,8 @@ const path = require("path");
 module.exports = {
   moment: path.resolve(__dirname, "node_modules", "moment", "moment"),
   mainjs: path.resolve(__dirname, "public", "assets", "js", "main"),
-  corejs: path.resolve(__dirname, "src", "assets", "js", "custom", "core"),
-  corecss: path.resolve(__dirname, "src", "assets", "css", "custom", "core"),
+  corejs: path.resolve(__dirname, "src", "assets", "js", "core"),
+  corecss: path.resolve(__dirname, "src", "assets", "css", "core"),
   img: path.resolve(__dirname, "src", "assets", "img"),
   fonts: path.resolve(__dirname, "src", "assets", "fonts"),
   plugins: path.resolve(__dirname, "src", "assets", "plugins"),

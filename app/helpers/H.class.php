@@ -42,7 +42,7 @@ class H
 
 	public static function currentUser()
 	{
-		return UsersrManager::$currentLoggedInUser;
+		return UsersManager::$currentLoggedInUser;
 	}
 
 	//=======================================================================
@@ -280,7 +280,7 @@ class H
 	public static function setQueryData($by_user)
 	{
 		if ($by_user) {
-			return  ['where' => ['userID' => UsersrManager::currentUser()->userID], 'return_mode' => 'class'];
+			return  ['where' => ['userID' => UsersManager::currentUser()->userID], 'return_mode' => 'class'];
 		} else {
 			return ['return_mode' => 'class'];
 		}
@@ -447,7 +447,7 @@ class H
 			case 'newsletters':
 				return 'Votre email est bien eregistré!';
 				break;
-			case 'utilisateur':
+			case 'users':
 				if ($method == 'update') {
 					if ($action == 'updateuser') {
 						return 'Votre profil a bien été mis à jour!';
@@ -463,13 +463,6 @@ class H
 					return 'Adhérent ajouté avec success!';
 				}
 				break;
-			case 'adherents':
-				if ($method == 'update') {
-					return 'l\'association a été mis à jour avec success!';
-				} else {
-					return 'Association ajouté avec success!';
-				}
-				break;
 			case 'posts':
 				if ($method == 'Add') {
 					return 'Votre article est bien enregistré!';
@@ -482,6 +475,13 @@ class H
 					return 'Votre réalisation est bien enregistré!';
 				} else {
 					return 'Votre  réalisation a été mis à jour!';
+				}
+				break;
+			case 'categories':
+				if ($method == 'Add') {
+					return 'Categorie ajoutée avec succes!';
+				} else {
+					return 'La Categorie a été mis à jour!';
 				}
 				break;
 			case 'comments':
@@ -526,12 +526,12 @@ class H
 				// case $item['table'] == 'categories':
 				//     return $model->getAllbyIndex(0)->get_results();
 				// break;
-			case in_array($item['table'], ['posts', 'utilisateurs', 'feedback', 'programme_formation']):
+			case in_array($item['table'], ['posts', 'userss', 'feedback', 'programme_formation']):
 				if ($item['method'] == 'showDetails') {
 					return (isset($item['user']) && $item['user'] == 'guest') ? $model->getDetails($request->getAll('id'))->outputProgramme($request->getAll('session_id')) : $model->getDetails($request->getAll('id'));
 				}
 
-				return !isset($item['user']) ? $model->getAllbyIndex((int)UsersrManager::currentUser()->userID)->get_results() : $model->getAllItem()->get_results();
+				return !isset($item['user']) ? $model->getAllbyIndex((int)UsersManager::currentUser()->userID)->get_results() : $model->getAllItem()->get_results();
 				break;
 			case in_array($item['table'], ['sessions_formations', 'offre_emploi']):
 				if ($item['method'] == 'showDetails') {

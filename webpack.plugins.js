@@ -36,7 +36,6 @@ module.exports = {
       "window.jQuery": "jquery",
       "global.jQuery": "jquery",
       "popper.js": "popper.js",
-      moment: "moment",
     }),
     new webpack.DefinePlugin({
       "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH),
@@ -44,9 +43,8 @@ module.exports = {
     new BrowserSyncPlugin({
       host: "localhost",
       port: 3003,
-      proxy: "http://localhost:80",
+      proxy: "localhost:80/kngell_ecommerce/backend",
       browser: "chrome",
-      files: ["**/*.php"],
     }),
     new webpack.SourceMapDevToolPlugin({}),
     // new CKEditorWebpackPlugin({ language: "fr" }),

@@ -22,8 +22,7 @@ class Rooter
             $this->_controller_Name = $this->controller;
         }
         if (!GrantAccess::hasAccess($this->_controller_Name, $this->_method_Name)) {
-            $this->_controller_Name = $this->controller = ACCESS_RESTRICTED . 'Controller';
-            $this->_method_Name == '' ? $this->_method_Name = $this->method = 'index' : '';
+            $this->manageRestrictedAccess();
         }
         !is_object($this->controller) ? $this->controller = new $this->controller($this->_controller_Name, $this->_method_Name) : '';
 
@@ -81,5 +80,14 @@ class Rooter
             echo '</noscript>';
             exit();
         }
+    }
+    //Manage restricted access 
+    private function manageRestrictedAccess()
+    {
+        if ($this->controller == "BackendController") {
+            $this->method = 'adminlogin';
+        }
+        $this->_controller_Name = $this->controller = ACCESS_RESTRICTED . 'Controller';
+        $this->method = empty($this->_method_Name) ? 'index' : $this->method;
     }
 }

@@ -13,7 +13,7 @@ class GrantAccess
         if (Session::exists(CURRENT_USER_SESSION_NAME)) {
             $current_user_acls[] = 'LoggedIn';
             //dd($current_user_acls);
-            foreach (UsersrManager::currentUser()->acls() as $a) {
+            foreach (UsersManager::currentUser()->acls() as $a) {
                 $current_user_acls[] = $a;
             }
         }

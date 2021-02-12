@@ -4,20 +4,8 @@
       "AdminController": ["*"]
     },
     "FrontendController": ["*"],
-    "BackendController": ["index"],
-    "UsersController": [
-      "ajaxRegister",
-      "ajaxLogin",
-      "index",
-      "login",
-      "fblogin",
-      "register",
-      "emailVerified",
-      "forgot",
-      "ajaxresetpass",
-      "resetpass",
-      "logincookies"
-    ],
+    "BackendController": ["login"],
+    "UsersController": ["*"],
     "NewsController": ["index", "show", "categorie", "unsuscribe"],
     "RestrictedController": ["*"],
     "VisitorsController": ["*"],
@@ -32,6 +20,7 @@
       "UsersController": ["login", "register"]
     },
     "UsersController": ["*"],
+    "BackendController": ["login"],
     "MembersController": ["*"],
     "UsersprofileController": ["*"],
     "UsersfeedbackController": ["*"],
@@ -46,7 +35,8 @@
     "AdminController": ["*"],
     "RealisationsController": ["*"],
     "AdminnavController": ["*"],
-    "VisitorsController": ["*"]
+    "VisitorsController": ["*"],
+    "BackendController": ["*"]
   },
   "admin2": {
     "denied": {},

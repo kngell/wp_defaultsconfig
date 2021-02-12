@@ -43,7 +43,7 @@ $drop = [];
             </div>
 
             <div class="connect col-md-2">
-                <?php if (!isset(UsersrManager::currentUser()->firstName)) : ?>
+                <?php if (!isset(UsersManager::currentUser()->firstName)) : ?>
                     <ul class="navbar">
                         <li class="connexion">
                             <a class="nav-link dropdown-toggle" data-toggle="modal" data-target="#login-box" href="<?= PROOT ?>users/ajaxLogin">
@@ -54,7 +54,7 @@ $drop = [];
                     <ul class="navbar">
                         <li class="nav-item dropdown menu-user ml-auto connexion">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" role="button">
-                                <span class="icon login"></span>&nbsp;&nbsp;<?= 'Bonjour&nbsp;' . UsersrManager::currentUser()->lastName; ?>
+                                <span class="icon login"></span>&nbsp;&nbsp;<?= 'Bonjour&nbsp;' . UsersManager::currentUser()->lastName; ?>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <?php foreach ($drop as $k => $v) :

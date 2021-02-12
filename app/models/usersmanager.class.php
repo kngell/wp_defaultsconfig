@@ -1,8 +1,8 @@
 <?php
-class UsersrManager extends Model
+class UsersManager extends Model
 {
     private $_colID = 'userID';
-    protected $_table = 'utilisateur';
+    protected $_table = 'users';
     private $_sessionName;
     private $_cookieName;
     public static $currentLoggedInUser = null;
@@ -46,11 +46,11 @@ class UsersrManager extends Model
         $this->_cookieName = REMEMBER_ME_COOKIE_NAME;
         if ($user) {
             if (is_int($user)) {
-                $cond = ['where' => ['userID' => $user], 'return_mode' => 'class', 'class' => 'UsersrManager'];
-                $u = $this->_db->findFirst('utilisateur', $cond);
+                $cond = ['where' => ['userID' => $user], 'return_mode' => 'class', 'class' => 'UsersManager'];
+                $u = $this->_db->findFirst($this->_table, $cond);
             } else {
-                $cond = ['where' => ['email' => $user], 'return_type' => 'single', 'return_mode' => 'class', 'class' => 'UsersrManager'];
-                $u = $this->_db->select('utilisateur', $cond);
+                $cond = ['where' => ['email' => $user], 'return_type' => 'single', 'return_mode' => 'class', 'class' => 'UsersManager'];
+                $u = $this->_db->select($this->_table, $cond);
             }
             if ($u) {
                 $this->_results = $this->_db->get_results();
@@ -59,11 +59,6 @@ class UsersrManager extends Model
                 }
             }
         }
-    }
-    //get colID
-    public function get_colID()
-    {
-        return $this->_colID;
     }
     //=======================================================================
     //Find and check users
@@ -82,7 +77,7 @@ class UsersrManager extends Model
     public function findByEmail($email)
     {
         $data = [
-            'where' => ['email' => $email, 'deleted' => !1], 'return_mode' => 'class', 'class' => 'UsersrManager'
+            'where' => ['email' => $email, 'deleted' => !1], 'return_mode' => 'class', 'class' => 'UsersManager'
         ];
         return $this->findFirst($data);
     }
@@ -98,7 +93,7 @@ class UsersrManager extends Model
     public static function currentUser()
     {
         if (!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)) {
-            $U = new UsersrManager((string) Session::get(CURRENT_USER_SESSION_NAME));
+            $U = new UsersManager((string) Session::get(CURRENT_USER_SESSION_NAME));
             self::$currentLoggedInUser = $U;
         }
         return self::$currentLoggedInUser;

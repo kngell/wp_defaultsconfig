@@ -1,6 +1,5 @@
 <?php
 
-
 class TH_Admin
 {
     //=======================================================================
@@ -22,7 +21,7 @@ class TH_Admin
                     <thead>
                         <tr>
                             <th scope="col" style="width:2%" class="text-center">#</th>
-                            <th scope="col" style="width:15%">Categorie</th>
+                            <th scope="col" style="width:20%">Categorie</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="width:15%">Photo</th>
                             <th scope="col" style="width:20%">Parent Categorie</th>
@@ -31,7 +30,7 @@ class TH_Admin
                     </thead>
                     <tbody>';
         foreach ($data as $cat) {
-            $catgorie = ((int)$cat->parentID != 0) ? $cat->getDetails($cat->parentID)->categorie : "";
+            $catgorie = ((int)$cat->parentID != 0) ? $cat->getDetails($cat->parentID)->categorie : '';
             $output .= ' <tr>
                             <th scope="row">' . $cat->catID . '</th>
                             <td>' . $cat->categorie . '</td>
@@ -48,6 +47,7 @@ class TH_Admin
 
         return $output;
     }
+
     //=======================================================================
     //Posts table
     //=======================================================================
@@ -68,10 +68,10 @@ class TH_Admin
                     </thead>
                     <tbody>';
         foreach ($data as $post) {
-            $user = UsersrManager::currentUser()->getDetails($post->userID);
+            $user = UsersManager::currentUser()->getDetails($post->userID);
             $output .= ' <tr>
                             <th scope="row">' . $post->postID . '</th>
-                            <th scope="row">' . $user->firstName . ' , ' .  $user->lastName . '</th>
+                            <th scope="row">' . $user->firstName . ' , ' . $user->lastName . '</th>
                             <td>' . $post->postTitle . '</td>
                             <td>' . $post->getpostDate() . '</td>
                             <td>' . $post->getContentOverview($post->get_colContent()) . '...</td>
@@ -89,11 +89,12 @@ class TH_Admin
 
         return $output;
     }
+
     //=======================================================================
     //users table
     //=======================================================================
 
-    public static function utilisateurTable($data, $deletedUsers = false)
+    public static function usersTable($data, $deletedUsers = false)
     {
         $output = '';
         $output = '<table class="table table-stripped table-bordered text-center">
@@ -163,7 +164,7 @@ class TH_Admin
     </thead>
     <tbody>';
         foreach ($data as $row) {
-            $user = UsersrManager::currentUser()->getDetails($row->userID);
+            $user = UsersManager::currentUser()->getDetails($row->userID);
             $output .= '<tr>
             <td>' . $row->fbID . '</td>
             <td>' . $row->subject . '</td>
@@ -192,7 +193,7 @@ class TH_Admin
         <span area-hidden="true">&times;</span>
     </button>
     <h4 class="alert-heading">New notification</h4>';
-            $user = UsersrManager::currentUser()->findById('userID', $row->userID);
+            $user = UsersManager::currentUser()->findById('userID', $row->userID);
             $output .= '<p class="mb-0 lead">' . $row->message . ' By :' . $user->firstName . ' ' . $user->lastName . '</p>
     <hr class="my-2">
     <p class="mb-0 float-left"><b>User E-mail :</b>' . $user->email . '</p>
@@ -221,6 +222,7 @@ class TH_Admin
         }
         return $output;
     }
+
     //=======================================================================
     //Adherents table
     //=======================================================================
@@ -262,6 +264,7 @@ class TH_Admin
         </table>';
         return $output;
     }
+
     //=======================================================================
     //Association table
     //=======================================================================
@@ -315,6 +318,7 @@ class TH_Admin
         </table>';
         return $output;
     }
+
     //=======================================================================
     //comments table
     //=======================================================================
@@ -327,6 +331,7 @@ class TH_Admin
         }
         return $output;
     }
+
     //=======================================================================
     //Realisation table admin
     //=======================================================================
@@ -440,9 +445,9 @@ class TH_Admin
             </td>
             <td class="pl-3">' . $row->titre . '
             </td>
-            <td>' . $row->getContentOverview("descriptif") . '
+            <td>' . $row->getContentOverview('descriptif') . '
             </td>
-             <td class="pl-3">' . $row->getContentOverview("profil_recherche") . '
+             <td class="pl-3">' . $row->getContentOverview('profil_recherche') . '
             </td>
             <td class="text-center justify-content-between claerfix">
                 <a href="#" id="' . $row->ofemID . '" title="View Details" class="text-info infoBtn" data-toggle="modal"
@@ -461,6 +466,7 @@ class TH_Admin
         </table>';
         return $output;
     }
+
     //=======================================================================
     //Programme formation formation table
     //=======================================================================
@@ -484,9 +490,9 @@ class TH_Admin
             </td>
             <td class="pl-3">' . $row->titre . '
             </td>
-             <td class="pl-3">' . $row->getContentOverview("objectifs") . '
+             <td class="pl-3">' . $row->getContentOverview('objectifs') . '
             </td>
-            <td>' . $row->getContentOverview("programme") . '
+            <td>' . $row->getContentOverview('programme') . '
             </td>
       
             <td class="text-center justify-content-between claerfix">

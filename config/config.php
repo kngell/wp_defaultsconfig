@@ -63,7 +63,7 @@ define('LAZYLOAD', SCRIPT . DS . 'assets' . DS . 'lazyload' . DS);
 // -----------------------------------------------------------------------
 // DATA BASE PARAMS
 // -----------------------------------------------------------------------
-define('DB_NAME', 'blogkngell'); // database Name
+define('DB_NAME', 'Kngell_eshopping'); // database Name
 define('DB_USER', 'root'); //User
 define('DB_PWD', ""); //Passord
 define('DB_HOST', '127.0.0.1'); //host use IP adresse to avoid DNS lookup

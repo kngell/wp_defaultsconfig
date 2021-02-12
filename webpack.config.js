@@ -141,6 +141,9 @@ var adminAssetsConfig = merge(adminEntries, commonConfig, {
         : "lazyload/css/admin/[name]_[chunkhash].css",
     }),
   ],
+  externals: {
+    moment: "moment",
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
