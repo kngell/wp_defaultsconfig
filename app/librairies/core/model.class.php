@@ -106,9 +106,9 @@ abstract class Model
     }
 
     //Get details by id
-    public function getDetails($id)
+    public function getDetails($id, $colID = '')
     {
-        $data_query = ['where' => [$this->get_colID() => $id], 'return_mode' => 'class'];
+        $data_query = ['where' => [$colID != '' ? $colID : $this->get_colID() => $id], 'return_mode' => 'class'];
         return $this->findFirst($data_query);
     }
 

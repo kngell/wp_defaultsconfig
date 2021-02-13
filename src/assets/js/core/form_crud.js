@@ -124,17 +124,13 @@ export function ManageResponse(response, data) {
       break;
     case "success":
       data.frm.trigger("reset");
-      console.log(response.msg);
       if (data.login) {
         data.loginbox.modal("hide");
         window.location.reload();
       }
       if (data.swal) {
         data.modalbox.modal("hide");
-        data.swal.fire({
-          title: response.msg,
-          type: "success",
-        });
+        data.swal.fire("Success!", response.msg, "success");
       } else {
         if (data.alertsuccess) data.alertid.html(response.msg);
       }
@@ -160,61 +156,72 @@ export function ManageResponse(response, data) {
 
 //delete
 export function Delete(data, displayItem) {
-  if (data.url_check) {
-    checkBeforeDelete(data).then((result) => {
-      if (result.value) {
-        $.ajax({
-          url: BASE_URL + data.url,
-          method: "post",
-          data: {
-            id: data.id,
-            table: data.table,
-            notification: data.notification,
-          },
-          success: function (response) {
-            if (response.result === "success") {
-              data.swal.fire("Deleted!", response.msg, "success");
-              displayItem();
-            } else {
-              data.alertID.html(response.msg);
-            }
-          },
-        });
-      }
-    });
-  }
+  checkBeforeDelete(data).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: BASE_URL + data.url,
+        method: "post",
+        data: {
+          id: data.id,
+          table: data.table,
+          notification: data.notification,
+        },
+        success: function (response) {
+          if (response.result === "success") {
+            data.swal.fire("Deleted!", response.msg, "success");
+            displayItem();
+          } else {
+            data.alertID.html(response.msg);
+          }
+        },
+      });
+    }
+  });
 }
 //function check before delete
-
 function checkBeforeDelete(data) {
   return new Promise((resolve, reject) => {
-    $.ajax({
-      url: BASE_URL + data.url_check,
-      method: "post",
-      data: {
-        id: data.id,
-        table: data.table,
-        notification: data.notification,
-      },
-    })
-      .done((response) => {
-        data.swal
-          .fire({
-            title: "Are you sure?",
-            type: "warning",
-            showCancelButton: true,
-            html: "<p>You won't be able to revert this!</p>" + response.msg,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Delete!",
-          })
-          .then((result) => {
-            resolve(result);
-          });
+    if (!data.url_check) {
+      data.swal
+        .fire({
+          title: "Are you sure?",
+          showCancelButton: true,
+          html: "<p>You won't be able to revert this!</p>",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Delete!",
+        })
+        .then((result) => {
+          resolve(result);
+        });
+    } else {
+      $.ajax({
+        url: BASE_URL + data.url_check,
+        method: "post",
+        data: {
+          id: data.id,
+          table: data.table,
+          notification: data.notification,
+        },
       })
-      .fail((error) => {
-        reject(error);
-      });
+        .done((response) => {
+          data.swal
+            .fire({
+              title: "Are you sure?",
+              showCancelButton: true,
+              html: "<p>You won't be able to revert this!</p>" + response.msg,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Delete!",
+            })
+            .then((result) => {
+              resolve(result);
+            });
+        })
+        .fail((error) => {
+          reject(error);
+        });
+    }
   });
 }
 export function displayMultisellect(data) {

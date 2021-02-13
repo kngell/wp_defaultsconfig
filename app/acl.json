@@ -3,8 +3,8 @@
     "denied": {
       "AdminController": ["*"]
     },
-    "FrontendController": ["*"],
-    "BackendController": ["login"],
+    "HomeController": ["*"],
+    "AdminController": ["login"],
     "UsersController": ["*"],
     "NewsController": ["index", "show", "categorie", "unsuscribe"],
     "RestrictedController": ["*"],
@@ -33,10 +33,8 @@
   "admin": {
     "denied": {},
     "AdminController": ["*"],
-    "RealisationsController": ["*"],
-    "AdminnavController": ["*"],
     "VisitorsController": ["*"],
-    "BackendController": ["*"]
+    "TablesController": ["*"]
   },
   "admin2": {
     "denied": {},

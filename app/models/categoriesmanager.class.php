@@ -88,9 +88,10 @@ class CategoriesManager extends Model
     public function check($id = '', $params = [])
     {
         $categories = $this->getAllbyIndex($id)->get_results();
+        $output = '';
         if ($categories) {
             $otherslink = $this->searchCategorie($id);
-            $output = '<h5> This category contains sub-categories : </h5>';
+            $output .= '<h5> This category contains sub-categories : </h5>';
 
             foreach ($categories as $categorie) {
                 $ponctuation = $categorie === end($categories) ? '.' : ',';
@@ -99,10 +100,9 @@ class CategoriesManager extends Model
             if ($otherslink) {
                 $output .= '<h6>Its also used by pther links : </h6>';
             }
-            $output .= '<h6 class="text-center">Do you really want to delete it ?</h6>';
-            return $output;
+            $output .= '<h6 class="text-center pt-2">Do you really want to delete it ?</h6>';
         }
-        return false;
+        return $output;
     }
 
     //After delete categorie
@@ -117,5 +117,22 @@ class CategoriesManager extends Model
             return $delete;
         }
         return true;
+    }
+
+    //Update active categories
+    public function categorieStatus($item = [])
+    {
+        $categorie = $this->getDetails($item['id']);
+        $categorie->status = $categorie->status == 1 ? 0 : 1;
+        $categorie->id = $item['id'];
+        $output = '';
+        if ($categorie->save()) {
+            if ($categorie->status == 1) {
+                $output = 'green';
+            } else {
+                $output = '#dc3545';
+            }
+        }
+        return $output;
     }
 }

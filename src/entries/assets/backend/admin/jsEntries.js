@@ -9,7 +9,7 @@ module.exports = {
       dependOn: "js/librairies/adminlib",
     },
     //Admin plugins
-    "js/plugins/backend/adminplugins": {
+    "js/plugins/adminplugins": {
       import: ["js/plugins_entries/adminplugins"],
       dependOn: "js/librairies/adminlib",
     },

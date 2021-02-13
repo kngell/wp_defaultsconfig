@@ -75,7 +75,7 @@ class FormsController extends Controller
                         (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID : '';
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
                         $this->model_instance[$table]->notify(UsersManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been added');
-                        ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => FH::showMessage('success', $SuccessMsg)]);
+                        ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $SuccessMsg]);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'Le formulaire est vide!')]);
                     }
@@ -158,7 +158,7 @@ class FormsController extends Controller
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
             $colID = $this->model_instance[$this->request->getAll('table')]->get_colID();
-            $this->model_instance[$this->request->getAll('table')]->sets_SoftDeleteOnTrue();
+            $this->model_instance[$table]->sets_SoftDeleteOnTrue();
             $categories = ($table === 'posts' && array_key_exists('categorie', $_REQUEST)) ? array_values($_REQUEST['categorie']) : '';
             $data = $this->request->getAll();
             $this->model_instance[$table]->assign($this->model_instance[$table]->getDetails($data[$colID]));
@@ -175,7 +175,7 @@ class FormsController extends Controller
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
                         $SuccessMsg = H::get_successMsg($this->model_instance[$table], $action, $this->_method);
                         $this->model_instance[$table]->notify(UsersManager::currentUser()->userID, $this->request->getAll('notification'), 'A' . $table . ' has been updated');
-                        $this->jsonResponse(['result' => 'success', 'msg' => FH::showMessage('success text-center', $SuccessMsg)]);
+                        $this->jsonResponse(['result' => 'success', 'msg' => $SuccessMsg]);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
                     }

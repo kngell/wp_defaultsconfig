@@ -41,7 +41,7 @@
                   <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                   <li class="nav-item ">
-                      <a href="<?= PROOT . 'backend' ?>"
+                      <a href="<?= PROOT . 'admin' ?>"
                           class="nav-link">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
@@ -51,7 +51,7 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'index' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'index' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Statistics</p>
@@ -69,7 +69,7 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'allcategories' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'allcategories' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Categories</p>
@@ -84,7 +84,7 @@
                       </ul>
                   </li>
                   <li class="nav-item">
-                      <a href="<?= PROOT . 'backend' . US . 'order' ?>"
+                      <a href="<?= PROOT . 'admin' . US . 'order' ?>"
                           class="nav-link">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
@@ -94,14 +94,14 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'payment' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'payment' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Payments</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'xxxxx' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'xxxxx' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>xxxxxxx</p>
@@ -110,7 +110,7 @@
                       </ul>
                   </li>
                   <li class="nav-item ">
-                      <a href="<?= PROOT . 'backend' . US . 'users' ?>"
+                      <a href="<?= PROOT . 'admin' . US . 'users' ?>"
                           class="nav-link">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
@@ -120,14 +120,14 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'allUsers' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'allUsers' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>All Users</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'restoreUsers' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'restoreUsers' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Restore Users</p>
@@ -145,7 +145,7 @@
                       </a>
                   </li>
                   <li class="nav-item ">
-                      <a href="<?= PROOT . 'backend' . US . 'users' ?>"
+                      <a href="<?= PROOT . 'admin' . US . 'users' ?>"
                           class="nav-link">
                           <i class="nav-icon fas fa-tachometer-alt"></i>
                           <p>
@@ -155,28 +155,28 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'contact' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'contact' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Contact</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'realisations' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'realisations' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Réalisations</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'programme' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'programme' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Programme formation</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'backend' . US . 'sessions' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'sessions' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Session formation</p>

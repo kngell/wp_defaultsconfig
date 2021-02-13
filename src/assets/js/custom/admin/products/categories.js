@@ -11,7 +11,7 @@ import {
   removeInvalidInput,
   reset_invalid_input,
 } from "corejs/inputErrManager";
-import Swal from "sweetalert2";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 document.addEventListener("DOMContentLoaded", function () {
   function PhpPlugin(element) {
     this.element = element;
@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
           phpPlugin.Pluginfrm.find("#updateAt").val(
             response.msg.items.updateAt
           );
+          phpPlugin.Pluginfrm.find("#status").val(response.msg.items.status);
           phpPlugin.Pluginfrm.find("#categorie").val(
             response.msg.items.categorie
           );
@@ -158,7 +159,33 @@ document.addEventListener("DOMContentLoaded", function () {
         displayMultisellect(data);
       }
     });
-
+    // =======================================================================
+    // Active/desactive plugin
+    // =======================================================================
+    phpPlugin.wrapper.on("click", ".activateBtn", function (e) {
+      e.preventDefault();
+      var data = {
+        url: "tables/update",
+        table: "categories",
+        frm: phpPlugin.Pluginfrm,
+        id: $(this).attr("id"),
+        method: "categorieStatus",
+        params: $(this),
+      };
+      Call_controller(data, Response);
+      function Response(response, elmt) {
+        console.log(response);
+        if (response.result == "success") {
+          response.msg == "green"
+            ? elmt.attr("title", "Deactivate Category")
+            : elmt.attr("title", "Activate Category");
+          elmt
+            .children()
+            .first()
+            .attr("style", "color:" + response.msg);
+        }
+      }
+    });
     // =======================================================================
     // Delete Plugin
     // =======================================================================

@@ -31,6 +31,8 @@ class TH_Admin
                     <tbody>';
         foreach ($data as $cat) {
             $catgorie = ((int)$cat->parentID != 0) ? $cat->getDetails($cat->parentID)->categorie : '';
+            $active = $cat->status == 1 ? "style='color:green'" : '';
+            $txtactive = $cat->status == 1 ? 'Deactivate Category' : 'Activate Category';
             $output .= ' <tr>
                             <th scope="row">' . $cat->catID . '</th>
                             <td>' . $cat->categorie . '</td>
@@ -38,9 +40,10 @@ class TH_Admin
                             <td>' . $cat->photo . '</td>
                             <td>' . $catgorie . '</td>
                             <td>
-                            <a href="#" id="' . $cat->catID . '"  title="Edit posts" class="text-primary editBtn mr-2" data-toggle="modal" data-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp; &nbsp; &nbsp; &nbsp;
-                            
-                            <a href="#" id="' . $cat->catID . '" title="Delete post" class="text-danger deleteBtn ml-2"><i class="fas fa-trash-alt fa-lg"></i></a></td>
+                            <a href="#" id="' . $cat->catID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fas fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
+                            <a href="#" id="' . $cat->catID . '"  title="Edit Category" class="text-primary editBtn mx-2" data-toggle="modal" data-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="#" id="' . $cat->catID . '" title="Delete Caegory" class="text-danger deleteBtn"><i class="fas fa-trash-alt fa-lg"></i></a>
+                            </td>   
                         </tr>';
         }
         $output .= '</tbody></table>';

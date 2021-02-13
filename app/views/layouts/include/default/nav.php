@@ -1,83 +1,54 @@
-<?php
-$menu = GrantAccess::getMenu('menu_acl');
-$currentPage = (isset($this->page) && $this->page == "Prestations") ? "/kngell/home/prestations" :  H::currentPage();
-$page = '';
-$drop = [];
-?>
-<nav class="navbar navbar-expand-lg fixed-top mynavbar">
-    <div class="container-fluid">
-        <div class="row myrow">
-            <div class="col-md-2 logo-wrapper">
-                <div class="logo pl-4 pb-4"> <a class="navbar-brand my-0 py-0" href="<?= PROOT ?>home/index"> <img src="/kngell/public/assets/img/logo.png" class="img-fluid" alt="logo" title="Logo" />
-                        <h4 class="my-0 pt-2"><span class="element"></span></h4>
-                    </a>
-                </div>
-            </div>
-            <div class="hamburger d-md-none">
-                <button class="navbar-toggler float-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-            </div>
-            <div class="col-lg-8 col-md-12 col-sm-12 collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav menu-general mx-auto">
-                    <?php
-                    foreach ($menu as $key => $val) :
-                        $active = '';
-                    ?>
-                        <?php
-                        if (is_array($val)) :
-                            foreach ($val as $k => $v) {
-                                $drop[$k] = $v;
-                            }
-                        ?>
-                        <?php
-                        else :
-                            $active = ($val == $currentPage) ? 'active' : '';
-                        ?>
-                            <li class="nav-item <?= $active ?>"> <a class="nav-link" href="<?= $val ?>">
-                                    <?= $key ?>
-                                </a> </li>
-                            <?php $page = !empty($active) ? $key : $page; ?>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-
-                </ul>
-            </div>
-
-            <div class="connect col-md-2">
-                <?php if (!isset(UsersManager::currentUser()->firstName)) : ?>
-                    <ul class="navbar">
-                        <li class="connexion">
-                            <a class="nav-link dropdown-toggle" data-toggle="modal" data-target="#login-box" href="<?= PROOT ?>users/ajaxLogin">
-                                <span class="icon login"></span>&nbsp;&nbsp;Login</a>
-                        </li>
-                    </ul>
-                <?php else : ?>
-                    <ul class="navbar">
-                        <li class="nav-item dropdown menu-user ml-auto connexion">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" role="button">
-                                <span class="icon login"></span>&nbsp;&nbsp;<?= 'Bonjour&nbsp;' . UsersManager::currentUser()->lastName; ?>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <?php foreach ($drop as $k => $v) :
-                                    $active = ($v == $currentPage) ? 'active' : ''; ?>
-                                    <?php if ($k == 'separator') : ?>
-                                        <li role="separator" class="dropdown-divider"></li>
-                                    <?php else : ?>
-                                        <li class="dropdown-item nav-item <?= $active ?>">
-                                            <a class="nav-link" href="<?= ($k != 'Logout') ? $v : "#" ?>">
-                                                <?= $k ?>
-                                            </a>
-                                        </li>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                            </ul>
-                        </li>
-                    </ul>
-            </div>
-        </div>
+<!-- Start Header -->
+<header id="header">
+  <div class="strip d-flex justify-content-between px-4 py-1 bg-light">
+    <p class="font-rale font-size-12 text-black-50 m-0">
+      Kngell, La Turbine. 32 boulevard du port. CS 20001. 95015 Cergy-Pontoise cedex.
+    </p>
+    <div class="font-rale font-size-14">
+      <a href="product.html" class="px-3 border-right border-left text-dark">Login</a>
+      <a href="#" class="px-3 border-right text-dark">Whishlist(0)</a>
     </div>
-
-</nav>
-<?php if ($this->page_title != 'Home') {
-    require_once 'after-nav.php';
-}
+  </div>
+  <!-- Primary navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark color-second-bg">
+    <a class="navbar-brand" href="<?=PROOT?>home/index">Mobile
+      Shopee</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav m-auto font-rubik">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">On Sale</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Category</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=PROOT?>home/product">Products
+            <i class="fas fa-chevron-down"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Category<i class="fas fa-chevron-down"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Comming Soon</a>
+        </li>
+      </ul>
+      <form action="#" class="font-size-14 font-rale">
+        <a href="<?=PROOT?>home/cart"
+          class="py-2 rounded-pill color-primary-bg">
+          <span class="font-size-16 px-2 text-white"><i class="fas fas fa-shopping-cart"></i></span>
+          <span class="px-3 py-2 rounded-pill text-dark bg-light cart_nb_elt">0</span>
+        </a>
+        <a href="#"></a>
+      </form>
+    </div>
+  </nav>
+  <!-- End Primary navigation -->
+</header>
+<!-- End Header -->

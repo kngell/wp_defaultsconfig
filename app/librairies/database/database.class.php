@@ -15,8 +15,8 @@ abstract class Database
     {
         // Set Options
         $options = [
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci",
-            PDO::MYSQL_ATTR_INIT_COMMAND=>'SET CHARACTER SET UTF8mb4',
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci',
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET CHARACTER SET UTF8mb4',
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -33,6 +33,7 @@ abstract class Database
         }
         return $this->_con;
     }
+
     //=======================================================================
     //General execution of queries
     //=======================================================================
@@ -43,7 +44,6 @@ abstract class Database
 
         // if prepare ok !
         if ($this->_query = $this->_con->prepare($sql)) {
-
             //Bind conditions
             if (!empty($cond)) {
                 foreach ($cond as $key => $val) {
@@ -51,13 +51,13 @@ abstract class Database
                 }
             }
             //Bind params
-            if (array_key_exists("where", $data)) {
-                foreach ($data[ 'where' ] as $key => $value) {
+            if (array_key_exists('where', $data)) {
+                foreach ($data['where'] as $key => $value) {
                     $this->bind(":$key", $value);
                 }
-                unset($data[ 'where' ]);
+                unset($data['where']);
             }
-           
+
             //Bind the datas whitch left
             if (!empty($data)) {
                 //dd( $data );
@@ -66,7 +66,7 @@ abstract class Database
                 }
             }
         } else {
-            $this->error =true;
+            $this->error = true;
             die('Error : ' . 'Il y a un problème avec la base de donnée');
         }
         //Execute
@@ -85,6 +85,7 @@ abstract class Database
     {
         $this->_query = $this->_con->prepare($sql);
     }
+
     /**
      * --------------------------------------------------------------------------------------------------
      * Binding the given values of the query
@@ -94,21 +95,19 @@ abstract class Database
      */
     protected function bind($param, $value, $type = null)
     {
-        if (is_null($type)) {
-            switch (true) {
+        switch (is_null($type)) {
                 case is_int($value):
                     $type = PDO::PARAM_INT;
-                    break;
+                break;
                 case is_bool($value):
                     $type = PDO::PARAM_BOOL;
-                    break;
+                break;
                 case is_null($value):
                     $type = PDO::PARAM_NULL;
-                    break;
+                break;
                 default:
                     $type = PDO::PARAM_STR;
             }
-        }
         $this->_query->bindValue($param, $value, $type);
     }
 
@@ -132,11 +131,16 @@ abstract class Database
     }
 
     //get rowcount
-    protected function rowcount()
+    public function rowcount()
     {
         return $this->_query->rowCount();
     }
 
+    //Last Insert ID
+    public function get_lastInsertId()
+    {
+        return $this->_con->lastInsertId();
+    }
 
     //=======================================================================
     //Error maanagement
@@ -145,10 +149,5 @@ abstract class Database
     protected function error()
     {
         return $this->_error;
-    }
-
-    public function get_lastInsertId()
-    {
-        return $this->_con->lastInsertId();
     }
 }

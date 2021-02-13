@@ -2,10 +2,10 @@
 // -----------------------------------------------------------------------
 // DEFINE SEPERATOR ALIASES
 // -----------------------------------------------------------------------
-define("URL_SEPARATOR", '/');
-define("DS", DIRECTORY_SEPARATOR);
-define("PS", PATH_SEPARATOR);
-define("US", URL_SEPARATOR);
+define('URL_SEPARATOR', '/');
+define('DS', DIRECTORY_SEPARATOR);
+define('PS', PATH_SEPARATOR);
+define('US', URL_SEPARATOR);
 // -----------------------------------------------------------------------
 // ROOT PATH
 // -----------------------------------------------------------------------
@@ -23,24 +23,23 @@ define('ACME_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'acme-challenge' . DS
 define('UPLOAD_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'img' . DS . 'upload' . DS);
 define('LAZYLOAD_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'lazyload' . DS);
 define('CUSTOM_VALIDATOR', ROOT . DS . 'app' . DS . 'custom_validator' . DS);
-
-$modules = [ROOT, APP, CORE, CONTROLLER, DATA, CUSTOM_VALIDATOR];
-set_include_path(get_include_path() . PS . implode(PS, $modules));
-
+// -----------------------------------------------------------------------
+// URL ROOT
+// -----------------------------------------------------------------------
+define('URLROOT', 'http://localhost' . US . 'kngell' . US);
+// -----------------------------------------------------------------------
+// SITE NAME
+// -----------------------------------------------------------------------
+define('SITE_TITLE', "K'nGELL Ingénierie Logistique"); //This will be use if any sie title is set
 // -----------------------------------------------------------------------
 // DEFAULT ITEMS
 // -----------------------------------------------------------------------
-define("DEFAULT_CONTROLLER", 'FrontendPagesController'); //default controller if there isen't one define in the url
+define('DEFAULT_CONTROLLER', 'HomeController'); //default controller if there isen't one define in the url
 define('DEFAULT_METHOD', 'index'); //Default methode for controllers
 
 define('DEBUG', true);
 define('DEFAULT_LAYOUT', 'default'); //if any layout is define in the controller use this one
 
-define('SITE_TITLE', "K'nGELL Ingénierie Logistique"); //This will be use if any sie title is set
-// -----------------------------------------------------------------------
-// URL ROOT
-// -----------------------------------------------------------------------
-define('URLROOT', 'http://localhost' . US . 'kngell' . US);
 // -----------------------------------------------------------------------
 // SCRIPT/CSS/IMG ACCESS
 // -----------------------------------------------------------------------
@@ -65,15 +64,16 @@ define('LAZYLOAD', SCRIPT . DS . 'assets' . DS . 'lazyload' . DS);
 // -----------------------------------------------------------------------
 define('DB_NAME', 'Kngell_eshopping'); // database Name
 define('DB_USER', 'root'); //User
-define('DB_PWD', ""); //Passord
+define('DB_PWD', ''); //Passord
 define('DB_HOST', '127.0.0.1'); //host use IP adresse to avoid DNS lookup
 
 // -----------------------------------------------------------------------
-// LOGIN & REGISTRATION
+// VISITORS, LOGIN & REGISTRATION
 // -----------------------------------------------------------------------
 define('CURRENT_USER_SESSION_NAME', 'user'); //Session name for loggedin user
 define('REMEMBER_ME_COOKIE_NAME', 'hash'); //Cookies for logged in user remember me
-define('REMEMBER_COOKIE_EXPIRY', 2592000); //time expiry remember me cookies expiry
+define('VISITOR_COOKIE_NAME', 'gc_visitxkngell'); // Cookies for visitors tracking
+define('COOKIE_EXPIRY', 2592000); //time expiry remember me cookies expiry
 define('TOKEN_NAME', 'token');
 define('USERNAME', 'admin@kngell.com');
 define('NO_REPLY', 'no-reply@kngell.com');

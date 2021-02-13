@@ -8,7 +8,6 @@ class Rooter
     private $_controller_Name;
     private $_method_Name;
 
-
     //=======================================================================
     //Construct
     //=======================================================================
@@ -24,8 +23,7 @@ class Rooter
         if (!GrantAccess::hasAccess($this->_controller_Name, $this->_method_Name)) {
             $this->manageRestrictedAccess();
         }
-        !is_object($this->controller) ? $this->controller = new $this->controller($this->_controller_Name, $this->_method_Name) : '';
-
+        $this->controller = !is_object($this->controller) ? new $this->controller($this->_controller_Name, $this->_method_Name) : '';
         if (method_exists($this->controller, $this->method)) {
             call_user_func_array([$this->controller, $this->method], [$this->params]);
         } else {
@@ -62,6 +60,7 @@ class Rooter
             $this->params = count($url) > 0 ? array_values($url) : [];
         }
     }
+
     //=======================================================================
     //Redirect
     //=======================================================================
@@ -81,13 +80,15 @@ class Rooter
             exit();
         }
     }
-    //Manage restricted access 
+
+    //Manage restricted access
     private function manageRestrictedAccess()
     {
-        if ($this->controller == "BackendController") {
-            $this->method = 'adminlogin';
+        if (($this->controller == 'AdminController') && ($this->method == 'index')) {
+            $this->method = $this->_method_Name = 'login';
+        } else {
+            $this->_controller_Name = $this->controller = ACCESS_RESTRICTED . 'Controller';
+            $this->method = empty($this->_method_Name) ? 'index' : $this->method;
         }
-        $this->_controller_Name = $this->controller = ACCESS_RESTRICTED . 'Controller';
-        $this->method = empty($this->_method_Name) ? 'index' : $this->method;
     }
 }

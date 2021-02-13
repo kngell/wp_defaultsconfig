@@ -9,7 +9,7 @@ module.exports = {
       dependOn: "css/librairies/adminlib",
     },
     //Admin plugins
-    "css/plugins/backend/adminplugins": {
+    "css/plugins/adminplugins": {
       import: ["css/plugins_entries/adminplugins.scss"],
       dependOn: "css/librairies/adminlib",
     },
@@ -26,7 +26,7 @@ module.exports = {
     },
     //Admin product caegories
     "css/custom/admin/products/categories": {
-      import: ["css/custom/admin/products/categories.css"],
+      import: ["css/custom/admin/products/categories.scss"],
       dependOn: "css/librairies/adminlib",
     },
   },

@@ -1,11 +1,5 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
-<!-- Main style -->
-<link href="<?= $this->cssAdminlib ?? "" ?>" rel="stylesheet" type="text/css">
-<!-- Plugins css -->
-<link href="<?= $this->cssAdminPlugins ?? "" ?>" rel="stylesheet" type="text/css">
-<!-- Main style -->
-<link href="<?= $this->cssAdminMain ?? "" ?>" rel="stylesheet" type="text/css">
 <link href="<?= $this->css ?>" rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
@@ -13,7 +7,8 @@
 <!-- login-box -->
 <div class="login-box m-auto" id="Login-Register-System">
     <div class="login-logo">
-        <a href="<?= PROOT . "backend" ?>"><b>Admin</b> - Area</a>
+        <a href="<?= PROOT . 'backend' ?>"><b>Admin</b>
+            - Area</a>
     </div>
     <!-- /.login-logo -->
     <div class="card" id="login-box">
@@ -78,17 +73,10 @@
 </div>
 <!-- /.login-box -->
 
-
+<input type="hidden" id="ip_address" style="display:none"
+    value="<?=H_visitors::getIP()?>">
 <?php $this->end(); ?>
 <?php $this->start('footer') ?>
-<!-- Librairies -->
-<script type="text/javascript" src="<?= $this->jsAdminlib ?? "" ?>"></script>
-<!-- Common vendor -->
-<script type="text/javascript" src="<?= $this->jscommonVendor ?? "" ?>"></script>
-<!-- Plugins -->
-<script type="text/javascript" src="<?= $this->jsAdminPlugins ?? "" ?>"></script>
-<!-- Mainjs -->
-<script type="text/javascript" src="<?= $this->jsAdminMain ?? "" ?>"></script>
 <!----------custom--------->
 <script type="text/javascript" src="<?= $this->js ?>"></script>
 <?php $this->end();

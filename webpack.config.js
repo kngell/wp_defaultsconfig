@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const wp_alias = require("./webpack.alias");
 const common_rules = require("./webpack.module");
 const common_plugins = require("./webpack.plugins");
@@ -9,10 +10,7 @@ const ASSET_PATH =
 
 const { merge } = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const {
-  frontCssEntries,
-  frontJsEntries,
-} = require("./src/entries/assets/frontend/frontendEntries");
+const frontendEntries = require("./src/entries/assets/frontend/frontendEntries");
 const {
   membersCssEntries,
   membersJsEntries,
@@ -56,31 +54,50 @@ var viewsConfig = Object.assign({}, commonConfig, {
 //=======================================================================
 
 //frontend
-const fontendAssetsConfig = merge(
-  frontCssEntries,
-  frontJsEntries,
-  commonConfig,
-  {
-    entry: {
-      "css/librairies/frontlib": "./src/assets/css/lib/frontlib.scss",
-      "js/librairies/frontlib": "./src/assets/js/lib/frontlib",
-    },
-    output: {
-      path: path.resolve(__dirname, "public", "assets"),
+const fontendAssetsConfig = merge(frontendEntries, commonConfig, {
+  entry: {
+    "css/librairies/frontlib": "./src/assets/css/lib/frontlib.scss",
+    "js/librairies/frontlib": "./src/assets/js/lib/frontlib",
+  },
+  output: {
+    path: path.resolve(__dirname, "public", "assets"),
+    chunkFilename: devMode
+      ? "lazyload/js/home/[name].js"
+      : "lazyload/js/home/[name]_[chunkhash].js",
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: devMode ? "[name].css" : "[name].[contenthash].css",
       chunkFilename: devMode
-        ? "lazyload/js/home/[name].js"
-        : "lazyload/js/home/[name]_[chunkhash].js",
+        ? "lazyload/css/home/[name].css"
+        : "lazyload/css/home/[name]_[chunkhash].css",
+    }),
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        homeCommonVendor: {
+          test: /[\\/]node_modules[\\/]((?!@ckeditor).*)[\\/]/, //except ckeditor5
+          name: "commons/frontend/commonVendor",
+          chunks: "initial",
+          minSize: 20000,
+          priority: -10,
+          minChunks: 2,
+          reuseExistingChunk: true,
+        },
+        homeCustomModules: {
+          test: /[\\/]((admin).*)|((core).*)[\\/]/,
+          name: "commons/frontend/commonCustomModules",
+          chunks: "initial",
+          minSize: 10000,
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
     },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: devMode ? "[name].css" : "[name].[contenthash].css",
-        chunkFilename: devMode
-          ? "lazyload/css/home/[name].css"
-          : "lazyload/css/home/[name]_[chunkhash].css",
-      }),
-    ],
-  }
-);
+  },
+});
 //backend members
 var membersAssetsConfig = merge(
   membersCssEntries,
@@ -149,7 +166,7 @@ var adminAssetsConfig = merge(adminEntries, commonConfig, {
       cacheGroups: {
         adminCommonVendor: {
           test: /[\\/]node_modules[\\/]((?!@ckeditor).*)[\\/]/, //except ckeditor5
-          name: "commons/admin/commonVendor",
+          name: "commons/backend/admin/commonVendor",
           chunks: "initial",
           minSize: 20000,
           priority: -10,
@@ -158,7 +175,7 @@ var adminAssetsConfig = merge(adminEntries, commonConfig, {
         },
         adminCustomModules: {
           test: /[\\/]((admin).*)|((core).*)[\\/]/,
-          name: "commons/admin/commonCustomModules",
+          name: "commons/backend/admin/commonCustomModules",
           chunks: "initial",
           minSize: 10000,
           minChunks: 2,
@@ -172,7 +189,10 @@ var adminAssetsConfig = merge(adminEntries, commonConfig, {
 
 //Dev config
 const developmentConfig = {
-  plugins: [new RemoveEmptyScriptsPlugin({ verbose: true })],
+  plugins: [
+    new RemoveEmptyScriptsPlugin({ verbose: true }),
+    new webpack.SourceMapDevToolPlugin({}),
+  ],
 };
 // Prod Config
 const productionConfig = {
@@ -205,6 +225,11 @@ const productionConfig = {
           ],
         ],
       },
+    }),
+    new webpack.SourceMapDevToolPlugin({
+      filename: "sourcemaps/[file].map",
+      publicPath: ASSET_PATH,
+      fileContext: "public",
     }),
   ],
   optimization: {

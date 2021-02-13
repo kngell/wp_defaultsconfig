@@ -58,6 +58,7 @@
                             <input type="hidden" name="catID" id="catID">
                             <input type="hidden" name="date_enreg" id="date_enreg">
                             <input type="hidden" name="updateAt" id="updateAt">
+                            <input type="hidden" name="status" id="status">
                             <div id="alertErr"></div>
                             <div class="form-group">
                                 <input type="text" name="categorie" id="categorie" class="form-control "

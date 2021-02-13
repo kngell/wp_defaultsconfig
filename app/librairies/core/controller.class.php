@@ -11,76 +11,64 @@ class Controller extends Application
     protected $_method;
     protected $assets;
 
+    //=======================================================================
+    //Construct
+    //=======================================================================
     public function __construct($controller, $method)
     {
         parent::__construct();
         $this->_controller = $controller;
         $this->_method = $method;
-        $this->get_view(lcfirst(rtrim($controller, 'Controller')) . DS . $method);
+        $this->view_instance = $this->get_view(substr($controller, 0, strpos($controller, 'Controller')) . DS . $method);
         $this->request = new Input();
         $this->assets = json_decode(file_get_contents(APP . 'assets.json'));
     }
+
+    //=======================================================================
+    //Load view and model
+    //=======================================================================
     //Load view
     public function get_view(string $viewName = '', $data = [])
     {
-        $this->view_instance = new View($viewName, $data);
-        return $this->view_instance;
+        $view = explode(DS, $viewName);
+        $files = H::search_file(VIEW . strtolower($view[0]), strtolower($view[1]) . '.php');
+        if ($files) {
+            return !isset($this->view_instance) ? new View($viewName, $data) : $this->view_instance;
+        }
+        return isset($this->view_instance) ? isset($this->view_instance) : null;
     }
+
     //Load model
     public function get_model($modelName, $model = '')
     {
-        if (file_exists(MODEL . strtolower($modelName) . '.class.php')) {
-            require_once MODEL . strtolower($modelName) . '.class.php';
-            if (!empty($model)) {
-                !isset($this->model_instance[$model]) ? $this->model_instance[$model] = new $modelName() : '';
+        if (!empty($modelName) && class_exists($modelName)) {
+            if (file_exists(MODEL . strtolower($modelName) . '.class.php')) {
+                // require_once MODEL . strtolower($modelName) . '.class.php';
+                if (!empty($model)) {
+                    $this->model_instance[$model] = !isset($this->model_instance[$model]) ? new $modelName() : $this->model_instance;
+                } else {
+                    $this->model_instance = !isset($this->model_instance) ? new $modelName() : $this->model_instance;
+                }
+                return $this->model_instance;
             } else {
-                !(isset($this->model_instance) && $this->model_instance == $modelName) ? $this->model_instance = new $modelName() : '';
+                echo 'the model :' . $modelName . 'doest not exist';
             }
-            return $this->model_instance;
         } else {
-            echo 'the model :' . $modelName . 'doest not exist';
+            echo 'The model is not define!';
         }
+        return null;
     }
 
-    protected function load_model($model)
-    {
-        if (class_exists($model)) {
-            $this->{$model . 'Model'} = new $model(strtolower($model));
-        }
-    }
-
+    //=======================================================================
+    //Extra opérations
+    //=======================================================================
+    //Json Response
     public function jsonResponse($resp)
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Content-type: application/json; charset=UTF-8");
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/json; charset=UTF-8');
         http_response_code(200);
         echo json_encode($resp);
         exit;
-    }
-
-    public function renameKeys($source, $item)
-    {
-        $S = $source;
-        if (isset($item)) {
-            foreach ($source as $key => $val) {
-                foreach ($item as $k => $v) {
-                    if ($key == $k) {
-                        $S = $this->_rename_arr_key($key, $v, $S);
-                    }
-                }
-            }
-        }
-        return $S;
-    }
-
-    private function _rename_arr_key($oldkey, $newkey, $arr = [])
-    {
-        if (array_key_exists($oldkey, $arr)) {
-            $arr[$newkey] = $arr[$oldkey];
-            unset($arr[$oldkey]);
-            return $arr;
-        } else {
-            return false;
-        }
     }
 }

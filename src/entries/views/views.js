@@ -7,7 +7,11 @@ import "views/layouts/include/admin/footer.php";
 import "views/layouts/include/admin/header.php";
 import "views/layouts/include/admin/nav.php";
 import "views/layouts/include/admin/side_nav.php";
+import "views/layouts/include/adminlogin/header.php";
+import "views/layouts/include/adminlogin/footer.php";
+
 import "views/layouts/admin.php";
+import "views/layouts/adminlogin.php";
 
 // Admin Pages
 import "views/admin/index.php";
@@ -17,4 +21,25 @@ import "views/admin/login.php";
 import "views/admin/products/allcategories.php";
 
 //admin contact page
-import "views/admin/frontpages/contact-us.php";
+import "views/admin/home/contact-us.php";
+//=======================================================================
+//Home Pages and Layouts
+//=======================================================================
+// Home Layout
+import "views/layouts/include/default/footer.php";
+import "views/layouts/include/default/header.php";
+import "views/layouts/include/default/nav.php";
+import "views/layouts/default.php";
+
+//home Pages
+import "views/home/index.php";
+import "views/home/partials/_banner_adds.php";
+import "views/home/partials/_banner_area.php";
+import "views/home/partials/_blog.php";
+import "views/home/partials/_empty_cart_template.php";
+import "views/home/partials/_new_products.php";
+import "views/home/partials/_product_details.php";
+import "views/home/partials/_shopping_cart.php";
+import "views/home/partials/_special_price.php";
+import "views/home/partials/_top_sales.php";
+import "views/home/partials/_wishlist.php";
