@@ -1,4 +1,5 @@
 <?php
+
 // -----------------------------------------------------------------------
 // DEFINE SEPERATOR ALIASES
 // -----------------------------------------------------------------------
@@ -72,8 +73,8 @@ define('DB_HOST', '127.0.0.1'); //host use IP adresse to avoid DNS lookup
 // -----------------------------------------------------------------------
 define('CURRENT_USER_SESSION_NAME', 'user'); //Session name for loggedin user
 define('REMEMBER_ME_COOKIE_NAME', 'hash'); //Cookies for logged in user remember me
-define('VISITOR_COOKIE_NAME', 'gc_visitxkngell'); // Cookies for visitors tracking
-define('COOKIE_EXPIRY', 2592000); //time expiry remember me cookies expiry
+define('VISITOR_COOKIE_NAME', 'gcx_kngell_eshop01'); // Cookies for visitors tracking
+define('COOKIE_EXPIRY', 60 * 60 * 24 * 360); //time expiry remember me cookies expiry 2592000
 define('TOKEN_NAME', 'token');
 define('USERNAME', 'admin@kngell.com');
 define('NO_REPLY', 'no-reply@kngell.com');

@@ -55,6 +55,7 @@
     "css-reset-and-normalize": "^2.3.5",
     "datatables.net": "^1.10.23",
     "datatables.net-dt": "^1.10.23",
+    "isotope-layout": "^3.0.6",
     "jquery": "^3.5.1",
     "jquery-mapael": "^2.2.0",
     "moment": "^2.29.1",

@@ -60,6 +60,7 @@ class UsersManager extends Model
             }
         }
     }
+
     //=======================================================================
     //Find and check users
     //=======================================================================
@@ -68,11 +69,13 @@ class UsersManager extends Model
         $data = ['where' => ['deleted' => $deleted], 'return_mode' => 'class', 'order_by' => 'userID DESC'];
         return $this->find($data);
     }
+
     // check if user is logged
     public function isLoggedIn()
     {
         return $this->_isLoggedIn;
     }
+
     //Find by email
     public function findByEmail($email)
     {
@@ -81,6 +84,7 @@ class UsersManager extends Model
         ];
         return $this->findFirst($data);
     }
+
     //find Password
     public function findPassword()
     {
@@ -89,6 +93,7 @@ class UsersManager extends Model
         ];
         return $this->findFirst($data);
     }
+
     //check current user
     public static function currentUser()
     {
@@ -98,6 +103,7 @@ class UsersManager extends Model
         }
         return self::$currentLoggedInUser;
     }
+
     //=======================================================================
     //Delete and restore users
     //=======================================================================
@@ -106,6 +112,7 @@ class UsersManager extends Model
         !$complete ? $this->_softDelete = true : '';
         return $this->delete('UserId', $id);
     }
+
     //restore User
 
     public function restoreUser($id)
@@ -133,7 +140,7 @@ class UsersManager extends Model
             } else {
                 $hash = $session->get_results()->session;
             }
-            Cookies::set($this->_cookieName, $hash, REMEMBER_COOKIE_EXPIRY);
+            Cookies::set($this->_cookieName, $hash, COOKIE_EXPIRY);
             $token = null;
             $session = null;
         } else {
@@ -142,6 +149,7 @@ class UsersManager extends Model
             }
         }
     }
+
     //Login from cookies
     public static function loginUserFromCookies()
     {
@@ -160,6 +168,7 @@ class UsersManager extends Model
         }
         return;
     }
+
     //login From Facebook
     public static function loginFromFacebook($userData)
     {
@@ -179,6 +188,7 @@ class UsersManager extends Model
             $user->login();
         }
     }
+
     //Logout
     public function logout()
     {
@@ -198,6 +208,7 @@ class UsersManager extends Model
         self::$currentLoggedInUser = null;
         return true;
     }
+
     //=======================================================================
     //ACL Permissions
     //=======================================================================
@@ -208,11 +219,13 @@ class UsersManager extends Model
         }
         return json_decode($this->acl, true);
     }
+
     //form validation
     public function validator($source = [], $items = [])
     {
         FH::validate_forms($source, $items, $this);
     }
+
     //=======================================================================
     //Getters
     //=======================================================================
@@ -221,14 +234,17 @@ class UsersManager extends Model
     {
         return $this->firstName . ' ' . $this->lastName;
     }
+
     public function get_columnNames()
     {
         return $this->_columnNames;
     }
+
     public function getConfirm()
     {
         return $this->_confirm;
     }
+
     //=======================================================================
     //Setters
     //=======================================================================
@@ -236,6 +252,7 @@ class UsersManager extends Model
     {
         $this->_confirm = $value;
     }
+
     //=======================================================================
     //Operations
     //=======================================================================
@@ -261,6 +278,7 @@ class UsersManager extends Model
     public function afterSave()
     {
     }
+
     //confirm Email
     public function confirmEmail($email)
     {

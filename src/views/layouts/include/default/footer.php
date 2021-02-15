@@ -55,6 +55,10 @@
   <!-- Common vendor -->
   <script type="text/javascript"
       src="<?= $this->jscommonVendor ?? '' ?>"></script>
+  <!-- Custom Common Modules  -->
+  <script type="text/javascript"
+      src="<?= $this->jscustomComnonModules ?? '' ?>">
+  </script>
   <!-- Plugins -->
   <script type="text/javascript"
       src="<?= $this->jsHomePlugins ?? '' ?>"></script>

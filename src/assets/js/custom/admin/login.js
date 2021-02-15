@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ip: visitors_data.ip,
     };
     send_visitors_data(data, manageR);
-    function manageR(response) {
-      console.log(response);
-    }
+    function manageR(response) {}
   });
 });

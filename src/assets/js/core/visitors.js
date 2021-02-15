@@ -22,7 +22,6 @@ export const send_visitors_data = (data, manageR) => {
     },
   })
     .done((response) => {
-      console.log(response);
       manageR(response);
     })
     .fail((error) => {

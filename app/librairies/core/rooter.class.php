@@ -19,6 +19,7 @@ class Rooter
             $this->controller = $this->_controller_Name;
         } else {
             $this->_controller_Name = $this->controller;
+            $this->_method_Name = !isset($this->_method_Name) ? $this->method : $this->_method_Name;
         }
         if (!GrantAccess::hasAccess($this->_controller_Name, $this->_method_Name)) {
             $this->manageRestrictedAccess();

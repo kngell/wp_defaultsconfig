@@ -3,12 +3,19 @@
 abstract class Model
 {
     protected $_db;
+
     protected $_modelName;
+
     protected $_softDelete = false;
+
     protected $update = true;
+
     protected $_results;
+
     protected $_count;
+
     protected $validates = true;
+
     protected $validationErr = [];
 
     public function __construct()
@@ -32,6 +39,7 @@ abstract class Model
         if (!empty($params) && in_array($params['table'], ['sessions_formations', 'offre_emploi'])) {
             return $this->getHtmlData($params);
         }
+
         return $this->find(['return_mode' => 'class']);
     }
 
@@ -60,7 +68,7 @@ abstract class Model
     //getAll by ID
     public function getAllbyIndex($index_value = '')
     {
-        return $this->find(['where' => [$this->get_colIndex() => (int) $index_value], 'return_mode' => 'class']);
+        return $this->find(['where' => [$this->get_colIndex() => $index_value], 'return_mode' => 'class']);
     }
 
     //get selected options
@@ -77,6 +85,7 @@ abstract class Model
                 $my_options .= $parentID != 0 ? $this->get_Children($option, $sub_option) : '';
             }
         }
+
         return $my_options;
     }
 
@@ -91,6 +100,7 @@ abstract class Model
                 $item .= $children->getAll_inputSelectOptions($children->parentID, $sub_option . '--- ');
             }
         }
+
         return $item;
     }
 
@@ -109,6 +119,7 @@ abstract class Model
     public function getDetails($id, $colID = '')
     {
         $data_query = ['where' => [$colID != '' ? $colID : $this->get_colID() => $id], 'return_mode' => 'class'];
+
         return $this->findFirst($data_query);
     }
 
@@ -150,6 +161,7 @@ abstract class Model
             $colomns[] = '$' . $val;
         }
         $colomns = implode(',', $colomns);
+
         return $colomns;
     }
 
@@ -172,6 +184,7 @@ abstract class Model
         foreach (H::getObjectProperties($this) as $column => $value) {
             $data->column = $value;
         }
+
         return $data;
     }
 
@@ -233,6 +246,7 @@ abstract class Model
                 }
             }
         }
+
         return $all;
     }
 
@@ -255,6 +269,7 @@ abstract class Model
         foreach ($columns as $column) {
             $columnName[] = $column->Field;
         }
+
         return $columnName;
     }
 
@@ -295,6 +310,7 @@ abstract class Model
                 $params['where'] = ['deleted' => !1];
             }
         }
+
         return $params;
     }
 
@@ -307,8 +323,10 @@ abstract class Model
                     $this->$key = $val;
                 }
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -328,6 +346,7 @@ abstract class Model
         //$resultsQuery = $this->_db->select($this->_table, $params);
         $this->_results = $this->_db->select($this->_table, $params)->get_results();
         $this->_count = $this->_db->count();
+
         return $this;
     }
 
@@ -345,6 +364,7 @@ abstract class Model
             return false;
         }
         $resultQuery->_count = $this->_db->count();
+
         return $resultQuery;
     }
 
@@ -373,6 +393,7 @@ abstract class Model
         }
         $insert = $this->_db->create($this->_table, $fields);
         $this->_count = $this->_db->count();
+
         return $insert;
     }
 
@@ -394,18 +415,18 @@ abstract class Model
         }
         $update = $this->_db->update($this->_table, $fields, $cond);
         $this->_count = $update->count();
+
         return $update;
     }
 
     //=======================================================================
     //Deleting Data
     //=======================================================================
-    public function delete($id = '', $params = [])
+    //Main delete
+    public function delete($id = null, $params = [])
     {
-        if ($id == '' && $this->userID = '') {
-            return false;
-        }
-        $id = ($id == '') ? $this->id : $id;
+        $colID = $this->get_colID();
+        $id = ($id == '') ? $this->$colID : $id;
         $params = array_merge($params, [$this->get_colID() => $id]);
         if ($this->beforeDelete()) {
             if ($this->_softDelete) {
@@ -417,12 +438,27 @@ abstract class Model
         if ($delete) {
             $del_actions = $this->afterDelete($params);
         }
+
         return $del_actions ? $del_actions : $delete;
     }
 
+    //Delete Cart =>Ecommerce
+    public function delete_cart($params = [], $id = '')
+    {
+        if (Cookies::exists(VISITOR_COOKIE_NAME)) {
+            $user_cart = $this->getAllbyIndex(Cookies::get(VISITOR_COOKIE_NAME))->get_results();
+            $item = current(array_filter($user_cart, function ($cart) use ($params) {
+                return $cart->item_id == $params['item_id'];
+            }));
+        }
+        return $item ? $item->delete() : false;
+    }
+
+    //Delete Null Index
     public function deleteAllNullIndex()
     {
         $sql = 'DELETE FROM ' . $this->_table . ' WHERE ' . $this->_Index . ' IS NULL';
+
         return $this->execquery($sql);
     }
 
@@ -453,7 +489,6 @@ abstract class Model
                 $save = $fields ? $this->insert($fields) : $fields;
                 $this->afterSave();
                 return $save;
-                //  }
             }
         }
         return $data;
@@ -473,6 +508,7 @@ abstract class Model
         if (isset($this->fileErr)) {
             unset($this->fileErr);
         }
+
         return true;
     }
 
@@ -482,6 +518,7 @@ abstract class Model
         $f = $fields;
         $current = new DateTime();
         $f['updateAt'] = $f['updateAt'] == '' ? $current->format('Y-m-d H:i:s') : '';
+
         return $f;
     }
 
@@ -503,6 +540,7 @@ abstract class Model
         if (array_key_exists($this->get_colID(), $f)) {
             unset($f[$this->get_colID()]);
         }
+
         return $f;
     }
 
@@ -578,6 +616,7 @@ abstract class Model
         $this->_table = $table;
         $conditions = ['return_type' => 'count'];
         $count = $this->find($conditions)->count();
+
         return $count;
     }
 

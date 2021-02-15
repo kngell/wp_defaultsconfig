@@ -70,12 +70,11 @@ abstract class Database
             die('Error : ' . 'Il y a un problème avec la base de donnée');
         }
         //Execute
-        if ($this->_query->execute()) {
+        if (!$this->_query->execute()) {
             //return
-            return $this->_query;
-        } else {
-            $this->_error = true;
+            return $this->_error = false;
         }
+        return (object) $this->_query;
     }
 
     //=======================================================================

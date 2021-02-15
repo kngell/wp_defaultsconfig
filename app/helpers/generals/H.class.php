@@ -33,17 +33,19 @@ class H
                 $path = realpath($folder . DS . $value);
                 if (!is_dir($path)) {
                     if ($file_to_search == $value) {
-                        $results[] = $path ;
+                        $results[] = $path;
                     }
                 } elseif ($value != '.' && $value != '..') {
                     self::search_file($path, $file_to_search, $results);
                     if ($file_to_search == $value) {
-                        $results[] = $path ;
+                        $results[] = $path;
                     }
                 }
             }
+
             return $results;
         }
+
         return false;
     }
 
@@ -62,6 +64,7 @@ class H
                 }
             }
         }
+
         return $S;
     }
 
@@ -71,6 +74,7 @@ class H
         if (array_key_exists($oldkey, $arr)) {
             $arr[$newkey] = $arr[$oldkey];
             unset($arr[$oldkey]);
+
             return $arr;
         } else {
             return false;
@@ -502,6 +506,9 @@ class H
             case 'comments':
                 return;
                 break;
+            case 'cart':
+                return $m->output_shopping_template($m->item_id);
+            break;
             default:
                 return 'Votre requête est bien prise en compte.';
                 break;
@@ -531,40 +538,20 @@ class H
         }
     }
 
-    //get showAll data
+    //get showAll data refactor
     public static function getShowAllData($model, $request, $item)
     {
-        switch (true) {
-            case $item['table'] == 'comments':
-                return $model->getAll($request->getParams($_REQUEST))->get_results();
+        switch ($item['data_type']) {
+                case $item['data_type'] == 'values': //values or html template
+                    if ($item['return_mode'] == 'details') { // Detals or All
+                        return $model->getDetails($request->getAll('id'));
+                    } else {
+                        return $model->getAllbyIndex($request->getAll('id'));
+                    }
                 break;
-                // case $item['table'] == 'categories':
-                //     return $model->getAllbyIndex(0)->get_results();
-                // break;
-            case in_array($item['table'], ['posts', 'userss', 'feedback', 'programme_formation']):
-                if ($item['method'] == 'showDetails') {
-                    return (isset($item['user']) && $item['user'] == 'guest') ? $model->getDetails($request->getAll('id'))->outputProgramme($request->getAll('session_id')) : $model->getDetails($request->getAll('id'));
-                }
-
-                return !isset($item['user']) ? $model->getAllbyIndex((int)UsersManager::currentUser()->userID)->get_results() : $model->getAllItem()->get_results();
+                case $item['data_type'] == 'template':
+                    return $model->getHtmlData($item);
                 break;
-            case in_array($item['table'], ['sessions_formations', 'offre_emploi']):
-                if ($item['method'] == 'showDetails') {
-                    return (isset($item['user']) && $item['user'] == 'guest') ? $model->getDetails($request->getAll('id'))->outputHTML() : $model->getDetails($request->getAll('id'));
-                }
-
-                return $model->getAllItem($item)->get_results();
-                break;
-            case in_array($item['table'], ['inscription_formation']):
-                return $model->outputInscription($item['id']);
-                break;
-            default:
-                if (isset($item['id'])) {
-                    return $model->getAllbyIndex((int)$request->getAll('id'))->get_results();
-                } else {
-                    return isset($item['query']) ? $model->getAllItem($item['query'])->get_results() : $model->getAllItem()->get_results();
-                }
-                break;
-        }
+            }
     }
 }

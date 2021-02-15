@@ -17,7 +17,7 @@ class DBOperations extends Database
         }
         return self::$_instance;
     }
-    
+
     //=======================================================================
     //General Select from table
     //=======================================================================
@@ -38,9 +38,8 @@ class DBOperations extends Database
         $this->_count = 0;
         $this->_results = '';
 
-
         $sql = $this->query_select_construction($table, $data);
-        
+
         //execute
         if ($q = $this->execQuery($sql, isset($this->_exec_data['where']) ? $this->_exec_data['where'] : [])) { //execute();
             //Result
@@ -50,14 +49,13 @@ class DBOperations extends Database
         }
 
         if (!$this->_error) {
-            $this->_results =$this->select_result($q, $data);
+            $this->_results = $this->select_result($q, $data);
             return $this;
         } else {
             return $this->_error;
         }
     }
 
-    
     public function get($table, $where)
     {
         return $this->select($table, $where);
@@ -75,14 +73,13 @@ class DBOperations extends Database
         $this->_count = 0;
         $this->_results = '';
 
-        
         $sql = $this->query_select_construction($table, $data);
 
         //execute
         if ($q = $this->execQuery($sql, isset($this->_exec_data['where']) ? $this->_exec_data['where'] : [])) {
             //dd(!$this->_error);
             //Result
-            $data = array_merge($data, ['return_type'=>'first']);
+            $data = array_merge($data, ['return_type' => 'first']);
             $this->_count = $q->rowCount();
             $this->_results = $this->select_result($q, $data);
         } else {
@@ -101,22 +98,22 @@ class DBOperations extends Database
 
     private function query_select_construction($table, $data)
     {
-        if (strpos($table, 'SELECT')!==false) {
+        if (strpos($table, 'SELECT') !== false) {
             $sql = $table;
         } else {
             $sql = ' SELECT ';
-            $sql .= array_key_exists("select", $data) ? $data[ 'select' ] : '*';
+            $sql .= array_key_exists('select', $data) ? $data['select'] : '*';
             $sql .= ' FROM ' . $table;
         }
         //Conditions
-        if (array_key_exists("where", $data)) {
+        if (array_key_exists('where', $data)) {
             $sql .= ' WHERE ';
             $i = 0;
             $op = isset($data['op']) ? $data['op'] : ' AND ';
             $comparator = isset($data['comparator']) ? $data['comparator'] : '=';
-            foreach ($data[ 'where' ] as $key => $value) {
+            foreach ($data['where'] as $key => $value) {
                 $add = ($i > 0) ? ' ' . $op . ' ' : '';
-                $sql .= ($comparator != "=") ? "$add" . "$key " . $comparator . " CONCAT('%',:$key,'%')" : "$add" . "$key=:$key";
+                $sql .= ($comparator != '=') ? "$add" . "$key " . $comparator . " CONCAT('%',:$key,'%')" : "$add" . "$key=:$key";
                 $i++;
             }
             if (isset($data['op']) || isset($data['comparator'])) {
@@ -124,31 +121,31 @@ class DBOperations extends Database
             }
         }
         //Goup By
-        if (array_key_exists("group_by", $data)) {
-            $sql .= ' GROUP BY ' . $data[ 'group_by' ];
-            unset($data[ 'group_by' ]);
+        if (array_key_exists('group_by', $data)) {
+            $sql .= ' GROUP BY ' . $data['group_by'];
+            unset($data['group_by']);
         }
 
         //Order
-        if (array_key_exists("order_by", $data)) {
-            $sql .= ' ORDER BY ' . $data[ 'order_by' ];
-            unset($data[ 'order_by' ]);
+        if (array_key_exists('order_by', $data)) {
+            $sql .= ' ORDER BY ' . $data['order_by'];
+            unset($data['order_by']);
         }
 
         //Limits
-        if (array_key_exists("start", $data) && array_key_exists("limit", $data)) {
-            $sql .= ' LIMIT ' . $data[ 'start' ] . ',' . $data[ 'limit' ];
-            unset($data[ 'start' ]);
-            unset($data[ 'limit' ]);
-        } elseif (!array_key_exists("start", $data) && array_key_exists("limit", $data)) {
-            $sql .= ' LIMIT ' . $data[ 'limit' ];
-            unset($data[ 'limit' ]);
+        if (array_key_exists('start', $data) && array_key_exists('limit', $data)) {
+            $sql .= ' LIMIT ' . $data['start'] . ',' . $data['limit'];
+            unset($data['start'], $data['limit']);
+        } elseif (!array_key_exists('start', $data) && array_key_exists('limit', $data)) {
+            $sql .= ' LIMIT ' . $data['limit'];
+            unset($data['limit']);
         }
-        
+
         $this->_exec_data = $data;
 
         return $sql;
     }
+
     //=======================================================================
     //Manage select results from query exec
     //=======================================================================
@@ -159,9 +156,9 @@ class DBOperations extends Database
         $type = $this->typeMode($data);
 
         // $type = array_key_exists("return_mode", $data) ? PDO::FETCH_OBJ : PDO::FETCH_ASSOC;
-        if (array_key_exists('return_mode', $data) && $data[ 'return_mode' ]=='class') {
-            if (array_key_exists("return_type", $data)) {
-                switch ($data[ 'return_type' ]) {
+        if (array_key_exists('return_mode', $data) && $data['return_mode'] == 'class') {
+            if (array_key_exists('return_type', $data)) {
+                switch ($data['return_type']) {
                 case 'count':
                     $value = $this->_count;
                 break;
@@ -174,15 +171,15 @@ class DBOperations extends Database
                     $value = current($q->fetchAll($type, $data['class']));
                 break;
                 default:
-                    $value ='';
+                    $value = '';
                 break;
             }
             } else {
                 $value = $q->fetchAll($type, $data['class']);
             }
         } else {
-            if (array_key_exists("return_type", $data)) {
-                switch ($data[ 'return_type' ]) {
+            if (array_key_exists('return_type', $data)) {
+                switch ($data['return_type']) {
                 case 'count':
                     $value = $this->_count;
                 break;
@@ -193,7 +190,7 @@ class DBOperations extends Database
                     $value = current($q->fetchAll($type));
                 break;
                 default:
-                    $value ='';
+                    $value = '';
                 break;
             }
             } else {
@@ -210,8 +207,8 @@ class DBOperations extends Database
     private function typeMode($data)
     {
         $type = '';
-        if (array_key_exists("return_mode", $data)) {
-            switch ($data[ 'return_mode' ]) {
+        if (array_key_exists('return_mode', $data)) {
+            switch ($data['return_mode']) {
                 case 'object':
                     $type = PDO::FETCH_OBJ;
                 break;
@@ -219,14 +216,15 @@ class DBOperations extends Database
                     $type = PDO::FETCH_CLASS;
                 break;
                 default:
-                    $type =PDO::FETCH_ASSOC;
+                    $type = PDO::FETCH_ASSOC;
                 break;
             }
         } else {
-            $type =PDO::FETCH_ASSOC;
+            $type = PDO::FETCH_ASSOC;
         }
         return $type;
     }
+
     //=======================================================================
     //Select from multitibales
     //=======================================================================
@@ -247,12 +245,12 @@ class DBOperations extends Database
         } else {
             $sql .= '*';
         }
-        $sql .= rtrim($fields, ',') . ' FROM ' . $table[ 0 ] . ' INNER JOIN ' . $table[ 1 ] . ' ON ';
+        $sql .= rtrim($fields, ',') . ' FROM ' . $table[0] . ' INNER JOIN ' . $table[1] . ' ON ';
 
         //Join on
         $add = '';
-        if (array_key_exists("join_on", $data)) {
-            foreach ($data[ 'join_on' ] as $k => $v) {
+        if (array_key_exists('join_on', $data)) {
+            foreach ($data['join_on'] as $k => $v) {
                 $add .= $k . '.' . $v . '=';
             }
         }
@@ -260,10 +258,10 @@ class DBOperations extends Database
 
         //Conditions
         $add = '';
-        if (array_key_exists("where", $data)) {
+        if (array_key_exists('where', $data)) {
             $sql .= ' WHERE ';
             $i = 0;
-            foreach ($data[ 'where' ] as $key => $value) {
+            foreach ($data['where'] as $key => $value) {
                 $add = ($i > 0) ? ' AND ' : '';
                 $sql .= "$add" . "$key=:$key";
                 $i++;
@@ -271,24 +269,24 @@ class DBOperations extends Database
         }
 
         //Goup By
-        if (array_key_exists("group_by", $data)) {
-            $sql .= ' GROUP BY ' . $data[ 'group_by' ];
+        if (array_key_exists('group_by', $data)) {
+            $sql .= ' GROUP BY ' . $data['group_by'];
         }
 
         //Order
-        if (array_key_exists("order_by", $data)) {
-            $sql .= ' ORDER BY ' . $data[ 'order_by' ];
+        if (array_key_exists('order_by', $data)) {
+            $sql .= ' ORDER BY ' . $data['order_by'];
         }
 
         //Limits
-        if (array_key_exists("start", $data) && array_key_exists("limit", $data)) {
-            $sql .= ' LIMIT ' . $data[ 'start' ] . ',' . $data[ 'limit' ];
-        } elseif (!array_key_exists("start", $data) && array_key_exists("limit", $data)) {
-            $sql .= ' LIMIT ' . $data[ 'limit' ];
+        if (array_key_exists('start', $data) && array_key_exists('limit', $data)) {
+            $sql .= ' LIMIT ' . $data['start'] . ',' . $data['limit'];
+        } elseif (!array_key_exists('start', $data) && array_key_exists('limit', $data)) {
+            $sql .= ' LIMIT ' . $data['limit'];
         }
         //dd($sql);
             //execute
-        if ($q = $this->execQuery($sql, $data[ 'where' ])) { //execute();
+        if ($q = $this->execQuery($sql, $data['where'])) { //execute();
             //Result
             $this->_results = $this->select_result($q, $data);
         } else {
@@ -301,7 +299,7 @@ class DBOperations extends Database
             return $this->_error;
         }
     }
-   
+
     //=======================================================================
     //Select string type Like *
     //=======================================================================
@@ -321,7 +319,7 @@ class DBOperations extends Database
             $i++;
         }
         //query exec
-        if ($q = $this->execQuery($sql, $data[ 'where' ])) { //execute();
+        if ($q = $this->execQuery($sql, $data['where'])) { //execute();
             //Result
             $this->_results = $this->select_result($q, $data);
         } else {
@@ -334,7 +332,6 @@ class DBOperations extends Database
             return $this->_error;
         }
     }
-
 
     //=======================================================================
     //Insert into
@@ -351,19 +348,20 @@ class DBOperations extends Database
             $values = ':' . implode(', :', array_keys($data));
         }
 
-        $sql = "INSERT INTO " . $table . " (" . $keys . ") VALUES (" . $values . ")";
+        $sql = 'INSERT INTO ' . $table . ' (' . $keys . ') VALUES (' . $values . ')';
         //dd($data);
         //execquery
         if ($q = $this->execQuery($sql, $data)) {
             //result
             $this->_lastinsertID = $this->_con->lastInsertId();
-            
+
             return $this->_lastinsertID;
         } else {
             $this->_error = true;
             return false;
         }
     }
+
     //=======================================================================
     //Update Table
     //=======================================================================
@@ -391,7 +389,7 @@ class DBOperations extends Database
 
         //Where Conditiond
         if (!empty($cond) && is_array($cond)) {
-            $whereCond .= " WHERE ";
+            $whereCond .= ' WHERE ';
             $i = 0;
             foreach ($cond as $key => $val) {
                 $add = ($i > 0) ? ' AND ' : '';
@@ -401,7 +399,7 @@ class DBOperations extends Database
         }
 
         //Query
-        $sql = "UPDATE " . $table . " SET " . $keyValues . $whereCond;
+        $sql = 'UPDATE ' . $table . ' SET ' . $keyValues . $whereCond;
 
         //dd($sql);
         //execQuery
@@ -412,6 +410,7 @@ class DBOperations extends Database
         }
         return $this ;
     }
+
     //=======================================================================
     //Delete From Table
     //=======================================================================
@@ -425,7 +424,7 @@ class DBOperations extends Database
     public function delete($table, $data = [])
     {
         if (!empty($data) && is_array($data)) {
-            $whereCond = " WHERE ";
+            $whereCond = ' WHERE ';
             $i = 0;
             foreach ($data as $key => $val) {
                 $add = ($i > 0) ? ' AND ' : '';
@@ -434,7 +433,7 @@ class DBOperations extends Database
             }
         }
 
-        $sql = "DELETE FROM " . $table . $whereCond;
+        $sql = 'DELETE FROM ' . $table . $whereCond;
 
         if ($q = $this->execQuery($sql, $data)) {
             $this->_results = $q->rowCount();
@@ -443,6 +442,7 @@ class DBOperations extends Database
         }
         return $this->_results;
     }
+
     //=======================================================================
     //returning result
     //=======================================================================
@@ -451,25 +451,26 @@ class DBOperations extends Database
         return $this->_results;
     }
 
-
     //=======================================================================
     //Get all tables
     //=======================================================================
 
     public function getAll_tables()
     {
-        $q = $this->execQuery("SHOW TABLES");
+        $q = $this->execQuery('SHOW TABLES');
         return $q->fetchAll(PDO::FETCH_OBJ);
     }
+
     //=======================================================================
     //Get column from a table
     //=======================================================================
 
     public function getColumn($table)
     {
-        $q = $this->execQuery("SHOW COLUMNS FROM " . "{$table}");
+        $q = $this->execQuery('SHOW COLUMNS FROM ' . "{$table}");
         return $q->fetchAll(PDO::FETCH_OBJ);
     }
+
     //=======================================================================
     //set/get rows count
     //=======================================================================
@@ -477,7 +478,6 @@ class DBOperations extends Database
     {
         return $this->_count;
     }
-
 
     //=======================================================================
     //Manage transactions
@@ -487,18 +487,17 @@ class DBOperations extends Database
         return $this->_query->beginTransaction();
     }
 
-
     public function endTransaction()
     {
         return $this->_query->commit();
     }
 
-
     public function cancelTransaction()
     {
         return $this->_query->rollBack();
     }
-    public function CustomQueryExec($sql, $data=[], $cond=[])
+
+    public function CustomQueryExec($sql, $data = [], $cond = [])
     {
         if ($q = $this->execQuery($sql, $data, $cond)) {
             return $q->rowCount();

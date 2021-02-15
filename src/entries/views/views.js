@@ -23,15 +23,14 @@ import "views/admin/products/allcategories.php";
 //admin contact page
 import "views/admin/home/contact-us.php";
 //=======================================================================
-//Home Pages and Layouts
+//Home Ecommerce Pages and Layouts
 //=======================================================================
 // Home Layout
 import "views/layouts/include/default/footer.php";
 import "views/layouts/include/default/header.php";
 import "views/layouts/include/default/nav.php";
 import "views/layouts/default.php";
-
-//home Pages
+//home Pages ecommerce index
 import "views/home/index.php";
 import "views/home/partials/_banner_adds.php";
 import "views/home/partials/_banner_area.php";
@@ -43,3 +42,7 @@ import "views/home/partials/_shopping_cart.php";
 import "views/home/partials/_special_price.php";
 import "views/home/partials/_top_sales.php";
 import "views/home/partials/_wishlist.php";
+//home Pages ecommerce product
+import "views/home/product.php";
+//home Pages ecommerce product
+import "views/home/cart.php";

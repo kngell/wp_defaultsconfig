@@ -64,6 +64,16 @@ module.exports = {
                 source: path.join(__dirname, "src", "assets", "img", "users"),
                 destination: "./public/assets/img/",
               },
+              {
+                source: path.join(
+                  __dirname,
+                  "src",
+                  "assets",
+                  "img",
+                  "products"
+                ),
+                destination: "./public/assets/img/",
+              },
             ],
           },
         },

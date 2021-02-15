@@ -13,9 +13,19 @@ module.exports = {
       import: ["css/plugins_entries/homeplugins.scss"],
       dependOn: "css/librairies/frontlib",
     },
-    //Index page js
+    //Index page css ecommerce
     "css/custom/home/home": {
       import: ["css/custom/home/index.scss"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //Product page Ecommerce
+    "css/custom/home/product": {
+      import: ["css/custom/home/product.scss"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //Ecommerce - Cart Page
+    "css/custom/home/cart": {
+      import: ["css/custom/home/cart.scss"],
       dependOn: "css/librairies/frontlib",
     },
   },

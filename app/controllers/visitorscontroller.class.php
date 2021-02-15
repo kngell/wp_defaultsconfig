@@ -30,7 +30,7 @@ class VisitorsController extends Controller
     public function saveipdata()
     {
         if ($this->request->exists('post')) {
-            $data = $this->renameKeys($this->request->getAll(), H_visitors::KeysFormat_IpApi());
+            $data = H::Object_Keys_format($this->request->getAll(), H_visitors::new_IpAPI_keys());
             $this->model_instance->assign($data);
             if (isset($data['ipAddress']) && !$this->model_instance->getByIp($data['ipAddress'])) {
                 $this->model_instance->save();
