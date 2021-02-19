@@ -1,5 +1,6 @@
 import { BASE_URL } from "corejs/config";
 import { Add, Call_controller, ManageResponse } from "corejs/form_crud";
+import { readurl } from "corejs/profile_img";
 function PhpLR(element) {
   this.element = element;
   this.init();
@@ -53,13 +54,17 @@ PhpLR.prototype.setupEvents = function () {
     phpLR.forgotfrm.trigger("reset");
   });
   //Fill in login from cookies on shonw
-  phpLR.logbox.on("show.bs.modal", function () {
+  phpLR.logbox.on("shown.bs.modal", function () {
     $.ajax({
-      url: BASE_URL + "users/logincookies",
+      url: BASE_URL + "auth/remember_check",
       method: "post",
       success: function (response) {
+        console.log(response);
         if (response.result === "success") {
-          phpLR.loginfrm.find("#email").val(response.msg);
+          phpLR.loginfrm.find("#email").val(response.msg.email);
+          phpLR.loginfrm
+            .find("#customCheck")
+            .attr("checked", response.msg.remember);
         } else {
           phpLR.loginfrm.find("#email").val("");
           phpLR.loginfrm.find("#password").val("");
@@ -73,14 +78,15 @@ PhpLR.prototype.setupEvents = function () {
     e.stopPropagation();
     phpLR.regfrm.find("#register-btn").val("Please wait...");
     var inputData = {
-      url: "users/ajaxRegister",
+      url: "auth/ajaxRegister",
       frm: phpLR.regfrm,
-      table: "users",
+      table: "auth",
       notification: "admin",
       frm_name: "register-frm",
     };
     Add(inputData, gestionR);
     function gestionR(response) {
+      console.log(response);
       phpLR.regfrm.find("#register-btn").val("Enregistrer");
       var outputData = {
         frm: phpLR.regfrm,
@@ -88,7 +94,7 @@ PhpLR.prototype.setupEvents = function () {
         alertid: phpLR.regfrm.find("#regAlert"),
         display: false,
         imgarea: phpLR.regbox.find(".upload-profile-image .img"),
-        imgvalue: "/kngell/public/assets/img/register/profile/beard.png",
+        imgvalue: response.img ? response.img : "",
         alertsuccess: true,
       };
       ManageResponse(response, outputData);
@@ -106,12 +112,13 @@ PhpLR.prototype.setupEvents = function () {
       );
     });
   //Login form
+
   phpLR.loginfrm.on("submit", function (e) {
     e.preventDefault();
     e.stopPropagation();
     phpLR.loginfrm.find("#login-btn").val("Please wait...");
     var data = {
-      url: "users/ajaxLogin",
+      url: "auth/ajaxLogin",
       frm: phpLR.loginfrm,
       frm_name: "login-frm",
     };
@@ -189,7 +196,7 @@ PhpLR.prototype.setupEvents = function () {
       var data = {
         frm: phpLR.loginfrm,
         frm_name: "login-frm",
-        url: "users/fblogin",
+        url: "auth/fblogin",
         freedata: JSON.stringify(response),
       };
       Call_controller(data, ManageLoginResponse);
@@ -201,7 +208,7 @@ PhpLR.prototype.setupEvents = function () {
     e.stopPropagation();
     phpLR.forgotfrm.find("#forgot-btn").val("Please wait...");
     var data = {
-      url: "users/forgot",
+      url: "auth/forgot",
       frm: phpLR.forgotfrm,
       frm_name: "forgot-frm",
     };
@@ -216,8 +223,9 @@ PhpLR.prototype.setupEvents = function () {
       phpLR.forgotfrm.find("#forgot-btn").val("Reset password");
     }
   });
-  //----------------------Ajax logout from elsewhere
+  //logout
   var logout = $("a:contains('Logout')");
+
   $(logout).on("click", function () {
     if (typeof FB !== "undefined") {
       FB.logout().then((response) => {
@@ -225,7 +233,7 @@ PhpLR.prototype.setupEvents = function () {
       });
     }
     $.ajax({
-      url: BASE_URL + "users/logout",
+      url: BASE_URL + "auth/logout",
       method: "post",
       success: function (response) {
         if (response === "success") {
@@ -234,6 +242,7 @@ PhpLR.prototype.setupEvents = function () {
       },
     });
   });
+  //----------------------Ajax logout from elsewhere
 };
 $.fn.phpLR = function (options) {
   new PhpLR(this);

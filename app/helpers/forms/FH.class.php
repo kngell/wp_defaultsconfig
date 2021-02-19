@@ -79,6 +79,7 @@ class FH
         }
         return $string;
     }
+
     public static function csrfInput($name, $token)
     {
         return '<input type="hidden" name="' . $name . '" value="' . $token . '" />';
@@ -164,5 +165,24 @@ class FH
                 }
             }
         }
+    }
+
+    //get showAll data refactor
+    public static function getShowAllData($model, $request, $item)
+    {
+        switch (true) {
+                    case isset($item['data_type']) && $item['data_type'] == 'values': //values or html template
+                        if (isset($item['return_mode']) && $item['return_mode'] == 'details') { // Detals or All
+                            return $model->getDetails($request->getAll('id'));
+                        } elseif (isset($item['return_mode']) && $item['return_mode'] == 'index') {
+                            return $model->getAllbyIndex($request->getAll('id'));
+                        } else {
+                            return $model->getAllItem()->get_results();
+                        }
+                    break;
+                    case $item['data_type'] == 'template':
+                        return $model->getHtmlData($item);
+                    break;
+                }
     }
 }

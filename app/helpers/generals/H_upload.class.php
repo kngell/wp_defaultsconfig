@@ -1,7 +1,6 @@
 <?php
 class H_upload
 {
-
     //=======================================================================
     //Upload image
     //=======================================================================
@@ -14,7 +13,7 @@ class H_upload
         $fileType = strtoupper(pathinfo($targetFilePath, PATHINFO_EXTENSION));
         if (!empty($filename)) {
             //allow certain files format
-            $allowType = array('JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX');
+            $allowType = ['JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX'];
             if (in_array($fileType, $allowType)) {
                 //upload file in the server
                 if (move_uploaded_file($file['tmp_name'], $path[0] . $targetFilePath)) {
@@ -27,12 +26,14 @@ class H_upload
             }
         }
     }
+
     //rename image
     public static function rename_image($file)
     {
         $ext = pathinfo(basename($file['name']), PATHINFO_EXTENSION);
         return md5(rand()) . '.' . $ext;
     }
+
     //=======================================================================
     //Validate and upload
     //=======================================================================
@@ -58,7 +59,7 @@ class H_upload
         if ($name && $_FILES[$name]['size'] == 0) {
             $imkKey = self::get_imageKey($model);
             $actual_Path = $model->$imkKey;
-            if ($actual_Path == US . 'kngell' . US . 'public' . US . 'assets' . US . 'img' . US . 'user_profile' . US . 'avatar.png' || $actual_Path == "") {
+            if ($actual_Path == US . 'kngell' . US . 'public' . US . 'assets' . US . 'img' . US . 'user_profile' . US . 'avatar.png' || $actual_Path == '') {
                 $path = self::get_path($model)[0] . 'user_profile/avatar.png';
                 $path = PROOT . 'p' . ltrim($path, ROOT);
                 return ['success' => true, 'msg' => self::updateModel($path, $model)];
@@ -90,6 +91,7 @@ class H_upload
         }
         return false;
     }
+
     //re-arrange files
     public static function reArrayFiles($files, $m)
     {
@@ -104,6 +106,7 @@ class H_upload
         }
         return $fileAry;
     }
+
     //update model
     private static function updateModel($path, $model)
     {
@@ -130,11 +133,12 @@ class H_upload
                 break;
 
             default:
-                # code...
+                // code...
                 break;
         }
         return $md;
     }
+
     //Get image key
     private static function get_imageKey($model)
     {
@@ -159,10 +163,11 @@ class H_upload
                 return 'fileUrl';
                 break;
             default:
-                # code...
+                // code...
                 break;
         }
     }
+
     //get path
     private static function get_path($model)
     {
@@ -172,7 +177,7 @@ class H_upload
                 $path = [IMAGE_ROOT, 'brand', IMG];
                 break;
             case 'users':
-                $path = [IMAGE_ROOT, 'user_profile', IMG];
+                $path = [IMAGE_ROOT, 'users', IMG];
                 break;
             case 'posts':
                 $path = [IMAGE_ROOT, 'blog-post', IMG];
@@ -184,11 +189,12 @@ class H_upload
                 $path = [UPLOAD_ROOT, 'postsImg', UPLOAD];
                 break;
             default:
-                # code...
+                // code...
                 break;
         }
         return $path;
     }
+
     // Image field
     private static function modelImageField($model)
     {
@@ -214,6 +220,7 @@ class H_upload
                 break;
         }
     }
+
     //upload post Url base 64
     public static function uploadPostUrl($postContent)
     {
@@ -232,13 +239,14 @@ class H_upload
                 $img->removeAttribute('src');
                 $img->setAttribute('src', $image_name);
             } else { //put '/' to prevent lossing image  actual path
-                $image_name = "/" . $data;
+                $image_name = '/' . $data;
                 $img->setAttribute('src', $image_name);
             }
         };
         $editor_content_save = $dom->saveHTML();
         return $editor_content_save;
     }
+
     //manage upload image un save
     public static function manage_uploadImage($lastID, $table, $data)
     {
@@ -271,10 +279,11 @@ class H_upload
             self::removeUnusedUrls();
         }
     }
+
     //remove unused urls
     public static function removeUnusedUrls()
     {
-        $postsFiles = array_diff(scandir(UPLOAD_ROOT . 'postsImg'), [".", ".."]);
+        $postsFiles = array_diff(scandir(UPLOAD_ROOT . 'postsImg'), ['.', '..']);
         $urls = (new PostFileUrlManager())->getAllItem();
         $urlsAry = array_column($urls->get_results(), 'fileUrl');
         foreach ($postsFiles as $key => $file) {

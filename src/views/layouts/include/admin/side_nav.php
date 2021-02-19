@@ -120,7 +120,7 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'allUsers' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'allusers' ?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>All Users</p>

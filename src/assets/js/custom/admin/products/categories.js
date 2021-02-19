@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         user: "admin",
         datatable: true,
         displayid: phpPlugin.wrapper.find("#showAll"),
+        data_type: "values",
       };
       displayAllItems(data);
     }

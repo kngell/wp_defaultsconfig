@@ -29,19 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var phpPlugin = this;
 
     //=======================================================================
-    //Get Visitors Data
-    //=======================================================================
-    let visitor = get_visitors_data().then((visitors_data) => {
-      var data = {
-        url: "visitors/track",
-        table: "visitors",
-        ip: visitors_data.ip,
-      };
-      send_visitors_data(data, manageR);
-      function manageR(response) {}
-    });
-
-    //=======================================================================
     //Owl carousel
     //=======================================================================
     //Top sales

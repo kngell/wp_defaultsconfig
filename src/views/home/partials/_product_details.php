@@ -1,10 +1,10 @@
 <section id="product" class="py-3">
-    <div class="container">
-        <div class="row">
+    <div class="container w-75">
+        <div class="row r_button">
             <div class="col-sm-6">
                 <img src="<?=IMG . $this->p_details->item_image ?? '../../../assets/img/products/1.png'?>"
                     alt="Product" class="img-fluid">
-                <div class="form-row pt-4 font-size-16 font-baloo">
+                <div class="row pt-4 font-size-16 font-baloo mb-3">
                     <div class="col">
                         <button type="submit" class="btn btn-danger form-control">Proceed to buy</button>
                     </div>
@@ -38,7 +38,8 @@
                         <span><i class="fas fa fa-star"></i></span>
                         <span><i class="far fa-star"></i></span>
                     </div>
-                    <a href="#" class="px-2 font-rale font-size-14">20534 Ratings | 1000+ answered questions</a>
+                    <a href="#" class="px-2 font-rale font-size-14 text-decoration-none">20534 Ratings | 1000+ answered
+                        questions</a>
                 </div>
                 <hr class="m-0">
                 <!-- Price section  -->
@@ -66,23 +67,23 @@
                 <!-- policy -->
                 <div id="policy">
                     <div class="d-flex">
-                        <div class="return text-center mr-5">
+                        <div class="return text-center me-5">
                             <div class="font-size-20 my-2 color-second">
                                 <span><i class="fas fas fa-retweet border p-3 rounded-pill"></i></span>
                             </div>
-                            <a href="#" class="font-rale font-size-12">10 Days<br> Replacement</a>
+                            <a href="#" class="font-rale font-size-12 text-decoration-none">10 Days<br> Replacement</a>
                         </div>
-                        <div class="return text-center mr-5">
+                        <div class="return text-center me-5">
                             <div class="font-size-20 my-2 color-second">
                                 <span><i class="fas fas fa-truck border p-3 rounded-pill"></i></span>
                             </div>
-                            <a href="#" class="font-rale font-size-12">K'nGELL<br> Delivered</a>
+                            <a href="#" class="font-rale font-size-12 text-decoration-none">K'nGELL<br> Delivered</a>
                         </div>
-                        <div class="return text-center mr-5">
+                        <div class="return text-center me-5">
                             <div class="font-size-20 my-2 color-second">
                                 <span><i class="fas fas fa-check-double border p-3 rounded-pill"></i></span>
                             </div>
-                            <a href="#" class="font-rale font-size-12">1 year<br> warranty</a>
+                            <a href="#" class="font-rale font-size-12 text-decoration-none">1 year<br> warranty</a>
                         </div>
                     </div>
                 </div>
@@ -91,7 +92,8 @@
                 <!-- Order details -->
                 <div id="order-details" class="font-rale d-flex flex-column text-dark">
                     <small>Delivery by : Mar 29 - Apr 1</small>
-                    <small>Sold by <a href="#">K'nGELL electronics&nbsp;</a>(4.5 out of 5 | 19,198
+                    <small>Sold by <a href="#" class="text-decoration-none">K'nGELL electronics&nbsp;</a>(4.5 out of 5 |
+                        19,198
                         ratings)</small>
                     <small><i class="fas fa-map-marker-alt color-primary"></i>&nbsp;&nbsp;Deliver to Customer -
                         424201</small>

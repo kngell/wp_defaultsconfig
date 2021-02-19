@@ -1,3 +1,14 @@
 @import "corecss/_variables.scss";
 @import "corecss/_color.scss";
+@import "corecss/_tipography.scss";
+@import "./_header.scss";
 @import "./_top-sale.scss";
+
+#product {
+  .r_button {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+  }
+}

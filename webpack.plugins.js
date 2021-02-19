@@ -35,7 +35,7 @@ module.exports = {
       jQuery: "jquery",
       "window.jQuery": "jquery",
       "global.jQuery": "jquery",
-      "popper.js": "popper.js",
+      Popper: "@popperjs/core",
     }),
     new webpack.DefinePlugin({
       "process.env.ASSET_PATH": JSON.stringify(ASSET_PATH),
@@ -62,6 +62,10 @@ module.exports = {
               },
               {
                 source: path.join(__dirname, "src", "assets", "img", "users"),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(__dirname, "src", "assets", "img", "camera"),
                 destination: "./public/assets/img/",
               },
               {

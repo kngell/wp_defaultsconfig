@@ -153,6 +153,16 @@ abstract class Model
         return $this->_colContent;
     }
 
+    // Check for unique identifiant
+    public function get_unique($id_name)
+    {
+        $output = (new Token())->user_identifiant(24);
+        while ($this->getDetails($output, $id_name)) :
+            $output = (new Token())->user_identifiant(24);
+        endwhile;
+        return $output;
+    }
+
     //get tables coloumn
     public function get_Tables_Column($table)
     {
@@ -508,7 +518,6 @@ abstract class Model
         if (isset($this->fileErr)) {
             unset($this->fileErr);
         }
-
         return true;
     }
 
@@ -517,8 +526,7 @@ abstract class Model
     {
         $f = $fields;
         $current = new DateTime();
-        $f['updateAt'] = $f['updateAt'] == '' ? $current->format('Y-m-d H:i:s') : '';
-
+        $f['updateAt'] = $current->format('Y-m-d H:i:s');
         return $f;
     }
 

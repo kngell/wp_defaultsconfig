@@ -1,6 +1,6 @@
   <!-- Start footer -->
-  <footer id="footer" class="bg-dark text-white py-5">
-      <div class="container">
+  <footer id="footer" class="bg-dark text-white pt-5 pb-2">
+      <div class="container w-75">
           <div class="row">
               <div class="col-lg-3 col-12">
                   <h4 class="font-rubik font-size-20">Mobile Shopee</h4>
@@ -20,7 +20,7 @@
                       </div>
                   </form>
               </div>
-              <div class="col-lg-2 col-12 text-right">
+              <div class="col-lg-2 col-12 text-end">
                   <h4 class="font-rubik font-size-20">Information</h4>
                   <div class="d-flex flex-column flex-wrap">
                       <a href="#" class="font-rale font-size-14 text-white-50 pb-1">About Us</a>
@@ -29,7 +29,7 @@
                       <a href="#" class="font-rale font-size-14 text-white-50 pb-1">Terms & conditions</a>
                   </div>
               </div>
-              <div class="col-lg-3 col-12 text-right">
+              <div class="col-lg-3 col-12 text-end">
                   <h4 class="font-rubik font-size-20">Account</h4>
                   <div class="d-flex flex-column flex-wrap">
                       <a href="#" class="font-rale font-size-14 text-white-50 pb-1">My Account</a>

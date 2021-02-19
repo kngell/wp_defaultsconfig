@@ -22,6 +22,8 @@ import "views/admin/products/allcategories.php";
 
 //admin contact page
 import "views/admin/home/contact-us.php";
+//admin users page
+import "views/admin/users/allusers.php";
 //=======================================================================
 //Home Ecommerce Pages and Layouts
 //=======================================================================
@@ -29,6 +31,7 @@ import "views/admin/home/contact-us.php";
 import "views/layouts/include/default/footer.php";
 import "views/layouts/include/default/header.php";
 import "views/layouts/include/default/nav.php";
+import "views/layouts/include/default/modal.php";
 import "views/layouts/default.php";
 //home Pages ecommerce index
 import "views/home/index.php";

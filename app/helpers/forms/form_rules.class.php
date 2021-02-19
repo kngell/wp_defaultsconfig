@@ -22,59 +22,60 @@ class Form_rules
                 'display' => 'Lastname'
             ],
             'userName' => [
-                'display' => "Username",
+                'display' => 'Username',
                 'required' => true,
                 'unique' => 'users',
                 'max' => 20
             ],
             'email' => [
-                'display' => "Email",
+                'display' => 'Email',
                 'required' => true,
                 'unique' => 'users',
                 'max' => 150,
                 'valid_email' => true
             ],
             'password' => [
-                'display' => "Password",
+                'display' => 'Password',
                 'required' => true,
                 'min' => 5,
                 'max' => 64
             ],
             'cpassword' => [
-                'display' => "Confirm Password",
+                'display' => 'Confirm Password',
                 'required' => true,
                 'min' => 5,
                 'matches' => 'password'
             ]
         ];
     }
-    //login rules 
+
+    //login rules
     public static function login()
     {
         return [
             'email' => [
-                'display' => "Email",
+                'display' => 'Email',
                 'required' => true,
                 'valid_email' => true
             ],
             'password' => [
-                'display' => "Password",
+                'display' => 'Password',
                 'required' => true,
                 'min' => 5
             ]
         ];
     }
-    //Add categories rules 
+
+    //Add categories rules
     public static function categories()
     {
         return [
             'categorie' => [
-                'display' => "Categorie",
+                'display' => 'Categorie',
                 'required' => true,
                 'unique' => 'categorie',
                 'max' => 155
             ],
-
         ];
     }
 
@@ -92,6 +93,57 @@ class Form_rules
                 'required' => true,
                 'min' => 5,
                 'max' => 65
+            ]
+        ];
+    }
+
+    public static function change_pass_admin_user()
+    {
+        return [
+            'curpass' => [
+                'display' => 'Current Password',
+                'required' => true,
+                'max' => 65,
+                'min' => 5
+            ],
+            'newpass' => [
+                'display' => 'New Password',
+                'required' => true,
+                'min' => 5,
+            ],
+            'cnewpass' => [
+                'display' => 'Confirm New Password',
+                'required' => true,
+                'min' => 5,
+                'matches' => 'newpass'
+            ]
+        ];
+    }
+
+    public static function forgot()
+    {
+        return [
+            'email' => [
+                'display' => 'Email',
+                'required' => true,
+                'valid_email' => true
+            ]
+        ];
+    }
+
+    public static function resetPass()
+    {
+        return [
+            'password' => [
+                'display' => 'Password',
+                'required' => true,
+                'min' => 5
+            ],
+            'cpassword' => [
+                'display' => 'Confirm Password',
+                'required' => true,
+                'min' => 5,
+                'matches' => 'password'
             ]
         ];
     }

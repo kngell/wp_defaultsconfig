@@ -1,5 +1,5 @@
 <section id="cart" class="py-3">
-    <div class="container-fluid w-75">
+    <div class="container w-75">
         <h5 class="font-baloo">Shopping Cart</h5>
         <!-- Shopping cart items -->
         <div class="row">

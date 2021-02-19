@@ -49,7 +49,8 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
-    "bootstrap": "^4.6.0",
+    "@popperjs/core": "^2.7.0",
+    "bootstrap": "^5.0.0-beta2",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.3",
     "css-reset-and-normalize": "^2.3.5",
@@ -61,7 +62,6 @@
     "moment": "^2.29.1",
     "overlayscrollbars": "^1.13.1",
     "owl.carousel": "^2.3.4",
-    "popper.js": "^1.16.1",
     "sass": "^1.32.6",
     "sweetalert2": "^10.14.1"
   }

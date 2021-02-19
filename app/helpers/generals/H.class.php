@@ -537,21 +537,4 @@ class H
                 break;
         }
     }
-
-    //get showAll data refactor
-    public static function getShowAllData($model, $request, $item)
-    {
-        switch ($item['data_type']) {
-                case $item['data_type'] == 'values': //values or html template
-                    if ($item['return_mode'] == 'details') { // Detals or All
-                        return $model->getDetails($request->getAll('id'));
-                    } else {
-                        return $model->getAllbyIndex($request->getAll('id'));
-                    }
-                break;
-                case $item['data_type'] == 'template':
-                    return $model->getHtmlData($item);
-                break;
-            }
-    }
 }

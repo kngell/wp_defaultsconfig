@@ -43,4 +43,12 @@ class AdminController extends Controller
         $this->view_instance->set_page_title('Login');
         $this->view_instance->render('admin' . DS . 'login');
     }
+
+    public function allusers()
+    {
+        $this->view_instance->js = $this->assets->{'js/custom/admin/users/allusers'}->js ?? '';
+        $this->view_instance->css = $this->assets->{'css/custom/admin/users/allusers'}->css ?? '';
+        $this->view_instance->set_page_title('Login');
+        $this->view_instance->render('admin' . DS . 'users' . DS . 'allusers');
+    }
 }

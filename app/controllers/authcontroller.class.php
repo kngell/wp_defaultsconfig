@@ -1,6 +1,6 @@
 <?php
 
-class UsersController extends Controller
+class AuthController extends Controller
 {
     //=======================================================================
     //Construct
@@ -13,6 +13,7 @@ class UsersController extends Controller
         // $this->view_instance->setLayout('default');
         // $this->view_instance->footerPosts = $this->get_model('PostsManager', 'posts');
     }
+
     //=======================================================================
     //Login
     //=======================================================================
@@ -38,46 +39,48 @@ class UsersController extends Controller
             }
         }
     }
+
     //=======================================================================
-    //Cookies Login
+    //Check for remember me cookies
     //=======================================================================
 
-    public function logincookies()
+    public function remember_check()
     {
         if ($this->request->exists('post')) {
-            $user = UsersManager::loginUserFromCookies();
-            if (!Session::exists(CURRENT_USER_SESSION_NAME) && Cookies::exists(REMEMBER_ME_COOKIE_NAME)) {
-                if ($user) {
-                    $this->jsonResponse(['result' => 'success', 'msg' => $user->email]);
+            if (Cookies::exists(REMEMBER_ME_COOKIE_NAME)) {
+                if ($userdata = UsersManager::rememberMe_checker()) {
+                    $this->jsonResponse(['result' => 'success', 'msg' => $userdata]);
                 } else {
-                    $this->jsonResponse('');
+                    $this->jsonResponse(['result' => 'error', 'msg' => '']);
                 }
             }
         }
     }
+
     //=======================================================================
     //Facebook Login
     //=======================================================================
 
-    public function fblogin()
-    {
-        if ($this->request->exists('post')) {
-            $fb_data = json_decode($this->request->getAll()['freedata'], true, JSON_UNESCAPED_SLASHES);
-            if ($fb_data['email']) {
-                $this->model_instance['users']->assign($this->renameKeys($fb_data, ['last_name' => 'lastName', 'first_name' => 'firstName']));
-                if (!$this->model_instance['users']->findByEmail($fb_data['email'])) {
-                    $this->model_instance['users']->profileImage = $fb_data['picture']['data']['url'];
-                    $this->model_instance['users']->oauth_provider = "facebook";
-                    $this->model_instance['users']->save();
-                }
-                $remember = ((isset($this->request->getAll()['rem'])) && $this->request->getAll('rem') === 'on') ? true : false;
-                $this->model_instance['users']->login($remember);
-                $this->jsonResponse(['result' => 'success', 'msg' => '']);
-            } else {
-                $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'User cancel login or did not fully authorized')]);
-            }
-        }
-    }
+    // public function fblogin()
+    // {
+    //     if ($this->request->exists('post')) {
+    //         $fb_data = json_decode($this->request->getAll()['freedata'], true, JSON_UNESCAPED_SLASHES);
+    //         if ($fb_data['email']) {
+    //             $this->model_instance['users']->assign($this->renameKeys($fb_data, ['last_name' => 'lastName', 'first_name' => 'firstName']));
+    //             if (!$this->model_instance['users']->findByEmail($fb_data['email'])) {
+    //                 $this->model_instance['users']->profileImage = $fb_data['picture']['data']['url'];
+    //                 $this->model_instance['users']->oauth_provider = 'facebook';
+    //                 $this->model_instance['users']->save();
+    //             }
+    //             $remember = ((isset($this->request->getAll()['rem'])) && $this->request->getAll('rem') === 'on') ? true : false;
+    //             $this->model_instance['users']->login($remember);
+    //             $this->jsonResponse(['result' => 'success', 'msg' => '']);
+    //         } else {
+    //             $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'User cancel login or did not fully authorized')]);
+    //         }
+    //     }
+    // }
+
     //=======================================================================
     //Register
     //=======================================================================
@@ -94,8 +97,7 @@ class UsersController extends Controller
             $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance['users']);
             if ($file['success']) {
                 if ($this->model_instance['users']->validationPasses()) {
-                    //dd($this);
-                    if ($lastID = $this->model_instance['users']->save()) {
+                    if ($lastID = $this->model_instance['users']->register()) {
                         $msgsuccess = FH::showMessage('success text-center', 'You successfully registered!<br> Please check your email to confirm your account');
                         $this->VerifyEmail($this->model_instance['users'], $lastID, $msgsuccess);
                     } else {
@@ -103,13 +105,14 @@ class UsersController extends Controller
                     }
                 } else {
                     $newKeys = ['email' => 'reg_email', 'password' => 'pass', 'cpassword' => 'cpass'];
-                    $this->jsonResponse(['result' => 'error-field', 'msg' => $this->renameKeys($this->model_instance['users']->getErrorMessages(), $newKeys)]);
+                    $this->jsonResponse(['result' => 'error-field', 'msg' => H::Object_Keys_format($this->model_instance['users']->getErrorMessages(), $newKeys)]);
                 }
             } else {
                 $this->jsonResponse(['result' => 'error-field', 'msg' => $file['msg']]);
             }
         }
     }
+
     //=======================================================================
     //Register - Email verification
     //=======================================================================
@@ -122,14 +125,14 @@ class UsersController extends Controller
         $user = $this->model_instance['users']->findByEmail($email);
         $msg = file_get_contents(FILES . 'template' . DS . 'home' . DS . 'LR' . DS . 'verification_result.php');
         if ($user && $user->salt === $salt) {
-            $msg = str_replace("{{class}}", 'text-success', $msg);
-            $msg = str_replace("{{accueil}}", 'Congratulation!! Your email is verified!', $msg);
-            $msg = str_replace("{{message}}", 'You can now logged in and enjoy our services. If you have some questions, please contact our <a href="mailto:contact@kngell.com"><sapn>client administrator.</a></sapn>', $msg);
+            $msg = str_replace('{{class}}', 'text-success', $msg);
+            $msg = str_replace('{{accueil}}', 'Congratulation!! Your email is verified!', $msg);
+            $msg = str_replace('{{message}}', 'You can now logged in and enjoy our services. If you have some questions, please contact our <a href="mailto:contact@kngell.com"><sapn>client administrator.</a></sapn>', $msg);
             $user->confirmEmail($email);
         } else {
-            $msg = str_replace("{{class}}", 'text-warning ', $msg);
-            $msg = str_replace("{{accueil}}", 'An error ocurred!', $msg);
-            $msg = str_replace("{{message}}", 'Please try later our contact our <a href="mailto:admin@kngell.com"><span>admin.</span></a>.', $msg);
+            $msg = str_replace('{{class}}', 'text-warning ', $msg);
+            $msg = str_replace('{{accueil}}', 'An error ocurred!', $msg);
+            $msg = str_replace('{{message}}', 'Please try later our contact our <a href="mailto:admin@kngell.com"><span>admin.</span></a>.', $msg);
         }
         $this->view_instance->verification_result = $msg;
         $this->view_instance->render('users' . DS . 'emailVerified');
@@ -149,7 +152,7 @@ class UsersController extends Controller
             $user->cnewpass = $this->request->getAll('cnewpass');
             $user->setConfirm($this->request->getAll('newpass'));
             $user->assign($this->request->getAll());
-            $user->validator($this->request->getAll(), Form_rules::change_pass_adin_user());
+            $user->validator($this->request->getAll(), Form_rules::change_pass_admin_user());
             if ($user->validationPasses()) {
                 if (password_verify($user->curpass, $user->password)) {
                     $user->id = $user->userID;
@@ -180,17 +183,18 @@ class UsersController extends Controller
         $m = (!$m) ? UsersManager::$currentLoggedInUser : $m;
         $subject = 'Email verification';
         $body = file_get_contents(FILES . 'template' . DS . 'home' . DS . 'LR' . DS . 'emailVerif.php');
-        $body = str_replace("{{email}}", $m->email, $body);
-        $body = str_replace("{{salt}}", $m->salt, $body);
-        $body = str_replace("{{URLROOT}}", URLROOT, $body);
+        $body = str_replace('{{email}}', $m->email, $body);
+        $body = str_replace('{{salt}}', $m->salt, $body);
+        $body = str_replace('{{URLROOT}}', URLROOT, $body);
         $msgsuccess = (!$msgsuccess && $this->request->exists('post')) ? FH::showMessage('success text-center', 'A verification link has been sent to your Email box. Please check!') : $msgsuccess;
         if ($err = H::sendmailgrid($m->email, $subject, $body)) {
-            $this->jsonResponse(['result' => 'success', 'msg' => $msgsuccess]);
+            $this->jsonResponse(['result' => 'success', 'msg' => $msgsuccess, 'img' => IMG . 'users' . DS . 'avatar.png']);
         } else {
             $lastID ? $this->model_instance['users']->delete('userID', $lastID) : '';
             $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', $err)]);
         }
     }
+
     //=======================================================================
     //Forgot password
     //=======================================================================
@@ -205,14 +209,14 @@ class UsersController extends Controller
                 $user = $this->model_instance['users']->findByEmail($this->model_instance['users']->email);
                 if ($user) {
                     $user->token = (new Token())->user_identifiant(128);
-                    $user->token_expire = ((new DateTime("now"))->add(new DateInterval('PT30M')))->format('Y-m-d H:i:s');
+                    $user->token_expire = ((new DateTime('now'))->add(new DateInterval('PT30M')))->format('Y-m-d H:i:s');
                     $user->id = $user->userID;
                     $user->save();
                     $subject = 'Reset Password';
                     $body = file_get_contents(FILES . 'template' . DS . 'home' . DS . 'LR' . DS . 'passwordreset.php');
-                    $body = str_replace("{{email}}", $user->email, $body);
-                    $body = str_replace("{{salt}}", $user->token, $body);
-                    $body = str_replace("{{URLROOT}}", URLROOT, $body);
+                    $body = str_replace('{{email}}', $user->email, $body);
+                    $body = str_replace('{{salt}}', $user->token, $body);
+                    $body = str_replace('{{URLROOT}}', URLROOT, $body);
                     if ($err = H::sendmailgrid($user->email, $subject, $body)) {
                         $this->jsonResponse(['result' => 'success', 'msg' => FH::showMessage('success text-center', 'Reset link have been sent!<br>Please check your email box.')]);
                     } else {
@@ -223,7 +227,7 @@ class UsersController extends Controller
                 }
             } else {
                 $newKeys = ['email' => 'forgot_email'];
-                $this->jsonResponse(['result' => 'error-field', 'msg' => $this->renameKeys($this->model_instance['users']->getErrorMessages(), $newKeys)]);
+                $this->jsonResponse(['result' => 'error-field', 'msg' => H::Object_Keys_format($this->model_instance['users']->getErrorMessages(), $newKeys)]);
             }
         }
     }
@@ -251,9 +255,9 @@ class UsersController extends Controller
                 if (!$user->count() > 0) {
                     $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning', 'Votre email n\'existe pas dans notre system!<br>Merci de vous enregistrer')]);
                 } elseif ($token == $user->token) {
-                    $user->token = "";
+                    $user->token = '';
                     $user->id = $user->userID;
-                    $datetime1 = new DateTime("now");
+                    $datetime1 = new DateTime('now');
                     $datetime2 = new Datetime($user->token_expire);
                     if ($datetime1 < $datetime2) {
                         $user->password = password_hash($this->request->getAll('password'), PASSWORD_DEFAULT);
@@ -271,7 +275,7 @@ class UsersController extends Controller
                 }
             } else {
                 $newKeys = ['password' => 'password_ch'];
-                $this->jsonResponse(['result' => 'error-field', 'msg' => $this->renameKeys($this->model_instance['users']->getErrorMessages(), $newKeys)]);
+                $this->jsonResponse(['result' => 'error-field', 'msg' => H::Object_Keys_format($this->model_instance['users']->getErrorMessages(), $newKeys)]);
             }
         } else {
         }

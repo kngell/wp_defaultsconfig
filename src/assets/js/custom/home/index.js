@@ -11,7 +11,6 @@ const responsive = {
   },
 };
 import imageLoaded from "corejs/waitfor";
-import { get_visitors_data, send_visitors_data } from "corejs/visitors";
 document.addEventListener("DOMContentLoaded", function () {
   function PhpPlugin(element) {
     this.element = element;
@@ -30,20 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   PhpPlugin.prototype.setupEvents = function () {
     var phpPlugin = this;
-
-    //=======================================================================
-    //Get Visitors Data
-    //=======================================================================
-    let visitor = get_visitors_data().then((visitors_data) => {
-      var data = {
-        url: "visitors/track",
-        table: "visitors",
-        ip: visitors_data.ip,
-      };
-      send_visitors_data(data, manageR);
-      function manageR(response) {}
-    });
-
     //=======================================================================
     //Owl carousel
     //=======================================================================
@@ -61,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
       responsive: responsive,
     });
 
-    //new phones
+    //new product
     phpPlugin.newPhone.find(".owl-carousel").owlCarousel({
       loop: true,
       nav: false,
@@ -77,19 +62,26 @@ document.addEventListener("DOMContentLoaded", function () {
         0: { items: 1 },
         600: { items: 3 },
       },
+      center: true,
     });
+
     //=======================================================================
     //Isotope Filter
     //=======================================================================
     function special_price() {
       return new Promise((resolve, reject) => {
         var gridIMG = phpPlugin.specialPrice.find(".grid .grid-item img");
+        var elem = document.querySelector(".grid");
         imageLoaded(gridIMG)
           .then(() => {
             resolve(
-              new Isotope("#special-price .grid", {
+              new Isotope(elem, {
                 itemSelector: ".grid-item",
-                layoutMode: "fitRows",
+                layoutMode: "masonry",
+                masonry: {
+                  columnWidth: 0,
+                  isFitWidth: true,
+                },
               })
             );
           })

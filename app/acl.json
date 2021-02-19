@@ -5,7 +5,7 @@
     },
     "HomeController": ["*"],
     "AdminController": ["login"],
-    "UsersController": ["*"],
+    "AuthController": ["*"],
     "NewsController": ["index", "show", "categorie", "unsuscribe"],
     "RestrictedController": ["*"],
     "VisitorsController": ["*"],
@@ -17,9 +17,9 @@
   },
   "LoggedIn": {
     "denied": {
-      "UsersController": ["login", "register"]
+      "AuthController": ["login", "register"]
     },
-    "UsersController": ["*"],
+    "AuthController": ["*"],
     "BackendController": ["login"],
     "MembersController": ["*"],
     "UsersprofileController": ["*"],

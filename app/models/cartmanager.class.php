@@ -135,16 +135,17 @@ class CartManager extends Model
     //=======================================================================
     //Checkers
     //=======================================================================
-    public function CheckDuplicateTems($u_id):array
+    public function CheckDuplicateTems($u_id = ''):array
     {
-        $user_cart = $this->getAllbyIndex($u_id)->get_results();
-        if ($user_cart != null) {
-            $cart_id = array_map(function ($item) {
-                return $item->item_id;
-            }, $user_cart);
+        if (Cookies::exists(VISITOR_COOKIE_NAME)) {
+            $user_cart = $this->getAllbyIndex(Cookies::get(VISITOR_COOKIE_NAME))->get_results();
+            if ($user_cart != null) {
+                $cart_id = array_map(function ($item) {
+                    return $item->item_id;
+                }, $user_cart);
 
-            return $cart_id;
-            // count($cart_id) === count(array_flip($cart_id)
+                return $cart_id;
+            }
         }
 
         return [];
@@ -155,7 +156,7 @@ class CartManager extends Model
         parent::beforeSave();
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
             $user_data = UsersManager::$currentLoggedInUser ? UsersManager::$currentLoggedInUser : $this->getDetails(Cookies::get(VISITOR_COOKIE_NAME, (new VisitorsManager())->get_colIndex()));
-            $this->user_id = $user_data ? $user_data->cookies : Cookies::get(VISITOR_COOKIE_NAME);
+            $this->user_id = $user_data ? $user_data->visitor_cookie : Cookies::get(VISITOR_COOKIE_NAME);
             $user_cart = $this->getAllbyIndex($this->user_id)->get_results();
             $cart = array_filter($user_cart, function ($item) {
                 return $item->item_id == $this->item_id;

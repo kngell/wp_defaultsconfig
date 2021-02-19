@@ -45,6 +45,8 @@ export function displayAllItems(data) {
       query: data.query != "" ? data.query : "",
       page: data.page != "" ? data.page : "",
       pagination: data.pagination != "" ? data.pagination : "",
+      data_type: data.data_type ? data.data_type : "",
+      return_mode: data.return_mode ? data.return_mode : "",
     },
     success: function (response) {
       if (response.result == "success") {

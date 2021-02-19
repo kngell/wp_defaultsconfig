@@ -1,7 +1,9 @@
 <section id="blog">
-    <div class="container py-4">
-        <h4 class="font-rubik font-size-20">Latest blog test</h4>
-        <hr>
+    <div class="container py-4 w-75">
+        <div class="row title">
+            <h4 class="font-rubik font-size-20">Latest blog test</h4>
+            <hr>
+        </div>
         <div class="owl-carousel owl-thme">
             <div class="item">
                 <div class="card border-0 font-rale mr-5" style="width:18rem;">

@@ -1,7 +1,7 @@
 <section id="top-sale">
-    <div class="container py-5">
+    <div class="container py-5 w-75">
         <h4 class="font-rubik font-size-20">Top Sale</h4>
-        <hr>
+        <hr class="divider mx-auto mt-0">
         <!-- Owl carousel -->
         <?php shuffle($this->products) ?>
         <div class="owl-carousel owl-theme">

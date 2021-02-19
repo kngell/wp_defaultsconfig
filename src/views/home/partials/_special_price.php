@@ -1,18 +1,21 @@
 <section id="special-price">
-    <div class="container">
-        <h4 class="font-rubik font-size-20">Special Price</h4>
-        <div id="filters" class="button-group text-right">
-            <?php
+    <div class="container w-75">
+        <div class="row title">
+            <h4 class="font-rubik font-size-20">Special Price</h4>
+            <div id="filters" class="button-group">
+                <?php
             $brands = array_unique(array_map(function ($prod) {
                 return $prod->item_brand;
             }, $this->products));
             sort($brands);
             ?>
-            <button class="btn is-checked" data-filter="*">All Brands</button>
-            <?php array_map(function ($brand) {
+                <button class="btn is-checked" data-filter="*">All Brands</button>
+                <?php array_map(function ($brand) {
                 printf('<button class="btn" data-filter=".%s">%s</button>', $brand, $brand);
             }, $brands); ?>
+            </div>
         </div>
+        <hr class="divider mx-auto mt-0">
         <div class="grid">
             <?php shuffle($this->products) ?>
             <?php array_map(function ($product) { ?>

@@ -1,6 +1,16 @@
 // Top Sale template
 
 #top-sale {
+  h4 {
+    padding-bottom: 0.6rem;
+  }
+
+  .owl-carousel {
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+  }
   .owl-carousel .item .product a {
     overflow: hidden;
   }
