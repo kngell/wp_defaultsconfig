@@ -170,8 +170,10 @@ export function Delete(data, displayItem) {
         },
         success: function (response) {
           if (response.result === "success") {
-            data.swal.fire("Deleted!", response.msg, "success");
-            displayItem();
+            data.swal
+              ? data.swal.fire("Deleted!", response.msg, "success")
+              : "";
+            displayItem(data.params ? data.params : "");
           } else {
             data.alertID.html(response.msg);
           }

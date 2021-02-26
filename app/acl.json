@@ -3,7 +3,7 @@
     "denied": {
       "AdminController": ["*"]
     },
-    "HomeController": ["*"],
+    "HomeController": ["index", "product", "cart"],
     "AdminController": ["login"],
     "AuthController": ["*"],
     "NewsController": ["index", "show", "categorie", "unsuscribe"],
@@ -28,7 +28,8 @@
     "FormsController": ["*"],
     "AssocController": ["*"],
     "CommentsController": ["*"],
-    "AssetsController": ["*"]
+    "AssetsController": ["*"],
+    "HomeController": ["profile"]
   },
   "admin": {
     "denied": {},

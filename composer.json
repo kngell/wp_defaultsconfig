@@ -17,7 +17,9 @@
       "app/",
       "vendor/sendgrid/"
     ],
-    "files": []
+    "files": [
+      "config/config.php"
+    ]
   },
   "require-dev": {
     "symfony/var-dumper": "^5.2"

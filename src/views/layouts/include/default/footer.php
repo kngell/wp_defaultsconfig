@@ -40,31 +40,36 @@
               </div>
           </div>
       </div>
-
+      <!-- CopyRights -->
+      <div class="conpyright text-center bg-dark text-white py-2">
+          <p class="font-rale font-size-14">&copy; Copyrights 2021 Design by <a href="#" class="color-second">
+                  Kngell</a>
+          </p>
+      </div>
   </footer>
   <!-- End footer -->
-  <!-- CopyRights -->
-  <div class="conpyright text-center bg-dark text-white py-2">
-      <p class="font-rale font-size-14">&copy; Copyrights 2021 Design by <a href="#" class="color-second"> Kngell</a>
-      </p>
-  </div>
+
 
   <!-- Librairies -->
   <script type="text/javascript"
-      src="<?= $this->jsHomelib ?? '' ?>"></script>
+      src="<?= $this->get_Asset('js/librairies/frontlib', 'js') ?? '' ?>">
+  </script>
   <!-- Common vendor -->
   <script type="text/javascript"
-      src="<?= $this->jscommonVendor ?? '' ?>"></script>
+      src="<?= $this->get_Asset('commons/frontend/commonVendor', 'js') ?? '' ?>">
+  </script>
   <!-- Custom Common Modules  -->
   <script type="text/javascript"
-      src="<?= $this->jscustomComnonModules ?? '' ?>">
+      src="<?= $this->get_Asset('commons/frontend/commonCustomModules', 'js') ?? '' ?>">
   </script>
   <!-- Plugins -->
   <script type="text/javascript"
-      src="<?= $this->jsHomePlugins ?? '' ?>"></script>
+      src="<?= $this->get_Asset('js/plugins/homeplugins', 'js') ?? '' ?>">
+  </script>
   <!-- Mainjs -->
   <script type="text/javascript"
-      src="<?= $this->jsHomeMain ?? '' ?>"></script>
+      src="<?= $this->get_Asset('js/main/frontend/main', 'js') ?? '' ?>">
+  </script>
   <?= $this->content('footer'); ?>
   </body>
 

@@ -1,5 +1,5 @@
 // /** add active class and stay opened when selected */
-var url = window.location;
+var url = window.location.href.split("?")[0];
 // for single sidebar menu
 $("ul.nav-sidebar a")
   .removeClass("active")

@@ -1,7 +1,8 @@
-<?php $this->setSiteTitle('K' . "'" . 'nGELL Ingénierie Logistique')?>
 <?php $this->start('head'); ?>
 <!-------Accueil-------->
-<link href="<?=$this->css?>" rel="stylesheet" type="text/css">
+<link
+    href="<?= $this->get_Asset('css/custom/home/product', 'css') ?? ''?>"
+    rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
 <!-- Start Main -->
@@ -19,6 +20,7 @@
 <?php $this->end(); ?>
 <?php $this->start('footer')?>
 <!-- Html visitors -->
-<script type="text/javascript" src="<?=$this->js?>">
+<script type="text/javascript"
+    src="<?= $this->get_Asset('js/custom/home/product', 'js') ?? ''?>">
 </script>
 <?php $this->end();

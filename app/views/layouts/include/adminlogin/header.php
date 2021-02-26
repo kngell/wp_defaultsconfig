@@ -4,20 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><?= $this->siteTitle() ?>
+    <title><?= $this->get_siteTitle() ?>
     </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Font Awesome -->
     <!-- Main style -->
-    <link href="<?= $this->cssAdminlib ?? '' ?>"
+    <link
+        href="<?= $this->get_Asset('css/librairies/adminlib', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
     <!-- Plugins css -->
     <link
-        href="<?= $this->cssAdminPlugins ?? '' ?>"
+        href="<?= $this->get_Asset('css/plugins/adminplugins', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
     <!-- Main style -->
-    <link href="<?= $this->cssAdminMain ?? '' ?>"
+    <link
+        href="<?= $this->get_Asset('css/main/backend/admin/main', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
     <?= $this->content('head');?>
 

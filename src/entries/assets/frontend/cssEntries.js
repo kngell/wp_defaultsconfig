@@ -28,5 +28,10 @@ module.exports = {
       import: ["css/custom/home/cart.scss"],
       dependOn: "css/librairies/frontlib",
     },
+    //Ecommerce - Account Page
+    "css/custom/home/profile": {
+      import: ["css/custom/home/profile.scss"],
+      dependOn: "css/librairies/frontlib",
+    },
   },
 };

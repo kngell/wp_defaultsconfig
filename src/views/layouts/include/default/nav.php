@@ -6,7 +6,7 @@
     </p>
     <div class="font-rale font-size-14 connect">
       <!-- <a href="product.html" class="px-3 border-right border-left text-dark">Login</a> -->
-      <?php if (!isset(UsersManager::$currentLoggedInUser)) : ?>
+      <?php if (!isset(AuthManager::$currentLoggedInUser)) : ?>
       <a class="px-3 border-right border-left text-dark connexion text-decoration-none" data-bs-toggle="modal"
         data-bs-target="#login-box" href="<?= PROOT ?>auth/ajaxLogin"
         id="login_btn">
@@ -14,7 +14,7 @@
       <?php else : ?>
       <a class="dropdown-toggle px-3 border-right border-left text-dark connexion text-decoration-none"
         id="navbarDropdownMenuLink" data-bs-toggle="dropdown" role="button">
-        <span class="icon login"></span>&nbsp;&nbsp;<?= 'Bonjour&nbsp;' . UsersManager::currentUser()->firstName; ?>
+        <span class="icon login"></span>&nbsp;&nbsp;<?= 'Bonjour&nbsp;' . AuthManager::currentUser()->firstName; ?>
       </a>
       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <?php $drop = GrantAccess::getMenu('menu_acl')['log_reg_menu']?>
@@ -26,7 +26,7 @@
         <?php else : ?>
         <li class="dropdown-item nav-item <?= $active ?>">
           <a class="nav-link"
-            href="<?= ($k != 'Logout') ? $v : '#' ?>">
+            href="<?= ($k != 'Logout') ? $v : 'javascript:void(0)' ?>">
             <?= $k ?>
           </a>
         </li>

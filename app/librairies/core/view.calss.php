@@ -2,6 +2,7 @@
 
 class View
 {
+    protected $ressources;
     protected $_head;
     protected $_body;
     protected $_footer;
@@ -12,17 +13,34 @@ class View
     protected $view_data;
     public $page_title;
 
+    //=======================================================================
+    //Constructor & Destructor
+    //=======================================================================
     public function __construct($view_file, $view_data = [])
     {
         $this->view_file = $view_file;
         $this->view_data = $view_data;
+        $this->ressources = json_decode(file_get_contents(APP . 'assets.json'));
     }
 
     public function __destruct()
     {
         include VIEW . 'layouts' . DS . $this->_layout . '.php';
+        $this->ressources = null;
+        $this->_head = null;
+        $this->_body = null;
+        $this->_footer = null;
+        $this->_siteTitle = null;
+        $this->_outputBuffer = null;
+        $this->_layout = null;
+        $this->view_file = null;
+        $this->view_data = null;
+        $this->page_title = null;
     }
 
+    //=======================================================================
+    //Rendering
+    //=======================================================================
     public function render($viewname)
     {
         if ($this->view_file != $viewname) {
@@ -32,7 +50,7 @@ class View
             include VIEW . $this->view_file . '.php';
         // include VIEW . 'layouts' . DS . $this->_layout . '.php';
         } else {
-            die('The view \"' . $this->view_file . '.php \ " does not exist');
+            Rooter::redirect('restricted' . DS . 'index');
         }
     }
 
@@ -70,86 +88,73 @@ class View
         }
     }
 
+    //=======================================================================
+    //Setters
+    //=======================================================================
     //Site Title
-    public function siteTitle()
-    {
-        return $this->_siteTitle;
-    }
-
-    public function setSiteTitle($title = '')
+    public function set_siteTitle($title = '')
     {
         $this->_siteTitle = $title;
     }
 
     //Set Layout
-    public function setLayout($path)
+    public function set_Layout($path)
     {
         $this->_layout = $path;
     }
 
-    public function getMethod()
-    {
-        return (explode('\\', $this->view_file))[1];
-    }
-
-    public function set_page_title($p_title = '')
+    //page title
+    public function set_pageTitle($p_title = '')
     {
         $this->page_title = $p_title;
     }
 
-    public function get_page_title($p_title = '')
-    {
-        return $this->page_title;
-    }
-
-    public function set_view_data($data)
+    //Datas
+    public function set_viewData($data)
     {
         $this->view_data = $data;
     }
 
-    public function insert($path)
+    //Files Insert / include
+
+    public function insert_File($path)
     {
         include VIEW . $path . '.php';
     }
 
-    public function partial($group, $partial)
+    //Insert Partial
+    public function insert_Partial($group, $partial)
     {
         include VIEW . $group . DS . 'partials' . DS . $partial . '.php';
     }
 
     //=======================================================================
-    //Get View Path
+    //Gettters
     //=======================================================================
-
-    public function get_file_path($from = '')
+    // Site Title
+    public function get_siteTitle()
     {
-        $path = explode('/', H::currentPage()) ;
-        $p = [];
-        foreach ($path as $key => $value) {
-            if (empty($value) || $value == 'kngell' || is_numeric($value) || $value == 'home') {
-                unset($path[$key]);
-            }
-        }
-        foreach (array_values($path) as $key => $value) {
-            switch ($value) {
-                case 'home':
-                    $p[$value] = 'Accueil';
-                break;
-                case 'aboutUs':
-                    $p[$value] = 'A propos';
-                break;
-                case 'flux':
-                    $p[$value] = 'Conception des flux';
-                break;
-                case 'lean':
-                    $p[$value] = 'Lean Management';
-                break;
-                default:
-                    $p[$value] = ucfirst($value);
-                break;
-            }
-        }
+        return $this->_siteTitle;
+    }
 
-        return $p;
+    //Get Method
+    public function get_Method()
+    {
+        return (explode('\\', $this->view_file))[1];
+    }
+
+    //Page Title
+    public function get_pageTitle($p_title = '')
+    {
+        return $this->page_title;
+    }
+
+    //Get assets
+    public function get_Asset($asset = '', $ext = '')
+    {
+        if (isset($this->ressources->$asset)) {
+            return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . $this->ressources->$asset->$ext ?? '' : $this->ressources->$asset->$ext ?? '';
+        }
+        return '';
     }
 }

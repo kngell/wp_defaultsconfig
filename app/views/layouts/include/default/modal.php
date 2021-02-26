@@ -82,8 +82,8 @@
                                     <img src="<?=IMG?>users/avatar.png"
                                         class="img rounded-circle" alt="profile" />
                                     <small class="form-text">Profile</small>
-                                    <input type="file" form="register-frm" class="form-file" name="profileUpload"
-                                        id="upload-profile">
+                                    <input type="file" form="register-frm" class="form-control form-file"
+                                        name="profileUpload" id="upload-profile">
                                 </div>
                             </div>
                             <hr class="my-0">

@@ -4,9 +4,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-//config & autoload
-require_once '../config/config.php';
-require_once VENDOR . 'autoload.php';
+//autoload
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Token form
 if (empty($_SESSION[TOKEN_NAME])) {

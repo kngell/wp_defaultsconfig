@@ -9,7 +9,7 @@ class AuthController extends Controller
     public function __construct($controller, $method)
     {
         parent::__construct($controller, $method);
-        $this->get_model('UsersManager', 'users');
+        $this->get_model('AuthManager', 'users');
         // $this->view_instance->setLayout('default');
         // $this->view_instance->footerPosts = $this->get_model('PostsManager', 'posts');
     }
@@ -48,7 +48,7 @@ class AuthController extends Controller
     {
         if ($this->request->exists('post')) {
             if (Cookies::exists(REMEMBER_ME_COOKIE_NAME)) {
-                if ($userdata = UsersManager::rememberMe_checker()) {
+                if ($userdata = AuthManager::rememberMe_checker()) {
                     $this->jsonResponse(['result' => 'success', 'msg' => $userdata]);
                 } else {
                     $this->jsonResponse(['result' => 'error', 'msg' => '']);
@@ -146,7 +146,7 @@ class AuthController extends Controller
     {
         if ($this->request->exists('post')) {
             $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
-            $user = UsersManager::currentUser();
+            $user = AuthManager::currentUser();
             $user->curpass = $this->request->getAll('curpass');
             $user->newpass = $this->request->getAll('newpass');
             $user->cnewpass = $this->request->getAll('cnewpass');
@@ -180,7 +180,7 @@ class AuthController extends Controller
 
     public function VerifyEmail($m = null, $lastID = '', $msgsuccess = '')
     {
-        $m = (!$m) ? UsersManager::$currentLoggedInUser : $m;
+        $m = (!$m) ? AuthManager::$currentLoggedInUser : $m;
         $subject = 'Email verification';
         $body = file_get_contents(FILES . 'template' . DS . 'home' . DS . 'LR' . DS . 'emailVerif.php');
         $body = str_replace('{{email}}', $m->email, $body);
@@ -284,15 +284,21 @@ class AuthController extends Controller
 
     public function logout($members = '')
     {
-        //dd( $_SESSION );
-        if (UsersManager::currentUser()) {
-            //dd( 'hey' );
-            if (UsersManager::currentUser()->logout()) {
+        if (AuthManager::currentUser()) {
+            if (AuthManager::currentUser()->logout()) {
                 if ($members) {
                     Rooter::redirect('');
                 }
-                $this->jsonResponse('success');
+                if (Session::exists(REDIRECT)) {
+                    $url = explode('/', $_SERVER['HTTP_REFERER']);
+                    if (array_pop($url) == Session::get(REDIRECT)) {
+                        Session::delete(REDIRECT);
+                        $this->jsonResponse(['result' => 'success', 'msg' => 'redirect']);
+                    }
+                }
+                $this->jsonResponse(['result' => 'success', 'msg' => 'no_redirect']);
             }
         }
+        $this->jsonResponse(['result' => 'error', 'msg' => 'Something goes wrong']);
     }
 }

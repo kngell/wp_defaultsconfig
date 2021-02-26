@@ -1,24 +1,27 @@
 <section id="product" class="py-3">
     <div class="container w-75">
         <div class="row r_button">
-            <div class="col-sm-6">
-                <img src="<?=IMG . $this->p_details->item_image ?? '../../../assets/img/products/1.png'?>"
+            <div class="col-sm-6 h-100">
+                <img src="<?= IMG . $this->p_details->item_image ?? '../../../assets/img/products/1.png' ?>"
                     alt="Product" class="img-fluid">
                 <div class="row pt-4 font-size-16 font-baloo mb-3">
                     <div class="col">
-                        <button type="submit" class="btn btn-danger form-control">Proceed to buy</button>
+                        <form action="">
+                            <button type="submit" class="btn btn-danger font-size-14 form-control">Proceed to
+                                buy</button>
+                        </form>
                     </div>
                     <div class="col">
                         <form class="add_to_cart_frm">
                             <input type="hidden" name="item_id"
-                                value="<?=$this->p_details->item_id ?? 1 ?>">
+                                value="<?= $this->p_details->item_id ?? 1 ?>">
                             <input type="hidden" name="user_id" value="1">
-                            <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $this->p_details->item_id ?? 1, $_SESSION[TOKEN_NAME]));?>
+                            <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $this->p_details->item_id ?? 1, $_SESSION[TOKEN_NAME])); ?>
                             <?php
                             if (in_array($this->p_details->item_id, $this->user_cart)) {
-                                echo ' <button type="submit" class="btn btn-success font-size-12 form-control">In the cart</button>';
+                                echo ' <button type="submit" class="btn btn-success font-size-14 form-control">In the cart</button>';
                             } else {
-                                echo '<button type="submit" class="btn btn-warning font-size-12 form-control">Add to
+                                echo '<button type="submit" class="btn btn-warning font-size-14 form-control">Add to
                                 Cart</button>';
                             }
                             ?>
@@ -26,10 +29,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 py-5">
-                <h5 class="font-baloo font-size-20"><?=$this->p_details->item_name ?? 'Unknown'?>
+            <div class="col-sm-6 py-5 h-100">
+                <h5 class="font-baloo font-size-20"><?= $this->p_details->item_name ?? 'Unknown' ?>
                 </h5>
-                <small>By <?=$this->p_details->item_brand ?? 'Brand'?></small>
+                <small>By <?= $this->p_details->item_brand ?? 'Brand' ?></small>
                 <div class="d-flex">
                     <div class="rating text-warning font-size-12">
                         <span><i class="fas fa fa-star"></i></span>
@@ -50,7 +53,7 @@
                     </tr>
                     <tr class="font-rale font-size-14">
                         <td>Deal Price :</td>
-                        <td class="font-size-20 text-danger">$<span><?=$this->p_details->item_price ?? 0?></span><small
+                        <td class="font-size-20 text-danger">$<span><?= $this->p_details->item_price ?? 0 ?></span><small
                                 class="text-dark font-size-12">&nbsp;&nbsp;inclusive of
                                 all
                                 taxes</small>
@@ -130,7 +133,7 @@
                     </div>
                 </div>
                 <!-- Mobile size  -->
-                <div class="size my-3">
+                <div class="size my-2">
                     <h6 class="font-baloo">Size :</h6>
                     <div class="d-flex justify-content-between w-75">
                         <div class="font-rubik border p-2">

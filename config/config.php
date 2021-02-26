@@ -1,16 +1,16 @@
 <?php
-
 // -----------------------------------------------------------------------
 // DEFINE SEPERATOR ALIASES
 // -----------------------------------------------------------------------
 define('URL_SEPARATOR', '/');
-define('DS', DIRECTORY_SEPARATOR);
 define('PS', PATH_SEPARATOR);
 define('US', URL_SEPARATOR);
+define('DS', DIRECTORY_SEPARATOR);
 // -----------------------------------------------------------------------
 // ROOT PATH
 // -----------------------------------------------------------------------
 define('ROOT', dirname(__DIR__) . DS);
+define('VENDOR', ROOT . 'vendor' . DS);
 define('APP', ROOT . 'app' . DS);
 define('FILES', ROOT . 'files' . DS);
 define('CORE', ROOT . 'app' . DS . 'core' . DS);
@@ -18,7 +18,6 @@ define('MODEL', ROOT . 'app' . DS . 'models' . DS);
 define('VIEW', ROOT . 'app' . DS . 'views' . DS);
 define('DATA', ROOT . 'app' . DS . 'data' . DS);
 define('CONTROLLER', ROOT . 'app' . DS . 'controllers' . DS);
-define('VENDOR', ROOT . 'vendor' . DS);
 define('IMAGE_ROOT', dirname(__DIR__) . US . 'public' . US . 'assets' . US . 'img' . US);
 define('ACME_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'acme-challenge' . DS);
 define('UPLOAD_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'img' . DS . 'upload' . DS);
@@ -27,7 +26,8 @@ define('CUSTOM_VALIDATOR', ROOT . DS . 'app' . DS . 'custom_validator' . DS);
 // -----------------------------------------------------------------------
 // URL ROOT
 // -----------------------------------------------------------------------
-define('URLROOT', 'http://localhost' . US . 'kngell' . US);
+define('URLROOT', 'http://localhost' . US . 'kngell_ecommerce' . US);
+define('ASSET_SERVICE_PROVIDER', 'http://localhost');
 // -----------------------------------------------------------------------
 // SITE NAME
 // -----------------------------------------------------------------------
@@ -79,6 +79,7 @@ define('TOKEN_NAME', 'token');
 define('USERNAME', 'admin@kngell.com');
 define('NO_REPLY', 'no-reply@kngell.com');
 define('PASSWORD', 'Akonoakono169&169');
+define('REDIRECT', 'page_to_redirect');//Store current page to redirect on logout;
 
 // -----------------------------------------------------------------------
 // PERMISSIONS

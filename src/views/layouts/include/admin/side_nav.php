@@ -13,11 +13,11 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
               <div class="image">
-                  <img src="<?= UsersManager::currentUser()->profileImage ?? IMG . 'users' . US . 'avatar.png' ?>"
+                  <img src="<?= AuthManager::currentUser()->profileImage ?? IMG . 'users' . US . 'avatar.png' ?>"
                       class="img-circle elevation-2" alt="User Image">
               </div>
               <div class="info">
-                  <a href="#" class="d-block"><?= UsersManager::currentUser()->firstName . '&nbsp;' . UsersManager::currentUser()->lastName ?></a>
+                  <a href="#" class="d-block"><?= AuthManager::currentUser()->firstName . '&nbsp;' . AuthManager::currentUser()->lastName ?></a>
               </div>
           </div>
 
@@ -120,14 +120,14 @@
                       </a>
                       <ul class="nav nav-treeview">
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'allusers' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'allusers' . US . 'get_allUsers'?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>All Users</p>
                               </a>
                           </li>
                           <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'restoreUsers' ?>"
+                              <a href="<?= PROOT . 'admin' . US . 'allusers' . US . 'restore_Users'?>"
                                   class="nav-link">
                                   <i class="far fa-circle nav-icon"></i>
                                   <p>Restore Users</p>

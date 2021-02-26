@@ -5,24 +5,24 @@ class Session
     {
         return (isset($_SESSION[$name])) ? true : false;
     }
-    
+
     public static function get($name)
     {
         return $_SESSION[$name];
     }
-    
+
     public static function set($name, $value)
     {
-        return $_SESSION[$name] =$value;
+        return $_SESSION[$name] = $value;
     }
-    
+
     public static function delete($name)
     {
         if (self::exists($name)) {
             unset($_SESSION[$name]);
         }
     }
-    
+
     public static function uagent_no_version()
     {
         $uagent = $_SERVER['HTTP_USER_AGENT'];
@@ -30,7 +30,7 @@ class Session
         $newString = preg_replace($regx, '', $uagent);
         return $newString;
     }
-    
+
     public static function flash($name, $string = '')
     {
         if (self::exists($name)) {
@@ -41,26 +41,9 @@ class Session
             self::set($name, $string);
         }
     }
-    public static function displayMsg()
-    {
-        $alerts = ['alert-info','alert-sucess','alert-warning','alert-danger'];
-        $html  ='';
-        foreach ($alerts as $alert) {
-            if (self::exists($alert)) {
-                $html = '<div class="alert '.$alert.' alert-dismissable" role="alert">';
-                $html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>';
-                $html .= self::get($alert);
-                $html .='</div>';
-                self::delete($alert);
-            }
-        }
-    }
 
-    public static function addMsg($type, $msg)
+    public static function set_redirect($controller, $method)
     {
-        $sessionName = 'alert'.$type;
-        self::set($sessionName, $msg);
+        ($method == 'profile' && $controller == 'HomeController') ? self::set(REDIRECT, $method) : '';
     }
 }

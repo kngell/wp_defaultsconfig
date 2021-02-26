@@ -103,7 +103,7 @@ class FH
     public static function showMessage($type, $message)
     {
         return '<div class="align-self-center alert alert-' . $type . ' alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <button type="button" class="close" data-bs-dismiss="alert"><span class="float-end">&times;</span></button>
                     <strong class="text-center">' . $message . '</strong>
               </div>';
     }

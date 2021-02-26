@@ -15,7 +15,8 @@ class Rooter
     public function __construct()
     {
         $this->parseURL();
-        if (file_exists(CONTROLLER . strtolower($this->_controller_Name) . '.class.php')) {
+
+        if (file_exists($this->_controller_Name == 'AuthController' ? CONTROLLER . 'auth' . DS : CONTROLLER . strtolower($this->_controller_Name) . '.class.php')) {
             $this->controller = $this->_controller_Name;
         } else {
             $this->_controller_Name = $this->controller;
@@ -26,6 +27,7 @@ class Rooter
         }
         $this->controller = !is_object($this->controller) ? new $this->controller($this->_controller_Name, $this->_method_Name) : '';
         if (method_exists($this->controller, $this->method)) {
+            Session::set_redirect($this->_controller_Name, $this->_method_Name);
             call_user_func_array([$this->controller, $this->method], [$this->params]);
         } else {
             self::redirect('home' . DS . '');
@@ -42,9 +44,6 @@ class Rooter
             $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
             if (isset($url[0])) {
                 $this->_controller_Name = ucfirst(strtolower($url[0])) . 'Controller';
-                if ($this->_controller_Name == '.well-knownController') {
-                    $this->_controller_Name = 'AssetsController';
-                }
             }
             $this->_method_Name = isset($url[1]) ? $url[1] : $this->method;
             switch ($this->_method_Name) {
@@ -66,7 +65,7 @@ class Rooter
     //Redirect
     //=======================================================================
 
-    public static function redirect($location)
+    public static function redirect($location = '')
     {
         if (!headers_sent()) {
             header('location:' . PROOT . $location);

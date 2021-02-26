@@ -1,8 +1,8 @@
 <section id="special-price">
     <div class="container w-75">
-        <div class="row title">
+        <div class="title">
             <h4 class="font-rubik font-size-20">Special Price</h4>
-            <div id="filters" class="button-group">
+            <div id="filters" class="button-group ms-auto float-end">
                 <?php
             $brands = array_unique(array_map(function ($prod) {
                 return $prod->item_brand;

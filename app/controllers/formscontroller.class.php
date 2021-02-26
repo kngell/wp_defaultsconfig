@@ -75,7 +75,7 @@ class FormsController extends Controller
                         H_upload::manage_uploadImage($LastID, $table, $data);
                         (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID : '';
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
-                        $this->model_instance[$table]->notify(UsersManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been added');
+                        $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been added');
                         ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $SuccessMsg]);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'Le formulaire est vide!')]);
@@ -96,9 +96,9 @@ class FormsController extends Controller
         $tableHTML = $table . 'Table';
         $model->_set_tableName($table);
         $data = $model->getAllbyId($LastID)->get_results();
-        $data[0]->firstName = UsersManager::currentUser()->firstName;
-        $data[0]->lastName = UsersManager::currentUser()->lastName;
-        $data[0]->profileImage = UsersManager::currentUser()->profileImage;
+        $data[0]->firstName = AuthManager::currentUser()->firstName;
+        $data[0]->lastName = AuthManager::currentUser()->lastName;
+        $data[0]->profileImage = AuthManager::currentUser()->profileImage;
         $output = TH::$tableHTML($data);
 
         return $output;
@@ -176,7 +176,7 @@ class FormsController extends Controller
                         H_upload::manage_uploadImage($this->model_instance[$table]->$colID, $table, $data);
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
                         $SuccessMsg = H::get_successMsg($this->model_instance[$table], $action, $this->_method);
-                        $this->model_instance[$table]->notify(UsersManager::currentUser()->userID, $this->request->getAll('notification'), 'A' . $table . ' has been updated');
+                        $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A' . $table . ' has been updated');
                         $this->jsonResponse(['result' => 'success', 'msg' => $SuccessMsg]);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
@@ -214,10 +214,12 @@ class FormsController extends Controller
         if ($this->request->exists('post')) {
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            in_array($table, ['contacts', 'assoc', 'users']) ? $this->model_instance[$this->request->getAll('table')]->sets_SoftDeleteOnTrue() : '';
+            in_array($table, ['contacts', 'assoc', 'users']) ? $this->model_instance[$this->request->getAll('table')]->sets_SoftDelete(true) : '';
             $SuccessMsg = ($table != 'assoc') ? rtrim($table, 's') : 'Association';
-            if ($output = $this->model_instance[$table]->delete($this->request->getAll('id'))) {
-                $this->model_instance[$table]->notify(UsersManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been deleted');
+            $data = $this->request->getAll();
+            $method = isset($data['method']) ? $data['method'] : 'delete';
+            if ($output = $this->model_instance[$table]->$method($data['id'])) {
+                $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been deleted');
                 $this->jsonResponse(['result' => 'success', 'msg' => 'your ' . $SuccessMsg . ' has been deleted']);
             } else {
                 $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning', 'Something goes wrong. Please try later!')]);
@@ -249,7 +251,7 @@ class FormsController extends Controller
         if ($this->request->exists('post')) {
             ($this->get_model('CategoriesManager'))->assign($this->request->getAll());
             if ($this->model_instance->save()) {
-                $this->model_instance->notify(UsersManager::currentUser()->userID, 'admin', 'A categorie has been added');
+                $this->model_instance->notify(AuthManager::currentUser()->userID, 'admin', 'A categorie has been added');
                 $this->jsonResponse('success');
             } else {
                 $this->jsonResponse('Un problème ' . "'" . 'est posé lors de la mise à jour des catégories');

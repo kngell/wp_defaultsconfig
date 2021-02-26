@@ -184,7 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
       Call_controller(data, manageResponse);
       function manageResponse(response, elt) {
         if (response.result == "success") {
-          console.log(response);
           refresh_deal_price(elt);
           elt.parents(".row").first().remove();
           phpPlugin.count_items.html(function () {

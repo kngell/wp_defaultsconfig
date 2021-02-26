@@ -49,3 +49,6 @@ import "views/home/partials/_wishlist.php";
 import "views/home/product.php";
 //home Pages ecommerce product
 import "views/home/cart.php";
+
+// home pages ecommerce account
+import "views/home/profile.php";

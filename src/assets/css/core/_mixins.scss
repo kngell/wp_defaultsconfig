@@ -37,3 +37,21 @@
     src: $src;
   }
 }
+// =============================================================================
+// Background image
+// =============================================================================
+@mixin background($imgpath, $position: 0 0, $repeat: no-repeat) {
+  background: {
+    image: url($imgpath);
+    position: $position;
+    repeat: $repeat;
+  }
+}
+// =============================================================================
+// Box Shadow
+// =============================================================================
+@mixin box-shadow($value) {
+  -webkit-box-shadow: $value;
+  -moz-box-shadow: $value;
+  box-shadow: $value;
+}

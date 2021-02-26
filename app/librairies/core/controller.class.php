@@ -2,7 +2,7 @@
 
 /*This is the base controller witch load models and view*/
 
-class Controller extends Application
+abstract class Controller extends Application
 {
     public $view_instance;
     public $request;
@@ -21,7 +21,6 @@ class Controller extends Application
         $this->_method = $method;
         $this->view_instance = $this->get_view(substr($controller, 0, strpos($controller, 'Controller')) . DS . $method);
         $this->request = new Input();
-        $this->assets = json_decode(file_get_contents(APP . 'assets.json'));
     }
 
     //=======================================================================
@@ -42,7 +41,7 @@ class Controller extends Application
     public function get_model($modelName, $model = '')
     {
         if (!empty($modelName) && class_exists($modelName)) {
-            if (file_exists(MODEL . strtolower($modelName) . '.class.php')) {
+            if (file_exists($modelName == 'AuthManager' ? MODEL . 'auth' . DS : MODEL . strtolower($modelName) . '.class.php')) {
                 // require_once MODEL . strtolower($modelName) . '.class.php';
                 if (!empty($model)) {
                     $this->model_instance[$model] = !isset($this->model_instance[$model]) ? new $modelName() : $this->model_instance;

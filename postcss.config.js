@@ -11,11 +11,11 @@ const normalConfig = {
   plugins: [
     "postcss-flexbugs-fixes",
     [
+      "postcss-grid-kiss",
       "postcss-preset-env",
       {
         autoprefixer: {
-          flexbox: "no-2009",
-          grid: "autoplace",
+          grid: true,
         },
         stage: 3,
         features: {

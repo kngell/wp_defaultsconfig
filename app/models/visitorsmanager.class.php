@@ -3,45 +3,25 @@
 class VisitorsManager extends Model
 {
     protected $_table = 'visitors';
-
     protected $_colID = 'vID';
-
     protected $_colIndex = 'cookies';
-
     public $vID;
-
     public $hits;
-
     public $ipAddress;
-
     public $cookies;
-
     public $useragent;
-
     public $latitude;
-
     public $longitude;
-
     public $date_enreg;
-
     public $statusCode;
-
     public $countryName;
-
     public $countryCode;
-
     public $regionName;
-
     public $cityName;
-
     public $zipCode;
-
     public $timeZone;
-
     public $regionCode;
-
     public $continentCode;
-
     public $continentName;
 
     //=======================================================================
@@ -70,7 +50,6 @@ class VisitorsManager extends Model
     {
         $conditions = ['select' => 'hits', 'return_type' => 'single'];
         $nb_hits = $this->find($conditions);
-
         return $nb_hits;
     }
 
@@ -80,7 +59,6 @@ class VisitorsManager extends Model
         $this->_table = 'utilisateur';
         $conditions = ['select' => 'gender, COUNT(*) as number', 'group_by' => 'gender'];
         $result = $this->find($conditions)->get_results();
-
         return $result;
     }
 
@@ -106,7 +84,6 @@ class VisitorsManager extends Model
         $this->_table = 'utilisateur';
         $conditions = ['where' => ['Verified' => $status], 'return_type' => 'count'];
         $count = $this->find($conditions)->get_results();
-
         return $count;
     }
 
@@ -151,7 +128,6 @@ class VisitorsManager extends Model
                 return $save;
             }
         }
-
         return false;
     }
 
@@ -172,7 +148,6 @@ class VisitorsManager extends Model
                 $delete = $data->delete();
             }
         }
-
         return $delete;
     }
 
@@ -183,7 +158,6 @@ class VisitorsManager extends Model
         $this->hits = $this->get_hits();
         //$hits = $this->save($data, $cond);
         $hits = $this->save('vID');
-
         return $hits;
     }
 
@@ -193,7 +167,6 @@ class VisitorsManager extends Model
         $this->_table = 'SELECT gender, COUNT(*) as number, MONTH(registerDate) as Month FROM Utilisateur WHERE registerDate ';
         $this->_table .= '>= CURDATE() - INTERVAL 6 MONTH GROUP BY YEAR(registerDate), MONTH(registerDate), gender ASC';
         $result = $this->find()->get_results();
-
         return $result;
     }
 
@@ -203,7 +176,6 @@ class VisitorsManager extends Model
         $this->_table = 'SELECT countryCode, COUNT(*) as number FROM visitors WHERE date_enreg ';
         $this->_table .= '>= CURDATE() - INTERVAL 12 MONTH GROUP BY countryCode ASC';
         $result = $this->find()->get_results();
-
         return $result;
     }
 
@@ -213,7 +185,6 @@ class VisitorsManager extends Model
         $this->_table = 'utilisateur';
         $conditions = ['select' => 'verified, COUNT(*) as number', 'group_by' => 'verified'];
         $result = $this->find($conditions)->get_results();
-
         return $result;
     }
 

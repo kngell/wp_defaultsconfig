@@ -140,9 +140,12 @@ class DBOperations extends Database
             $sql .= ' LIMIT ' . $data['limit'];
             unset($data['limit']);
         }
-
+        //offset
+        if (array_key_exists('offset', $data)) {
+            $sql .= ' OFFSET ' . $data['offset'];
+            unset($data['offset']);
+        }
         $this->_exec_data = $data;
-
         return $sql;
     }
 

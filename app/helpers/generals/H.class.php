@@ -102,7 +102,7 @@ class H
 
     public static function currentUser()
     {
-        return UsersManager::$currentLoggedInUser;
+        return AuthManager::$currentLoggedInUser;
     }
 
     //=======================================================================
@@ -299,7 +299,7 @@ class H
     public static function setQueryData($by_user)
     {
         if ($by_user) {
-            return  ['where' => ['userID' => UsersManager::currentUser()->userID], 'return_mode' => 'class'];
+            return  ['where' => ['userID' => AuthManager::currentUser()->userID], 'return_mode' => 'class'];
         } else {
             return ['return_mode' => 'class'];
         }

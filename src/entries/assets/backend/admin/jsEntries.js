@@ -28,5 +28,10 @@ module.exports = {
       import: ["js/custom/admin/products/categories"],
       dependOn: "js/librairies/adminlib",
     },
+    //Admin users allusers
+    "js/custom/admin/users/allusers": {
+      import: ["js/custom/admin/users/allusers"],
+      dependOn: "js/librairies/adminlib",
+    },
   },
 };

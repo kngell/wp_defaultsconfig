@@ -1,5 +1,6 @@
 import { BASE_URL } from "corejs/config";
 import { Add, Call_controller, ManageResponse } from "corejs/form_crud";
+import { reset_invalid_input } from "corejs/inputErrManager";
 import { readurl } from "corejs/profile_img";
 function PhpLR(element) {
   this.element = element;
@@ -236,8 +237,12 @@ PhpLR.prototype.setupEvents = function () {
       url: BASE_URL + "auth/logout",
       method: "post",
       success: function (response) {
-        if (response === "success") {
+        console.log(response);
+        if (response.result == "success") {
           logout.closest("div").load(location.href + " .connect");
+          if (response.msg == "redirect") {
+            window.location.href = BASE_URL;
+          }
         }
       },
     });

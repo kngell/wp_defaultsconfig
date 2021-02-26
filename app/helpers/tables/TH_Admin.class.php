@@ -71,7 +71,7 @@ class TH_Admin
                     </thead>
                     <tbody>';
         foreach ($data as $post) {
-            $user = UsersManager::currentUser()->getDetails($post->userID);
+            $user = AuthManager::currentUser()->getDetails($post->userID);
             $output .= ' <tr>
                             <th scope="row">' . $post->postID . '</th>
                             <th scope="row">' . $user->firstName . ' , ' . $user->lastName . '</th>
@@ -167,7 +167,7 @@ class TH_Admin
     </thead>
     <tbody>';
         foreach ($data as $row) {
-            $user = UsersManager::currentUser()->getDetails($row->userID);
+            $user = AuthManager::currentUser()->getDetails($row->userID);
             $output .= '<tr>
             <td>' . $row->fbID . '</td>
             <td>' . $row->subject . '</td>
@@ -196,7 +196,7 @@ class TH_Admin
         <span area-hidden="true">&times;</span>
     </button>
     <h4 class="alert-heading">New notification</h4>';
-            $user = UsersManager::currentUser()->findById('userID', $row->userID);
+            $user = AuthManager::currentUser()->findById('userID', $row->userID);
             $output .= '<p class="mb-0 lead">' . $row->message . ' By :' . $user->firstName . ' ' . $user->lastName . '</p>
     <hr class="my-2">
     <p class="mb-0 float-left"><b>User E-mail :</b>' . $user->email . '</p>

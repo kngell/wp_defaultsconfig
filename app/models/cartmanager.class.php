@@ -155,7 +155,7 @@ class CartManager extends Model
     {
         parent::beforeSave();
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
-            $user_data = UsersManager::$currentLoggedInUser ? UsersManager::$currentLoggedInUser : $this->getDetails(Cookies::get(VISITOR_COOKIE_NAME, (new VisitorsManager())->get_colIndex()));
+            $user_data = AuthManager::$currentLoggedInUser ? AuthManager::$currentLoggedInUser : $this->getDetails(Cookies::get(VISITOR_COOKIE_NAME, (new VisitorsManager())->get_colIndex()));
             $this->user_id = $user_data ? $user_data->visitor_cookie : Cookies::get(VISITOR_COOKIE_NAME);
             $user_cart = $this->getAllbyIndex($this->user_id)->get_results();
             $cart = array_filter($user_cart, function ($item) {

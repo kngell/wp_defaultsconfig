@@ -923,6 +923,7 @@
 <?php $this->end(); ?>
 <?php $this->start('footer') ?>
 <!----------custom--------->
-<script type="text/javascript" src="<?= $this->js ?? '' ?>">
+<script type="text/javascript"
+    src="<?= $this->get_Asset('js/custom/admin/dashboard', 'js') ?? ''?>">
 </script>
 <?php $this->end();

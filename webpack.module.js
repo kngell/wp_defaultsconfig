@@ -29,12 +29,7 @@ module.exports = {
         {
           loader: "extract-loader",
           options: {
-            publicPath: (context) =>
-              "../".repeat(
-                path
-                  .relative(path.resolve(__dirname, "src"), context.context)
-                  .split("/").length
-              ),
+            attrs: ["img:src", "link:href", "style:url"],
           },
         },
         {

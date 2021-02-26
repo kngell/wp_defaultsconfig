@@ -3,25 +3,18 @@
 abstract class Model
 {
     protected $_db;
-
     protected $_modelName;
-
     protected $_softDelete = false;
-
+    protected $_deleted_item = false;
     protected $update = true;
-
     protected $_results;
-
     protected $_count;
-
     protected $validates = true;
-
     protected $validationErr = [];
 
     public function __construct()
     {
         $this->_db = DBOperations::getInstance();
-        $this->_results = $this->_db->get_results();
     }
 
     //=======================================================================
@@ -39,7 +32,6 @@ abstract class Model
         if (!empty($params) && in_array($params['table'], ['sessions_formations', 'offre_emploi'])) {
             return $this->getHtmlData($params);
         }
-
         return $this->find(['return_mode' => 'class']);
     }
 
@@ -53,16 +45,10 @@ abstract class Model
         return $this->find(H::setQueryData($by_user));
     }
 
-    //GetAll some element with a 1 limit
-    public function getRecent_Items($limit)
-    {
-        return $this->find(['limit' => $limit, 'return_mode' => 'class', 'order_by' => $this->get_colID() . ' DESC']);
-    }
-
     //GetAll interval min and max
-    public function getAll_MinMax($min, $max)
+    public function getAll_MinMax($min = '', $max = '')
     {
-        return $this->find(['start' => $min, 'limit' => $max, 'return_mode' => 'class', 'order_by' => $this->get_colID() . ' DESC']);
+        return $this->find(['offset' => $min, 'limit' => $max, 'return_mode' => 'class', 'order_by' => $this->get_colID() . ' DESC']);
     }
 
     //getAll by ID
@@ -85,7 +71,6 @@ abstract class Model
                 $my_options .= $parentID != 0 ? $this->get_Children($option, $sub_option) : '';
             }
         }
-
         return $my_options;
     }
 
@@ -100,10 +85,10 @@ abstract class Model
                 $item .= $children->getAll_inputSelectOptions($children->parentID, $sub_option . '--- ');
             }
         }
-
         return $item;
     }
 
+    //Output parent
     public function get_parent($id)
     {
         return $this->getDetails($id);
@@ -119,7 +104,6 @@ abstract class Model
     public function getDetails($id, $colID = '')
     {
         $data_query = ['where' => [$colID != '' ? $colID : $this->get_colID() => $id], 'return_mode' => 'class'];
-
         return $this->findFirst($data_query);
     }
 
@@ -216,10 +200,10 @@ abstract class Model
     }
 
     // post content 200 char
-    public function getContentOverview($content): string
+    public function getContentOverview($content, $length = '', $url = ''): string
     {
         // $headercontent = preg_match_all('|<h[^>]+>(.*)</h[^>]+>|iU', htmlspecialchars_decode($content, ENT_NOQUOTES), $headings);
-        return substr(strip_tags(htmlspecialchars_decode($this->$content, ENT_NOQUOTES)), 0, 200) . '...';
+        return substr(strip_tags(htmlspecialchars_decode($content, ENT_NOQUOTES)), 0, empty($length) ? 200 : $length) . '<a href="' . $url . '" class="text-decoration-none">...</a>';
     }
 
     //get Selected Options
@@ -284,9 +268,15 @@ abstract class Model
     }
 
     //set soft delete to true (=update)
-    public function sets_SoftDeleteOnTrue()
+    public function sets_SoftDelete($value)
     {
-        $this->_softDelete = true;
+        $this->_softDelete = $value;
+    }
+
+    //set deleted items
+    public function set_deleted($value)
+    {
+        return $this->_deleted_items = $value;
     }
 
     public function _set_tableName($table)
@@ -307,20 +297,23 @@ abstract class Model
     }
 
     //Set query params deleted
-    protected function _softDelete_Params($params)
+    protected function set_deleted_Params($params)
     {
-        if ($this->_softDelete) {
-            if (array_key_exists('where', $params)) {
-                if (is_array($params['where'])) {
+        if (property_exists($this, 'deleted')) {
+            if (!$this->_deleted_item) {
+                if (array_key_exists('where', $params) && is_array($params['where'])) {
                     $params['where'] = array_merge($params['where'], ['deleted' => !1]);
                 } else {
-                    $params['where'] .= ['deleted' => !1];
+                    $params['where'] = ['deleted' => !1];
                 }
             } else {
-                $params['where'] = ['deleted' => !1];
+                if (array_key_exists('where', $params) && is_array($params['where'])) {
+                    $params['where'] = array_merge($params['where'], ['deleted' => 1]);
+                } else {
+                    $params['where'] = ['deleted' => 1];
+                }
             }
         }
-
         return $params;
     }
 
@@ -336,7 +329,6 @@ abstract class Model
 
             return true;
         }
-
         return false;
     }
 
@@ -347,9 +339,9 @@ abstract class Model
     //find all
     public function find($params = [])
     {
-        $params = $this->_softDelete_Params($params);
+        $params = $this->set_deleted_Params($params);
         if (isset($params['return_mode']) && $params['return_mode'] == 'class') {
-            if (!isset($params['class'])) {
+            if ($params && !isset($params['class'])) {
                 $params = array_merge($params, ['class' => get_class($this)]);
             }
         }
@@ -368,7 +360,7 @@ abstract class Model
                 $params = array_merge($params, ['class' => get_class($this)]);
             }
         }
-        $params = $this->_softDelete_Params($params);
+        $params = $this->set_deleted_Params($params);
         $resultQuery = $this->_db->findFirst($this->_table, $params);
         if (!$resultQuery) {
             return false;
@@ -387,10 +379,18 @@ abstract class Model
     //populate data
     public function populateObjData($result)
     {
-        //dd($this);
-        foreach ($result as $key => $val) {
-            $this->$key = $val;
+        $r = $result;
+        foreach ($r as $key => $val) {
+            if (!property_exists($this, $key)) {
+                $this->createProperty($key, $val);
+            }
         }
+        return $this;
+    }
+
+    public function createProperty($name, $value)
+    {
+        $this->{$name} = $value;
     }
 
     //=======================================================================
@@ -507,9 +507,9 @@ abstract class Model
     //before save
     public function beforeSave()
     {
-        if (isset(UsersManager::$currentLoggedInUser->userID) && property_exists($this, 'userID')) {
+        if (isset(AuthManager::$currentLoggedInUser->userID) && property_exists($this, 'userID')) {
             if (!isset($this->userID) || empty($this->userID) || $this->userID == null) {
-                $this->userID = UsersManager::$currentLoggedInUser->userID;
+                $this->userID = AuthManager::$currentLoggedInUser->userID;
             }
         }
         if (isset($this->msg)) {
@@ -566,6 +566,7 @@ abstract class Model
     //After delete
     public function afterDelete($params = [])
     {
+        $params = null;
         return true;
     }
 
