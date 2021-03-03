@@ -1,6 +1,5 @@
 {
   "plugins": [
-    ["@babel/plugin-syntax-class-properties"],
     [
       "polyfill-corejs3",
       {

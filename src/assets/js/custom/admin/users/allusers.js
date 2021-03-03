@@ -27,11 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
         params: $(this),
         frm_Name: "#delete_user" + $(this).find("input[name=userID]").val(),
       };
-      console.log("swal");
       Swal.fire({
         title: "Delete User?",
         showCancelButton: true,
-        html: "<p>You can restore this user later on!</p>",
+        html: "<p>Really want to delete it? You can restore later!</p>",
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Delete!",
@@ -40,10 +39,48 @@ document.addEventListener("DOMContentLoaded", () => {
           Call_controller(data, manageR);
           function manageR(response, elmt) {
             if (response.result == "success") {
-              elmt
-                .find(".deleteBtn")
-                .removeClass("text-danger")
-                .addClass("text-secondary");
+              // elmt
+              //   .find(".deleteBtn")
+              //   .removeClass("text-danger")
+              //   .addClass("text-secondary");
+              elmt.parents(".card.bg-light").parent().remove();
+            } else {
+            }
+          }
+        }
+      });
+    });
+
+    //=======================================================================
+    //Restore User
+    //=======================================================================
+    phpPlugin.wrapper.on("submit", ".restore_user", function (e) {
+      e.preventDefault();
+      var data = {
+        url: "forms/delete",
+        id: $(this).find("input[name=userID]").val(),
+        table: "users",
+        frm: $(this),
+        params: $(this),
+        frm_Name: "#delete_user" + $(this).find("input[name=userID]").val(),
+        method: "restore_User",
+      };
+      Swal.fire({
+        title: "Restore User?",
+        showCancelButton: true,
+        html: "<p>Really want to Restore it? You can delete later!</p>",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Restore!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Call_controller(data, manageR);
+          function manageR(response, elmt) {
+            if (response.result == "success") {
+              // elmt
+              //   .find(".restoreBtn")
+              //   .removeClass("text-secondary")
+              //   .addClass("text-danger");
               elmt.parents(".card.bg-light").parent().remove();
             } else {
             }

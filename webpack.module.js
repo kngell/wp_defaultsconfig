@@ -5,15 +5,15 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   rules: [
     {
-      test: /\.(js|jsx)$/,
-      include: [path.resolve(__dirname, "src", "assets", "js")],
-      exclude: [
-        path.resolve(__dirname, "node_modules"),
-        path.resolve(__dirname, "src", "assets", "plugins"),
-      ],
-      enforce: "pre",
-      enforce: "post",
+      test: /\.js$/,
+      exclude: [/node_modules/],
       loader: "babel-loader",
+      options: {
+        plugins: [
+          "@babel/plugin-syntax-dynamic-import",
+          "@babel/plugin-proposal-class-properties",
+        ],
+      },
     },
     {
       test: /\.(php)$/,
@@ -36,7 +36,7 @@ module.exports = {
           loader: "html-loader",
           options: {
             attributes: true,
-            esModule: false,
+            esModule: true,
             minimize: false,
           },
         },
@@ -97,7 +97,7 @@ module.exports = {
       },
     },
     {
-      test: /\.(woff|woff2|ttf|eot)$/,
+      test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
       use: [
         {
           loader: "file-loader",
@@ -109,6 +109,7 @@ module.exports = {
         },
       ],
     },
+
     {
       test: /\.svg$/,
 

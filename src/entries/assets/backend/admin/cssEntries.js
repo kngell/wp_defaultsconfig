@@ -29,5 +29,15 @@ module.exports = {
       import: ["css/custom/admin/products/categories.scss"],
       dependOn: "css/librairies/adminlib",
     },
+    //Admin users allusers
+    "css/custom/admin/users/allusers": {
+      import: ["css/custom/admin/users/allusers.scss"],
+      dependOn: "css/librairies/adminlib",
+    },
+    //Admin users allusers
+    "css/custom/admin/users/profile": {
+      import: ["css/custom/admin/users/profile.scss"],
+      dependOn: "css/librairies/adminlib",
+    },
   },
 };

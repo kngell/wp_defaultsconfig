@@ -65,25 +65,32 @@ class UsersManager extends Model
     {
         $this->_deleted_item = false;
         $users = isset($start) && isset($limit) ? $this->getAll_MinMax($start, $limit)->get_results() : $this->getAllItem()->get_results();
-        return $this->output_users($users);
+        $btn = ['text-danger', 'deleteBtn', 'delete_user'];
+        return $this->output_users($users, $btn);
     }
 
-    //Restore users
-    public function restore_Users($start = '', $limit = '')
+    //Restored users list
+    public function get_deletedUsers($start = '', $limit = '')
     {
         $this->_deleted_item = true;
         $users = isset($start) && isset($limit) ? $this->getAll_MinMax($start, $limit)->get_results() : $this->getAllItem()->get_results();
-        return $this->output_users($users);
+        $btn = ['text-secondary', 'restoreBtn', 'restore_user'];
+        return $this->output_users($users, $btn);
+    }
+
+    public function restore_User($id = [])
+    {
+        return $this->update(['userID' => $id], ['deleted' => 0]);
     }
 
     //output users
-    public function output_users($users)
+    public function output_users($users, $btn = [])
     {
         $output = '';
         if ($users && is_array($users)) {
             foreach ($users as $user) {
                 $template = file_get_contents(FILES . 'template' . DS . 'admin' . DS . 'users.php');
-                $template = $this->output_userData($user, $template);
+                $template = $this->output_userData($user, $template, $btn);
                 $template = $this->output_userExtraData($user, $template);
                 $output .= $template;
             }
@@ -99,7 +106,7 @@ class UsersManager extends Model
     }
 
     //output users data
-    public function output_userData($user = null, $temp = '')
+    public function output_userData($user = null, $temp = '', $btn = '')
     {
         $template = $temp;
         $template = str_replace('{{firstname}}', $user->firstName ?? '', $template);
@@ -107,6 +114,10 @@ class UsersManager extends Model
         $template = str_replace('{{userID}}', $user->userID, $template);
         $template = str_replace('{{image}}', $user->profileImage ?? IMG . 'users' . US . 'avatar.png', $template);
         $template = str_replace('{{phone}}', $user->phone ?? '', $template);
+        $template = str_replace('{{delBtnClass}}', $btn[0] ?? '', $template);
+        $template = str_replace('{{btn}}', $btn[1] ?? '', $template);
+        $template = str_replace('{{formClass}}', $btn[2] ?? '', $template);
+        $template = str_replace('{{users_profile}}', PROOT . 'admin' . US . 'profile' . US . $user->userID, $template);
         $template = str_replace('{{token}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'delete_user' . $user->userID, $_SESSION[TOKEN_NAME])), $template);
         return $template;
     }
@@ -117,7 +128,6 @@ class UsersManager extends Model
         $extra_data = (new UserextradataManager())->getDetails($m->userID, 'userID');
         $template = $temp;
         $template = str_replace('{{function}}', $extra_data->u_function ?? '', $template);
-        $template = str_replace('{{description}}', $this->getContentOverview($extra_data->u_descr ?? '', 60) ?? '', $template);
         $template = str_replace('{{address}}', $extra_data->u_address ?? '', $template);
         $extra_data = null;
         return $template;

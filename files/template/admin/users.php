@@ -8,8 +8,6 @@
                     <div class="col-7">
                         <h2 class="lead"><b>{{firstname}}&nbsp;{{lastname}}</b>
                         </h2>
-                        <p class="text-muted text-sm"><b>About Me: </b>{{description}}
-                        </p>
                         <ul class="ml-4 mb-0 fa-ul text-muted">
                             <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span>
                                 <b>Address:</b>
@@ -20,7 +18,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-5 text-center">
+                    <div class="col-5 text-center img-wrapper">
                         <img src="{{image}}" alt="user-avatar" class="img-circle img-fluid">
                     </div>
                 </div>
@@ -28,7 +26,7 @@
             <div class="card-footer">
                 <div class="row justify-content-between">
                     <div class="col text-start">
-                        <a href="#" class="btn btn-sm btn-primary">
+                        <a href="{{users_profile}}" class="btn btn-sm btn-primary">
                             <i class="fas fa-user"></i> Edit Profile
                         </a>
                         <a href="#" class="btn btn-sm bg-teal">
@@ -37,10 +35,10 @@
                         <div id="alertErr"></div>
                     </div>
                     <div class="col text-end">
-                        <form id="delete_user{{userID}}" class="delete_user">
+                        <form id="delete_user{{userID}}" class="{{formClass}}">
                             {{token}}
                             <input type="hidden" name='userID' value="{{userID}}" id="{{userID}}">
-                            <button type="submit" class="text-danger deleteBtn"><i
+                            <button type="submit" class="{{delBtnClass}} {{btn}}"><i
                                     class="fas fa-trash-alt fa-lg"></i></button>
                         </form>
                     </div>

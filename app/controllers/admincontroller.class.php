@@ -33,7 +33,13 @@ class AdminController extends Controller
     {
         $this->view_instance->set_viewData($this->get_model('UsersManager'));
         $this->view_instance->user_method = array_pop($method);
-        $this->view_instance->set_pageTitle('Login');
+        $this->view_instance->set_pageTitle('All Users');
         $this->view_instance->render('admin' . DS . 'users' . DS . 'allusers');
+    }
+
+    public function profile()
+    {
+        $this->view_instance->set_pageTitle('Profile');
+        $this->view_instance->render('admin' . DS . 'users' . DS . 'profile');
     }
 }

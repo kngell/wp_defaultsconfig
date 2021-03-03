@@ -1,193 +1,401 @@
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <!-- Brand Logo -->
-      <a href="<?= PROOT . 'backend' ?>"
-          class="brand-link text-sm">
-          <img src="/kngell_ecommerce/public/assets/img/logo.png" alt="AdminLTE Logo"
-              class="brand-image img-circle elevation-3 rounded" style="opacity: .8">
-          <span class="brand-text font-weight-light">K'nGELL Logistique</span>
-      </a>
+<nav id="left-sidebar" class="left-sidebar">
+    <!-- start sidebar-header -->
+    <div class="sidebar-header">
+        <div class="logo">
+            <a class="navbar-brand"
+                href="<?=PROOT . 'admin' . US . 'index'?>">
+                <img src="/kngell_ecommerce/public/assets/img/logo.png" alt="" width="30" height="24">
+                <span class="fw-700">K'nGELL Logistiue</span>
+            </a>
 
-      <!-- Sidebar -->
-      <div class="sidebar">
-          <!-- Sidebar user panel (optional) -->
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-              <div class="image">
-                  <img src="<?= AuthManager::currentUser()->profileImage ?? IMG . 'users' . US . 'avatar.png' ?>"
-                      class="img-circle elevation-2" alt="User Image">
-              </div>
-              <div class="info">
-                  <a href="#" class="d-block"><?= AuthManager::currentUser()->firstName . '&nbsp;' . AuthManager::currentUser()->lastName ?></a>
-              </div>
-          </div>
+        </div>
+        <a class="sidebar-toggle-btn">
+            <i class="far fa-bars"></i>
+        </a>
+    </div>
+    <!-- end sidebar-header -->
+    <div class="sidebar-wrapper">
+        <!-- start sidebar-body -->
+        <div class="sidebar-body">
+            <div class="nav-filter align-items-center justify-content-center flex-row mb-4 p-2">
+                <input type="text" placeholder="Quick search" class="w-100 form-control" tabindex="0">
+            </div>
+            <!-- end nav-profile -->
+            <!-- start sidebar-block -->
+            <div class="sidebar-block">
+                <div class="sidebar-title">MAIN</div>
+                <ul class="list-unstyled sidebar-content">
+                    <li class="sidebar-item">
+                        <a href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-tachometer"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="homeSubmenu"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a href="dashboard-analytics.html">Analytics</a>
+                            </li>
+                            <li>
+                                <a href="index.html">Ecommerce</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="calendar.html">
+                            <i class="fal fa-calendar"></i>
+                            <span>Calendar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="chat.html">
+                            <i class="fal fa-comments-alt"></i>
+                            <span>Chat</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#pageSubmenuEcommerce" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-dumpster"></i>
+                            <span>Ecommerce</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="pageSubmenuEcommerce"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a href="ecommerce-products.html">All Products</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-product-detail.html">Product Detail</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-add-product.html">Add Product</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-orders.html">Orders</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-order-detail.html">Order Detail</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-customers.html">Customers</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-shopping-card.html">Shopping Card</a>
+                            </li>
+                            <li>
+                                <a href="ecommerce-checkout.html">Checkout</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="sidebar-pages" class="sidebar-item">
+                        <a href="#pageSubmenu1" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-file"></i>
+                            <span>Pages</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="pageSubmenu1"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a href="#pageAuthentication" data-bs-toggle="collapse" aria-expanded="false"
+                                    class="dropdown-toggle collapsed">Authentication</a>
+                                <ul class="sidebar-third-level collapse list-unstyled" id="pageAuthentication"
+                                    data-parent="#sidebar-pages">
+                                    <li>
+                                        <a href="pages-authentication-login.html">Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages-authentication-register.html">Register</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages-authentication-forgot-password.html">Forgot Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="pages-authentication-confirm-email.html">Confirm Email</a>
+                                    </li>
+                                </ul>
+                            </li> <!-- end li authentication -->
 
-          <!-- SidebarSearch Form -->
-          <div class="form-inline">
-              <div class="input-group" data-widget="sidebar-search">
-                  <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                      aria-label="Search">
-                  <div class="input-group-append">
-                      <button class="btn btn-sidebar">
-                          <i class="fas fa-search fa-fw"></i>
-                      </button>
-                  </div>
-              </div>
-          </div>
-
-          <!-- Sidebar Menu -->
-          <nav class="mt-2">
-              <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                  data-accordion="false">
-                  <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                  <li class="nav-item ">
-                      <a href="<?= PROOT . 'admin' ?>"
-                          class="nav-link">
-                          <i class="nav-icon fas fa-tachometer-alt"></i>
-                          <p>
-                              Dashboard
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'index' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Statistics</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                  <li class="nav-item">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-tachometer-alt"></i>
-                          <p>
-                              Product Management
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'allcategories' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Categories</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="#" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Products</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                  <li class="nav-item">
-                      <a href="<?= PROOT . 'admin' . US . 'order' ?>"
-                          class="nav-link">
-                          <i class="nav-icon fas fa-tachometer-alt"></i>
-                          <p>
-                              Order Management
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'payment' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Payments</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'xxxxx' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>xxxxxxx</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                  <li class="nav-item ">
-                      <a href="<?= PROOT . 'admin' . US . 'users' ?>"
-                          class="nav-link">
-                          <i class="nav-icon fas fa-tachometer-alt"></i>
-                          <p>
-                              Users Management
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'allusers' . US . 'get_allUsers'?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>All Users</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'allusers' . US . 'restore_Users'?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Restore Users</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-                  <li class="nav-item">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Notifications
-                              <span class="right badge badge-danger">New</span>
-                          </p>
-                      </a>
-                  </li>
-                  <li class="nav-item ">
-                      <a href="<?= PROOT . 'admin' . US . 'users' ?>"
-                          class="nav-link">
-                          <i class="nav-icon fas fa-tachometer-alt"></i>
-                          <p>
-                              Manage front pages
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'contact' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Contact</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'realisations' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Réalisations</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'programme' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Programme formation</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="<?= PROOT . 'admin' . US . 'sessions' ?>"
-                                  class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Session formation</p>
-                              </a>
-                          </li>
-                      </ul>
-                  </li>
-
-              </ul>
-          </nav>
-          <!-- /.sidebar-menu -->
-      </div>
-      <!-- /.sidebar -->
-  </aside>
+                            <li>
+                                <a href="pages-contact.html">Contact</a>
+                            </li>
+                            <li>
+                                <a href="#pageError" data-bs-toggle="collapse" aria-expanded="false"
+                                    class="dropdown-toggle collapsed">Error</a>
+                                <ul class="sidebar-third-level collapse list-unstyled" id="pageError"
+                                    data-parent="#sidebar-pages">
+                                    <li>
+                                        <a href="pages-error-404.html">Error 404 </a>
+                                    </li>
+                                    <li>
+                                        <a href="pages-error-500.html">Error 500</a>
+                                    </li>
+                                </ul>
+                            </li> <!-- end li pageError -->
+                            <li>
+                                <a href="pages-faq.html">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="pages-invoice.html">Invoice</a>
+                            </li>
+                            <li>
+                                <a href="pages-maintenance.html">Maintenance Page</a>
+                            </li>
+                            <li>
+                                <a href="pages-pricing.html">Pricing</a>
+                            </li>
+                            <li>
+                                <a href="pages-profile.html">Profile</a>
+                            </li>
+                            <li>
+                                <a href="pages-starter.html">Starter Page</a>
+                            </li>
+                        </ul> <!-- end sidebar-second-level -->
+                    </li> <!-- end sidebar-item -->
+                </ul>
+            </div> <!-- end sidebar-block -->
+            <!-- start sidebar-block -->
+            <div class="sidebar-block">
+                <div class="sidebar-title">COMPONENT</div>
+                <ul class="list-unstyled sidebar-content">
+                    <li class="sidebar-item">
+                        <a href="#ui-kit" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-layer-group"></i>
+                            <span>UI Kit</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="ui-kit" data-parent="#left-sidebar">
+                            <li>
+                                <a href="ui-kits-avatars.html">Avatars</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-breadcrumbs.html">Breadcrumbs</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-buttons.html">Buttons</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-cards.html">Cards</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-dual-listbox.html">Dual Listbox</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-jstree.html">jsTree</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-image-cropper.html">Image cropper</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-notifications.html">Notifications</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-spinners.html">Spinner</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-sweetalert.html">SweetAlert2</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-tabs.html">Tabs</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-toastr.html">Toastr</a>
+                            </li>
+                            <li>
+                                <a href="ui-kits-widgets.html">Widgets</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#utilities" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-shield-alt"></i>
+                            <span>Utilities</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="utilities"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a href="utilities-borders.html">Borders</a>
+                            </li>
+                            <li>
+                                <a href="utilities-colors.html">Colors</a>
+                            </li>
+                            <li>
+                                <a href="utilities-display.html">Display</a>
+                            </li>
+                            <li>
+                                <a href="utilities-flex.html">Flex</a>
+                            </li>
+                            <li>
+                                <a href="utilities-float.html">Float</a>
+                            </li>
+                            <li>
+                                <a href="utilities-interactions.html">Interactions</a>
+                            </li>
+                            <li>
+                                <a href="utilities-overflow.html">Overflow</a>
+                            </li>
+                            <li>
+                                <a href="utilities-positions.html">Positions</a>
+                            </li>
+                            <li>
+                                <a href="utilities-shadows.html">Shadows</a>
+                            </li>
+                            <li>
+                                <a href="utilities-sizing.html">Sizing</a>
+                            </li>
+                            <li>
+                                <a href="utilities-spacing.html">Spacing</a>
+                            </li>
+                            <li>
+                                <a href="utilities-text.html">Text</a>
+                            </li>
+                            <li>
+                                <a href="utilities-typography.html">Typography</a>
+                            </li>
+                            <li>
+                                <a href="utilities-vertical-align.html">Vertical Align</a>
+                            </li>
+                            <li>
+                                <a href="utilities-visibility.html">Visibility</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#forms" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fab fa-wpforms"></i>
+                            <span>Forms </span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="forms" data-parent="#left-sidebar">
+                            <li>
+                                <a href="forms-basic-elements.html">Basic Elements</a>
+                            </li>
+                            <li>
+                                <a href="forms-checkboxs.html">Checkbox</a>
+                            </li>
+                            <!-- <li>
+                    <a href="forms-editors.html">Editors</a>
+                  </li> -->
+                            <li>
+                                <a href="forms-dropzonejs.html">DropzoneJS</a>
+                            </li>
+                            <li>
+                                <a href="forms-input-groups.html">Input Groups</a>
+                            </li>
+                            <li>
+                                <a href="forms-radios.html">Radio</a>
+                            </li>
+                            <li>
+                                <a href="forms-select2.html">Select2</a>
+                            </li>
+                            <li>
+                                <a href="forms-validations.html">Validations</a>
+                            </li>
+                            <!-- <li>
+                    <a href="forms-wizard.html">Wizard</a>
+                  </li> -->
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#charts" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="far fa-chart-bar"></i>
+                            <span>Charts</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="charts" data-parent="#left-sidebar">
+                            <li>
+                                <a href="charts-britecharts.html">Britecharts</a>
+                            </li>
+                            <li>
+                                <a href="charts-chartjs.html">Chartjs</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#tables" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-table"></i>
+                            <span>Tables</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="tables" data-parent="#left-sidebar">
+                            <li>
+                                <a href="tables-basic-table.html">Basic Table</a>
+                            </li>
+                            <li>
+                                <a href="tables-data-table.html">Data Table</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="sidebar-icons" class="sidebar-item">
+                        <a href="#icons" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-award"></i>
+                            <span>Icons</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="icons" data-parent="#left-sidebar">
+                            <li>
+                                <a href="#font-awesome" data-bs-toggle="collapse" aria-expanded="false"
+                                    class="dropdown-toggle collapsed">Font Awesome 5</a>
+                                <ul class="sidebar-third-level collapse list-unstyled" id="font-awesome"
+                                    data-parent="#sidebar-icons">
+                                    <li>
+                                        <a href="icon-fontawesome-solid.html">Solid</a>
+                                    </li>
+                                    <li>
+                                        <a href="icon-fontawesome-regular.html">Regular</a>
+                                    </li>
+                                    <li>
+                                        <a href="icon-fontawesome-light.html">Light</a>
+                                    </li>
+                                    <li>
+                                        <a href="icon-fontawesome-duotone.html">Duotone</a>
+                                    </li>
+                                    <li>
+                                        <a href="icon-fontawesome-brands.html">Brands</a>
+                                    </li>
+                                </ul>
+                            </li> <!-- end li fontawesome -->
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#maps" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-map-marked-alt"></i>
+                            <span>Maps</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="maps" data-parent="#left-sidebar">
+                            <li>
+                                <a href="maps-google-map.html">Google Map</a>
+                            </li>
+                            <li>
+                                <a href="maps-vector-map.html">Vector Map</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- end sidebar-block -->
+        </div>
+        <!-- end sidebar-body -->
+        <div class="align-items-center justify-content-center sidebar-footer">
+            <ul class="d-flex justify-content-around list-unstyled">
+                <li>
+                    <a href="#">
+                        <i class="fal fa-comments" data-bs-original-title="Chat History" data-bs-toggle="tooltip"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fal fa-life-ring" data-bs-original-title="Support" data-bs-toggle="tooltip"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fal fa-question-circle" data-bs-original-title="Helper" data-bs-toggle="tooltip"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- end sidebar-footer -->
+    </div><!-- end sidebar-wrapper -->
+</nav>

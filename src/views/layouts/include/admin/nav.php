@@ -1,131 +1,299 @@
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-      <!-- Left navbar links -->
-      <ul class="navbar-nav">
-          <li class="nav-item">
-              <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-          </li>
-          <li class="nav-item d-none d-sm-inline-block">
-              <a href="<?=PROOT . 'home'?>"
-                  class="nav-link">Home</a>
-          </li>
-          <li class="nav-item d-none d-sm-inline-block">
-              <a href="#" class="nav-link">Contact</a>
-          </li>
-      </ul>
-
-      <!-- SEARCH FORM -->
-      <form class="form-inline ml-3">
-          <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group">
-                  <button class="btn btn-navbar input-group-text" type="submit">
-                      <i class="fas fa-search"></i>
-                  </button>
-              </div>
-          </div>
-      </form>
-
-      <!-- end navbar links -->
-      <ul class="navbar-nav ms-auto">
-          <!-- Messages Dropdown Menu -->
-          <li class="nav-item dropdown">
-              <a class="nav-link" data-bs-toggle="dropdown" href="#">
-                  <i class="far fa-comments"></i>
-                  <span class="badge badge-danger navbar-badge">3</span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                  <a href="#" class="dropdown-item">
-                      <!-- Message Start -->
-                      <div class="media">
-                          <img src="<?= IMG . 'users' . US . 'user1-128x128.jpg' ?>"
-                              alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                          <div class="media-body">
-                              <h3 class="dropdown-item-title">
-                                  Brad Diesel
-                                  <span class="float-end text-sm text-danger"><i class="fas fa-star"></i></span>
-                              </h3>
-                              <p class="text-sm">Call me whenever you can...</p>
-                              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                          </div>
-                      </div>
-                      <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                      <!-- Message Start -->
-                      <div class="media">
-                          <img src="<?= IMG . 'users' . US . 'user8-128x128.jpg' ?>"
-                              alt="User Avatar" class="img-size-50 img-circle mr-3">
-                          <div class="media-body">
-                              <h3 class="dropdown-item-title">
-                                  John Pierce
-                                  <span class="float-end text-sm text-muted"><i class="fas fa-star"></i></span>
-                              </h3>
-                              <p class="text-sm">I got your message bro</p>
-                              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                          </div>
-                      </div>
-                      <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                      <!-- Message Start -->
-                      <div class="media">
-                          <img src="<?= IMG . 'users' . US . 'user3-128x128.jpg' ?>"
-                              alt="User Avatar" class="img-size-50 img-circle mr-3">
-                          <div class="media-body">
-                              <h3 class="dropdown-item-title">
-                                  Nora Silvester
-                                  <span class="float-end text-sm text-warning"><i class="fas fa-star"></i></span>
-                              </h3>
-                              <p class="text-sm">The subject goes here</p>
-                              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                          </div>
-                      </div>
-                      <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-              </div>
-          </li>
-          <!-- Notifications Dropdown Menu -->
-          <li class="nav-item dropdown">
-              <a class="nav-link" data-bs-toggle="dropdown" href="#">
-                  <i class="far fa-bell"></i>
-                  <span class="badge badge-warning navbar-badge">15</span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                  <span class="dropdown-item dropdown-header">15 Notifications</span>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                      <i class="fas fa-envelope mr-2"></i> 4 new messages
-                      <span class="float-end text-muted text-sm">3 mins</span>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                      <i class="fas fa-users mr-2"></i> 8 friend requests
-                      <span class="float-end text-muted text-sm">12 hours</span>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                      <i class="fas fa-file mr-2"></i> 3 new reports
-                      <span class="float-end text-muted text-sm">2 days</span>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-              </div>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                  <i class="fas fa-expand-arrows-alt"></i>
-              </a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                  <i class="fas fa-th-large"></i>
-              </a>
-          </li>
-      </ul>
-  </nav>
-  <!-- /.navbar -->
+<nav class="navbar topbar">
+    <div class="top-left-menu">
+        <div id="form-global-search" class="rounded">
+            <form>
+                <div class="input-group position-relative">
+                    <input type="text" class="form-control" placeholder="Search..." id="top-search">
+                    <button type="submit">
+                        <i class="fal fa-search text-highlight"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <ul class="list-unstyled top-right-menu">
+        <li class="nav-item topbar-dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+                aria-expanded="false" id="emailsDropdown">
+                <i class="fal fa-envelope"></i>
+                <span class="badge bg-success rounded-circle">6</span>
+            </a>
+            <div class="dropdown-menu dropdown-animate dropdown-menu-lg dropdown-menu-right py-0"
+                aria-labelledby="emailsDropdown">
+                <div class="dropdown-menu-header">
+                    6 New Emails
+                </div>
+                <div class="list-group">
+                    <a href="#" class="list-group-item">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-2">
+                                <img src="<?=IMG . 'users' . US . 'avatar.png'?>"
+                                    class="user-avatar rounded-circle" alt="User">
+                            </div>
+                            <div class="col-10">
+                                <div>Sam Robert</div>
+                                <div class="text-muted small mt-1">Ability to select/create Modules</div>
+                                <div class="text-muted small mt-1">1h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-2">
+                                <img src="<?=IMG . 'users' . US . 'default-female-avatar.jpg'?>"
+                                    alt="User" class="user-avatar rounded-circle">
+                            </div>
+                            <div class="col-10">
+                                <div>Schirsten Vander</div>
+                                <div class="text-muted small mt-1">Add widgets descriptions</div>
+                                <div class="text-muted small mt-1">2h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-2">
+                                <img src="<?=IMG . 'users' . US . 'default-female-avatar.jpg'?>"
+                                    alt="User" class="user-avatar rounded-circle">
+                            </div>
+                            <div class="col-10">
+                                <div>Robert Nordic</div>
+                                <div class="text-muted small mt-1">Mark cancelled the event</div>
+                                <div class="text-muted small mt-1">4h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-2">
+                                <img src="<?=IMG . 'users' . US . 'default-female-avatar.jpg'?>"
+                                    alt="User" class="user-avatar rounded-circle">
+                            </div>
+                            <div class="col-10">
+                                <div>Michael Branson</div>
+                                <div class="text-muted small mt-1">Lorem ipsum dolor sit amet</div>
+                                <div class="text-muted small mt-1">6h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-2">
+                                <img src="<?=IMG . 'users' . US . 'default-female-avatar.jpg'?>"
+                                    alt="User" class="user-avatar rounded-circle">
+                            </div>
+                            <div class="col-10">
+                                <div>Antonym Sladers</div>
+                                <div class="text-muted small mt-1">Lorem ipsum dolor sit amet</div>
+                                <div class="text-muted small mt-1">6h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-2">
+                                <img src="<?=IMG . 'users' . US . 'default-female-avatar.jpg'?>"
+                                    alt="User" class="user-avatar rounded-circle">
+                            </div>
+                            <div class="col-10">
+                                <div>Marcus</div>
+                                <div class="text-muted small mt-1">Lorem ipsum dolor sit amet</div>
+                                <div class="text-muted small mt-1">6h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="dropdown-menu-footer">
+                    <a href="#" class="text-primary">View all</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item task-list topbar-dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+                aria-expanded="false" id="tasksDropdown">
+                <i class="fal fa-tasks"></i>
+                <span class="badge bg-danger rounded-circle">5</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0 dropdown-animate"
+                aria-labelledby="tasksDropdown">
+                <div class="dropdown-menu-header">
+                    4 New Tasks
+                </div>
+                <div class="list-group">
+                    <a class="list-group-item" href="#">
+                        <span class="task small">
+                            <span class="desc">Design database</span>
+                            <span class="percent">74%</span>
+                        </span>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="74" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 74%">
+                                <span class="sr-only">74% Complete</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        <span class="task small">
+                            <span class="desc">Testing</span>
+                            <span class="percent">30%</span>
+                        </span>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="30" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 30%">
+                                <span class="sr-only">30% Complete</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        <span class="task small">
+                            <span class="desc">Document writting</span>
+                            <span class="percent">50%</span>
+                        </span>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="50" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 50%">
+                                <span class="sr-only">50% Complete</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        <span class="task small">
+                            <span class="desc">Development</span>
+                            <span class="percent">45%</span>
+                        </span>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="45" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 45%">
+                                <span class="sr-only">45% Complete</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        <span class="task small">
+                            <span class="desc">HTML slicing</span>
+                            <span class="percent">66%</span>
+                        </span>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="66" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 66%">
+                                <span class="sr-only">66% Complete</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="dropdown-menu-footer">
+                    <a href="#" class="text-primary">View all</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item notification-list topbar-dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+                aria-expanded="false" id="notificationsDropdown">
+                <i class="fal fa-bell"></i>
+                <span class="badge bg-info rounded-circle">4</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0 dropdown-animate"
+                aria-labelledby="notificationsDropdown">
+                <div class="dropdown-menu-header">
+                    4 New Notifications
+                </div>
+                <div class="list-group">
+                    <a href="#" class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-2">
+                                <i class="ms-1 text-primary fas fa-fw fa-user"></i>
+                            </div>
+                            <div class="col-10">
+                                <div>New user registered</div>
+                                <div class="text-muted small mt-1">Lorem ipsum dolor sit amet</div>
+                                <div class="text-muted small mt-1">1h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-2">
+                                <i class="ms-1 text-warning fas fa-fw fa-bell"></i>
+                            </div>
+                            <div class="col-10">
+                                <div>Update completed</div>
+                                <div class="text-muted small mt-1">Lorem ipsum dolor sit amet.</div>
+                                <div class="text-muted small mt-1">2h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-2">
+                                <i class="ms-1 text-info fas fa-fw fa-envelope-open"></i>
+                            </div>
+                            <div class="col-10">
+                                <div>Mark cancelled the event</div>
+                                <div class="text-muted small mt-1">Lorem ipsum dolor sit amet, consectetur adip</div>
+                                <div class="text-muted small mt-1">4h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <div class="row align-items-center">
+                            <div class="col-2">
+                                <i class="ms-1 text-danger fas fa-fw fa-building"></i>
+                            </div>
+                            <div class="col-10">
+                                <div>Login from 192.168.1.1</div>
+                                <div class="text-muted small mt-1">6h ago</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="dropdown-menu-footer">
+                    <a href="#" class="text-primary">View all</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item user-setting-list topbar-dropdown">
+            <a class="nav-link dropdown-toggle nav-profile" data-bs-toggle="dropdown" href="#" role="button"
+                aria-haspopup="false" aria-expanded="false">
+                <img src="<?=IMG . 'users' . US . 'avatar.png'?>"
+                    alt="user-image" class="rounded-circle">
+                <span class="ms-1 d-none d-lg-inline">
+                    <span class="user-name">Hi, Admin</span>
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right profile-dropdown dropdown-animate">
+                <div class="dropdown-header">
+                    <h6 class="text-center">Welcome !</h6>
+                </div>
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="fal fa-user-alt me-1"></i>
+                    <span>My Account</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="fal fa-cog me-1"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="fal fa-envelope me-1"></i>
+                    <span>Inbox</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="fal fa-calendar-alt me-1"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="fal fa-tasks me-1"></i>
+                    <span>Tasks</span>
+                </a>
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <i class="fal fa-sign-out me-1"></i>
+                    <span>Sign out</span>
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#right-sidebar" class="nav-link" data-bs-toggle="modal" id="modalSetting">
+                <i class="fal fa-cog rotate"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

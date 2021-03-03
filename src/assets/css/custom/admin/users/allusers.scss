@@ -1,0 +1,15 @@
+.content {
+  & .card {
+    & .card-body {
+      & .card.bg-light {
+        & .card-body {
+          & .img-wrapper {
+            & img {
+              width: 80px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

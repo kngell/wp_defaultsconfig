@@ -41,7 +41,7 @@ class TH_Admin
                             <td>' . $catgorie . '</td>
                             <td>
                             <a href="#" id="' . $cat->catID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fas fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
-                            <a href="#" id="' . $cat->catID . '"  title="Edit Category" class="text-primary editBtn mx-2" data-toggle="modal" data-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="#" id="' . $cat->catID . '"  title="Edit Category" class="text-primary editBtn mx-2" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
                             <a href="#" id="' . $cat->catID . '" title="Delete Caegory" class="text-danger deleteBtn"><i class="fas fa-trash-alt fa-lg"></i></a>
                             </td>   
                         </tr>';

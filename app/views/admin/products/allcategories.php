@@ -33,8 +33,8 @@
                     <span class="ml-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
                         </a>&nbsp;&nbsp;
-                        <a href="" class="btn btn-secondary" data-toggle="modal" data-target="#modal-box" id="addNew"><i
-                                class="fas fa-plus-circle fa-lg"></i>&nbsp;Add new</a>
+                        <a href="" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-box"
+                            id="addNew"><i class="fas fa-plus-circle fa-lg"></i>&nbsp;Add new</a>
                     </span>
                 </h5>
                 <div id="globalErr"></div>
@@ -51,7 +51,7 @@
                 <div class="modal-content">
                     <div class="modal-header bg-dark">
                         <h5 class="modal-title text-light"> Add new</h5>
-                        <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                        <button type="button" class="close text-light" data-bs-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation">

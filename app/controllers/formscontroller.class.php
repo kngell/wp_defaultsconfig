@@ -219,7 +219,7 @@ class FormsController extends Controller
             $data = $this->request->getAll();
             $method = isset($data['method']) ? $data['method'] : 'delete';
             if ($output = $this->model_instance[$table]->$method($data['id'])) {
-                $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been deleted');
+                $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been ' . $method . 'ed');
                 $this->jsonResponse(['result' => 'success', 'msg' => 'your ' . $SuccessMsg . ' has been deleted']);
             } else {
                 $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning', 'Something goes wrong. Please try later!')]);

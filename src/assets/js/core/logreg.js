@@ -60,7 +60,6 @@ PhpLR.prototype.setupEvents = function () {
       url: BASE_URL + "auth/remember_check",
       method: "post",
       success: function (response) {
-        console.log(response);
         if (response.result === "success") {
           phpLR.loginfrm.find("#email").val(response.msg.email);
           phpLR.loginfrm
@@ -140,7 +139,6 @@ PhpLR.prototype.setupEvents = function () {
   });
 
   //login with Facebook
-
   phpLR.logbox.find("#fblink").on("click", (e) => {
     e.preventDefault();
     phpLR.loginfrm.find("#login-btn").val("Please wait...");

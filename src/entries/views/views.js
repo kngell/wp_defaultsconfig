@@ -7,6 +7,8 @@ import "views/layouts/include/admin/footer.php";
 import "views/layouts/include/admin/header.php";
 import "views/layouts/include/admin/nav.php";
 import "views/layouts/include/admin/side_nav.php";
+import "views/layouts/include/admin/modal.php";
+import "views/layouts/include/admin/script.php";
 import "views/layouts/include/adminlogin/header.php";
 import "views/layouts/include/adminlogin/footer.php";
 
@@ -24,6 +26,7 @@ import "views/admin/products/allcategories.php";
 import "views/admin/home/contact-us.php";
 //admin users page
 import "views/admin/users/allusers.php";
+import "views/admin/users/profile.php";
 //=======================================================================
 //Home Ecommerce Pages and Layouts
 //=======================================================================

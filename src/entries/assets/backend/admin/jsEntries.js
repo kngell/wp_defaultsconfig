@@ -33,5 +33,10 @@ module.exports = {
       import: ["js/custom/admin/users/allusers"],
       dependOn: "js/librairies/adminlib",
     },
+    //Admin users profile
+    "js/custom/admin/users/profile": {
+      import: ["js/custom/admin/users/profile"],
+      dependOn: "js/librairies/adminlib",
+    },
   },
 };

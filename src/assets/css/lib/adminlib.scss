@@ -7,8 +7,10 @@
 
 // Fontawesome
 //fontawesome
-$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+$fa-font-path: "../../fonts/fontawesome/webfonts";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/brands";
+@import "../../fonts/fontawesome/scss/light";
+@import "../../fonts/fontawesome/scss/duotone";

@@ -1,5 +1,5 @@
 // Adminlte
-@import "plugins/adminlte/adminlte.css";
+@import "../../../custom/admin/flexadmin/app.scss";
 @import "corecss/_mixins";
 @include fontface("roboto", "fonts/Roboto/Roboto-Regular", 100, normal, "ttf");
 ul.nav-sidebar {
