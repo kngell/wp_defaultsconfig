@@ -95,7 +95,7 @@ abstract class Model
     }
 
     //getAll by any column
-    public function getAllbyAnyColumn($params = [])
+    public function getAllbyParams($params = [])
     {
         return $this->find(['where' => $params, 'return_mode' => 'class']);
     }

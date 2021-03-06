@@ -33,8 +33,6 @@ Website: https://teachprod.com
         rel="stylesheet" type="text/css">
     <!-- Custom css -->
     <?= $this->content('head'); ?>
-    <!-- <link href="assets/css/vendor~app.css" rel="stylesheet">
-    <link href="assets/css/app.css" rel="stylesheet"> -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180917586-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];

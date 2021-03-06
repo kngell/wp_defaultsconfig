@@ -1,5 +1,5 @@
-import "plugins/jqvmap/jquery.vmap";
-import "plugins/jqvmap/maps/jquery.vmap.world.js";
+import "plugins/modules/jqvmap/jquery.vmap";
+import "plugins/modules/jqvmap/maps/jquery.vmap.world.js";
 import Chartjs from "./chart/chartjs.js";
 
 class DemoDashboardEcommerce {

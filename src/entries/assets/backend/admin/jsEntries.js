@@ -13,9 +13,19 @@ module.exports = {
       import: ["js/plugins_entries/adminplugins"],
       dependOn: "js/librairies/adminlib",
     },
-    //Admin dashboard
+    //Admin dashboard index
     "js/custom/admin/dashboard": {
-      import: ["js/custom/admin/index"],
+      import: ["js/custom/admin/dashboard/index"],
+      dependOn: "js/librairies/adminlib",
+    },
+    //Admin dashboard analytics
+    "js/custom/admin/analytics": {
+      import: ["js/custom/admin/dashboard/analytics"],
+      dependOn: "js/librairies/adminlib",
+    },
+    //Admin dashboard analytics
+    "js/custom/admin/calendar": {
+      import: ["js/custom/admin/calendar/calendar"],
       dependOn: "js/librairies/adminlib",
     },
     // Admin login

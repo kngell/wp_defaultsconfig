@@ -4,8 +4,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import Chartjs from "./chart/chartjs.js";
-import "plugins/jqvmap/jquery.vmap.min.js";
-import "plugins/jqvmap/maps/jquery.vmap.world.js";
+import "plugins/modules/jqvmap/jquery.vmap.min.js";
+import "plugins/modules/jqvmap/maps/jquery.vmap.world.js";
 
 class DemoDashboardAnalytics {
   constructor() {

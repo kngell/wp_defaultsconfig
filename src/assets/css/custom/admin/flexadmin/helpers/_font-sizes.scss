@@ -1,6 +1,0 @@
-@each $font-size,
-$value in $theme-font-sizes {
-  .fs-#{$font-size} {
-    font-size: $value;
-  }
-}

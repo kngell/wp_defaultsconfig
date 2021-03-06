@@ -17,7 +17,9 @@ import "views/layouts/adminlogin.php";
 
 // Admin Pages
 import "views/admin/index.php";
+import "views/admin/analytics.php";
 import "views/admin/login.php";
+import "views/admin/calendar.php";
 
 // Admin pages products
 import "views/admin/products/allcategories.php";

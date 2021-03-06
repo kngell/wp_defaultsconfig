@@ -1,6 +1,7 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
-<link href="<?= $this->css ?? '' ?>"
+<link
+    href="<?= $this->get_Asset('css/custom/admin/dashboard/dashboard', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>

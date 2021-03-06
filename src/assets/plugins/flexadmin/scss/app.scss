@@ -1,5 +1,4 @@
 @import "variables";
-@import "bootstrap/scss/bootstrap";
 @import "utilities";
 @import "dual-listbox/src/dual-listbox.scss";
 @import "dropzone/dist/dropzone.css";
@@ -7,8 +6,8 @@
 
 @import "britecharts/dist/css/britecharts.min.css";
 @import "node-waves/dist/waves.min.css";
-@import "plugins/bootstrap-datepicker/bootstrap-datepicker.css";
-@import "plugins/jqvmap/jqvmap.min.css";
+@import "plugins/modules/bootstrap-datepicker/bootstrap-datepicker.css";
+@import "plugins/modules/jqvmap/jqvmap.min.css";
 @import "toastr";
 @import "select2";
 

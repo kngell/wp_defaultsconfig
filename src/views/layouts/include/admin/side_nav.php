@@ -2,15 +2,14 @@
     <!-- start sidebar-header -->
     <div class="sidebar-header">
         <div class="logo">
-            <a class="navbar-brand"
-                href="<?=PROOT . 'admin' . US . 'index'?>">
-                <img src="../../../../assets/img/logo.png" alt="" width="30" height="24">
-                <span class="fw-700">K'nGELL Logistiue</span>
-            </a>
-
+            <h3><a
+                    href="<?=PROOT . 'admin' . US . 'index'?>">
+                    <img src="../../../../assets/img/logo.png" alt="" width="30" height="24">
+                    <span class="fw-700 text-white-50">Administration</span>
+                </a></h3>
         </div>
         <a class="sidebar-toggle-btn">
-            <i class="far fa-bars"></i>
+            <i class="fas fa-bars"></i>
         </a>
     </div>
     <!-- end sidebar-header -->
@@ -34,15 +33,18 @@
                         <ul class="sidebar-second-level collapse list-unstyled" id="homeSubmenu"
                             data-parent="#left-sidebar">
                             <li>
-                                <a href="dashboard-analytics.html">Analytics</a>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'analytics'?>">Analytics</a>
                             </li>
                             <li>
-                                <a href="index.html">Ecommerce</a>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'index'?>">Ecommerce</a>
                             </li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
-                        <a href="calendar.html">
+                        <a
+                            href="<?=PROOT . 'admin' . US . 'calendar'?>">
                             <i class="fal fa-calendar"></i>
                             <span>Calendar</span>
                         </a>

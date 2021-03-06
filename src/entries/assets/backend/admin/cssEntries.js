@@ -14,11 +14,11 @@ module.exports = {
       dependOn: "css/librairies/adminlib",
     },
 
-    //Admin dashboard
-    // "css/custom/admin/dashboard": {
-    //   import: ["css/custom/admin/index.scss"],
-    //   dependOn: "css/librairies/adminlib",
-    // },
+    // Admin dashboard
+    "css/custom/admin/dashboard": {
+      import: ["css/custom/admin/index.scss"],
+      dependOn: "css/librairies/adminlib",
+    },
     //Admin login
     "css/custom/admin/login": {
       import: ["css/custom/admin/login.scss"],

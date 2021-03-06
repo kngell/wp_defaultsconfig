@@ -137,13 +137,18 @@ class AuthManager extends Model
                 Cookies::set($this->_cookieName, $rem_cookie, COOKIE_EXPIRY);
                 $this->remember_cookie = $rem_cookie;
                 $this->save();
-            } elseif (!$this->remember_cookie && Cookies::exists(VISITOR_COOKIE_NAME)) {
-                $this->remember_cookie = Cookies::get(VISITOR_COOKIE_NAME);
+            } elseif ($this->remember_cookie != Cookies::get($this->_cookieName)) {
+                $this->remember_cookie = Cookies::get($this->_cookieName);
                 $this->save();
             }
         } else {
             Cookies::exists(REMEMBER_ME_COOKIE_NAME) ? Cookies::delete($this->_cookieName) : '';
             $this->remember_cookie = null;
+            $this->save();
+        }
+        // Check for visitor identifiant
+        if (Cookies::exists(VISITOR_COOKIE_NAME) && $this->visitor_cookie != Cookies::get(VISITOR_COOKIE_NAME)) {
+            $this->visitor_cookie = Cookies::get(VISITOR_COOKIE_NAME);
             $this->save();
         }
         (new UserSessionsManager())->set_userSession($this);
@@ -167,8 +172,9 @@ class AuthManager extends Model
     {
         $user_data = [];
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
-            $user_session = (new UserSessionsManager(Cookies::get(VISITOR_COOKIE_NAME)));
-            if ($user_session->remember_cookie) {
+            $visitor = Cookies::get(VISITOR_COOKIE_NAME);
+            $user_session = (new UserSessionsManager($visitor));
+            if ($user_session && $user_session->remember_cookie) {
                 $user_data['remember'] = true;
                 $user_data['email'] = $user_session->email ?? '';
             }

@@ -1,1 +1,1 @@
-import "bootstrap";
+import { Toast, Popover } from "bootstrap";

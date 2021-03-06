@@ -7,4 +7,5 @@
 
     <?php require_once 'include/admin/footer.php'?>
 </div>
+<?php require_once 'include/admin/modal.php'?>
 <?php require_once 'include/admin/script.php';

@@ -12,3 +12,10 @@ window.colors = {
   gray: "#e3eaef",
   purple: "#9833d5",
 };
+
+import LeftSidebar from "./left_sidebar.js";
+import Topbar from "./topbar.js";
+import Footer from "./footer.js";
+import ThemeConfig from "./theme_config.js";
+import AppCommon from "./app_common.js";
+import Fullscreen from "./fullscreen.js";

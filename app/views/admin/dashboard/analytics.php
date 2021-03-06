@@ -1,124 +1,178 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/dashboard/dashboard', 'css') ?? ''?>"
+    href="<?= $this->get_Asset('css/custom/admin/dashboard/analytics', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
 <div class="page-content">
     <h1 class="header-title h3 mb-4">
-        <span class="text-highlight">E-Commerce</span> <span class="fw-300">Dashboard</span>
+        <span class="text-highlight">Analytics</span> <span class="fw-300">Dashboard</span>
     </h1>
     <div class="row">
-        <div class="col-md-6 col-xl-3">
+        <div class="col-xl-6 col-xxl-5 d-flex">
+            <div class="row w-100">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-muted mb-1 text-truncate">Total Earnings
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <div class="icon-sm bg-primary rounded float-end">
+                                        <i class="fal fa-usd-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="my-1 fw-300">$24,431</h2>
+                            <div class="mt-3">
+                                <h6>Target <span class="float-end">59%</span></h6>
+                                <div class="progress progress-sm m-0">
+                                    <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="59"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 59%">
+                                        <span class="sr-only">59% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-muted mb-1 text-truncate">Payouts</p>
+                                </div>
+                                <div class="col-6">
+                                    <div class="icon-sm bg-warning rounded float-end">
+                                        <i class="fal fa-receipt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="my-1 fw-300">$4,321</h2>
+                            <div class="mt-3">
+                                <h6>Target <span class="float-end">76%</span></h6>
+                                <div class="progress progress-sm m-0">
+                                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="76"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 76%">
+                                        <span class="sr-only">76% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-muted mb-1 text-truncate">Sales Today</p>
+                                </div>
+                                <div class="col-6">
+                                    <div class="icon-sm bg-success rounded float-end">
+                                        <i class="fal fa-shopping-cart"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="my-1 fw-300">1,576</h2>
+                            <div class="mt-3">
+                                <h6>Target <span class="float-end">68%</span></h6>
+                                <div class="progress progress-sm m-0">
+                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="68"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 68%">
+                                        <span class="sr-only">68% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-muted mb-1 text-truncate">Pending Orders</p>
+                                </div>
+                                <div class="col-6">
+                                    <div class="icon-sm bg-info rounded float-end">
+                                        <i class="fal fa-user-clock"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="my-1 fw-300"><span>234</span></h2>
+                            <div class="mt-3">
+                                <h6>Target <span class="float-end">74%</span></h6>
+                                <div class="progress progress-sm m-0">
+                                    <div class="progress-bar bg-info" role="progressbar" aria-valuenow="74"
+                                        aria-valuemin="0" aria-valuemax="100" style="width: 74%">
+                                        <span class="sr-only">74% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end card-->
+                </div>
+            </div>
+        </div>
+        <!-- end col-xl-6 col-xxl-5 d-flex -->
+        <div class="col-xl-6 col-xxl-7">
             <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="text-muted mb-1 text-truncate">Total Earnings
-                            </p>
-                        </div>
-                        <div class="col-6">
-                            <div class="icon-sm bg-primary rounded float-end">
-                                <i class="fal fa-usd-circle"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="my-1 fw-300">$24,431</h2>
-                    <div class="mt-3">
-                        <h6>Target <span class="float-end">59%</span></h6>
-                        <div class="progress progress-sm m-0">
-                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="59" aria-valuemin="0"
-                                aria-valuemax="100" style="width: 59%">
-                                <span class="sr-only">59% Complete</span>
-                            </div>
-                        </div>
+                <div class="card-body px-4">
+                    <h4 class="mb-4 fs-base">Sessions Overview</h4>
+                    <div class="chart chart-sm">
+                        <canvas id="analytics-session-overview"></canvas>
                     </div>
                 </div>
-            </div> <!-- end card-->
-        </div> <!-- end col -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="text-muted mb-1 text-truncate">Sales Today</p>
-                        </div>
-                        <div class="col-6">
-                            <div class="icon-sm bg-success rounded float-end">
-                                <i class="fal fa-shopping-cart"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="my-1 fw-300">1,576</h2>
-                    <div class="mt-3">
-                        <h6>Target <span class="float-end">68%</span></h6>
-                        <div class="progress progress-sm m-0">
-                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="68" aria-valuemin="0"
-                                aria-valuemax="100" style="width: 68%">
-                                <span class="sr-only">68% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end card-->
-        </div> <!-- end col -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="text-muted mb-1 text-truncate">Pending Orders</p>
-                        </div>
-                        <div class="col-6">
-                            <div class="icon-sm bg-info rounded float-end">
-                                <i class="fal fa-user-clock"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="my-1 fw-300"><span>234</span></h2>
-                    <div class="mt-3">
-                        <h6>Target <span class="float-end">74%</span></h6>
-                        <div class="progress progress-sm m-0">
-                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="74" aria-valuemin="0"
-                                aria-valuemax="100" style="width: 74%">
-                                <span class="sr-only">74% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end card-->
-        </div> <!-- end col -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="text-muted mb-1 text-truncate">Payouts</p>
-                        </div>
-                        <div class="col-6">
-                            <div class="icon-sm bg-warning rounded float-end">
-                                <i class="fal fa-receipt"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="my-1 fw-300">$4,321</h2>
-                    <div class="mt-3">
-                        <h6>Target <span class="float-end">76%</span></h6>
-                        <div class="progress progress-sm m-0">
-                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="76" aria-valuemin="0"
-                                aria-valuemax="100" style="width: 76%">
-                                <span class="sr-only">76% Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end card-->
-        </div> <!-- end col -->
-    </div> <!-- end row -->
+                <!-- end card-body -->
+            </div>
+            <!-- end card -->
+        </div>
+    </div>
+    <!-- end row -->
     <div class="row">
-        <div class="col-md-6 d-flex">
-            <div class="card w-100 ">
+        <div class="col-12 col-md-6 col-xxl-3 d-flex order-2 order-xxl-3">
+            <div class="card w-100">
+                <div class="d-flex justify-content-between p-3">
+                    <h5 class="card-title mb-0">Browser Usage</h5>
+                    <div class="card-actions float-end">
+                        <div class="d-inline-block dropdown show">
+                            <a href="#" data-bs-toggle="dropdown" data-display="static">
+                                <i class="far fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Export</a>
+                                <a class="dropdown-item" href="#">Profit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    <div class="">
+                        <canvas id="analytics-browser-usage"></canvas>
+                    </div>
+                    <table class="table mb-0">
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-circle text-primary fa-fw"></i> Chrome</td>
+                                <td class="text-end">2398</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-circle text-warning fa-fw"></i> Firefox</td>
+                                <td class="text-end">1359</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-circle text-danger fa-fw"></i> IE</td>
+                                <td class="text-end">254</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-xxl-6 d-flex order-3 order-xxl-2">
+            <div class="card w-100">
                 <div class="d-flex justify-content-between p-3">
                     <h5 class="card-title mb-0">Location</h5>
                     <div class="card-actions">
@@ -139,10 +193,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 d-flex">
-            <div class="card flex-fill w-100 ">
+        <div class="col-12 col-md-6 col-xxl-3 d-flex order-1 order-xxl-1">
+            <div class="card w-100">
                 <div class="d-flex justify-content-between p-3">
-                    <h5 class="card-title mb-0">Total Sales</h5>
+                    <h5 class="card-title mb-0">Expect and Actual</h5>
                     <div class="card-actions float-end">
                         <div class="d-inline-block dropdown show">
                             <a href="#" data-bs-toggle="dropdown" data-display="static">
@@ -157,38 +211,14 @@
                     </div>
                 </div>
                 <div class="card-body px-4">
-                    <div class="">
-                        <canvas id="dashboard-doughnut-chartjs"></canvas>
-                    </div>
+                    <canvas id="dashboard-bar-chartjs"></canvas>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 d-flex">
-            <div class="card flex-fill w-100 ">
-                <div class="d-flex justify-content-between p-3">
-                    <h5 class="card-title mb-0">Lifetime Sales</h5>
-                    <div class="card-actions">
-                        <div class="d-inline-block dropdown show">
-                            <a href="#" data-bs-toggle="dropdown" data-display="static">
-                                <i class="far fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Export</a>
-                                <a class="dropdown-item" href="#">Profit</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body px-4">
-                    <canvas id="dashboard-line-chartjs"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 d-flex">
-            <div class="card flex-fill w-100 ">
+        <div class="col-lg-6 md-12 d-flex">
+            <div class="card w-100">
                 <div class="d-flex justify-content-between p-3">
                     <h5 class="card-title mb-0">Top Selling Products</h5>
                     <div class="card-actions">
@@ -272,34 +302,10 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 d-flex">
-            <div class="card flex-fill w-100 ">
+        <div class="col-lg-6 md-12 d-flex">
+            <div class="card w-100">
                 <div class="d-flex justify-content-between p-3">
-                    <h5 class="card-title mb-0">Revenue</h5>
-                    <div class="card-actions">
-                        <div class="d-inline-block dropdown show">
-                            <a href="#" data-bs-toggle="dropdown" data-display="static">
-                                <i class="far fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Export</a>
-                                <a class="dropdown-item" href="#">Profit</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body px-4">
-                    <canvas id="dashboard-progress-bar-chartjs"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 d-flex">
-            <div class="card flex-fill w-100 ">
-                <div class="d-flex justify-content-between p-3">
-                    <h5 class="card-title mb-0">Expect and Actual</h5>
+                    <h5 class="card-title mb-0">Events</h5>
                     <div class="card-actions float-end">
                         <div class="d-inline-block dropdown show">
                             <a href="#" data-bs-toggle="dropdown" data-display="static">
@@ -314,7 +320,7 @@
                     </div>
                 </div>
                 <div class="card-body px-4">
-                    <canvas id="dashboard-bar-chartjs"></canvas>
+                    <div id="demo-calendar"></div>
                 </div>
             </div>
         </div>
@@ -325,6 +331,6 @@
 <?php $this->start('footer') ?>
 <!----------custom--------->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/dashboard', 'js') ?? ''?>">
+    src="<?= $this->get_Asset('js/custom/admin/dashboard/analytics', 'js') ?? ''?>">
 </script>
 <?php $this->end();

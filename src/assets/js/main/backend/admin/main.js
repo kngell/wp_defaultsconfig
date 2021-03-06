@@ -1,4 +1,4 @@
 //Admin js
-import "../../../custom/admin/flexadmin/app";
+import "plugins/flexadmin/js/app";
 
 document.addEventListener("DOMContentLoaded", function () {});

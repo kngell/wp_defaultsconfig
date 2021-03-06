@@ -15,7 +15,7 @@ class UserSessionsManager extends Model
     //=======================================================================
     //construct
     //=======================================================================
-    public function __construct($userSession = '')
+    public function __construct($userSession = null)
     {
         parent::__construct();
         $this->_modelName = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_table))) . 'Manager';
@@ -35,7 +35,16 @@ class UserSessionsManager extends Model
     //=======================================================================
     public function set_userSession($m = null)
     {
-        $user_session = $m->visitor_cookie ? current($this->getAllbyIndex($m->visitor_cookie)->get_results()) : null;
+        $user_session = $m->visitor_cookie ? $this->getAllbyParams(['userID' => $m->userID]) : [];
+        if ($user_session->count() > 1) {
+            $user_session = array_map(function ($session) use ($m) {
+                $session->visitor_cookie != $m->visitor_cookie ? $session->delete() : '';
+                return $session;
+            }, $user_session->get_results());
+            $user_session = array_filter($user_session, function ($session) use ($m) {
+                return $session->visitor_cookie == $m->visitor_cookie;
+            });
+        }
         if (!$user_session) {
             $this->userID = $m->userID ?? '';
             $this->remember_cookie = $m->remember_cookie ?? '';

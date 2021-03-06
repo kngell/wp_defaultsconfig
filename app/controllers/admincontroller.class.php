@@ -15,6 +15,20 @@ class AdminController extends Controller
         $this->view_instance->render('admin' . DS . 'index');
     }
 
+    //page index
+    public function analytics($data = [])
+    {
+        $this->view_instance->set_pageTitle('Analytics');
+        $this->view_instance->render('admin' . DS . 'analytics');
+    }
+
+    //page index
+    public function calendar($data = [])
+    {
+        $this->view_instance->set_pageTitle('Calendar');
+        $this->view_instance->render('admin' . DS . 'calendar');
+    }
+
     // Categories add and Manage categories
     public function allcategories()
     {
