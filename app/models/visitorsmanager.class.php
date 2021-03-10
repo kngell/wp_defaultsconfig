@@ -111,7 +111,6 @@ class VisitorsManager extends Model
                 }
             }
         }
-
         return $this->add_new_visitor(H_visitors::getVisitorData('91.173.88.22'));
     }
 

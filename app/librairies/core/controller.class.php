@@ -45,8 +45,12 @@ abstract class Controller extends Application
                 // require_once MODEL . strtolower($modelName) . '.class.php';
                 if (!empty($model)) {
                     $this->model_instance[$model] = !isset($this->model_instance[$model]) ? new $modelName() : $this->model_instance;
+                } elseif (!isset($this->model_instance)) {
+                    $this->model_instance = new $modelName();
                 } else {
-                    $this->model_instance = !isset($this->model_instance) ? new $modelName() : $this->model_instance;
+                    if (!isset($this->model_instance[strtolower(rtrim($modelName, 'Manager'))])) {
+                        $this->model_instance[strtolower(rtrim($modelName, 'Manager'))] = new $modelName();
+                    }
                 }
                 return $this->model_instance;
             } else {

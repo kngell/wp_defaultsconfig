@@ -11,23 +11,23 @@
 
 <!-- Librairies -->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/librairies/adminlib', 'js') ?? ''?>">
+    src="<?= $this->asset('js/librairies/adminlib', 'js') ?? ''?>">
 </script>
 <!-- Common vendor -->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('commons/backend/admin/commonVendor', 'js') ?? ''?>">
+    src="<?= $this->asset('commons/backend/admin/commonVendor', 'js') ?? ''?>">
 </script>
 <!-- Common custom modules -->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('commons/backend/admin/commonCustomModules', 'js') ?? ''?>">
+    src="<?= $this->asset('commons/backend/admin/commonCustomModules', 'js') ?? ''?>">
 </script>
 <!-- Plugins -->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/plugins/adminplugins', 'js') ?? ''?>">
+    src="<?= $this->asset('js/plugins/adminplugins', 'js') ?? ''?>">
 </script>
 <!-- Mainjs -->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/main/backend/admin/main', 'js') ?? ''?>">
+    src="<?= $this->asset('js/main/backend/admin/main', 'js') ?? ''?>">
 </script>
 <!-- Custom js -->
 <?= $this->content('footer'); ?>

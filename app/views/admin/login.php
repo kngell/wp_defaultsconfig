@@ -1,7 +1,7 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/login', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/admin/login', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
@@ -81,6 +81,6 @@
 <?php $this->start('footer') ?>
 <!----------custom--------->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/login', 'js') ?? ''?>">
+    src="<?= $this->asset('js/custom/admin/login', 'js') ?? ''?>">
 </script>
 <?php $this->end();

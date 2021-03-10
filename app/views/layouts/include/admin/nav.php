@@ -15,7 +15,7 @@
         <li class="nav-item topbar-dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                 aria-expanded="false" id="emailsDropdown">
-                <i class="fal fa-envelope"></i>
+                <i class="fal fa-envelope text-white"></i>
                 <span class="badge bg-success rounded-circle">6</span>
             </a>
             <div class="dropdown-menu dropdown-animate dropdown-menu-lg dropdown-menu-right py-0"
@@ -111,7 +111,7 @@
         <li class="nav-item task-list topbar-dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                 aria-expanded="false" id="tasksDropdown">
-                <i class="fal fa-tasks"></i>
+                <i class="fal fa-tasks text-white"></i>
                 <span class="badge bg-danger rounded-circle">5</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0 dropdown-animate"
@@ -189,7 +189,7 @@
         <li class="nav-item notification-list topbar-dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                 aria-expanded="false" id="notificationsDropdown">
-                <i class="fal fa-bell"></i>
+                <i class="fal fa-bell text-white"></i>
                 <span class="badge bg-info rounded-circle">4</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0 dropdown-animate"
@@ -252,10 +252,10 @@
             </div>
         </li>
         <li class="nav-item user-setting-list topbar-dropdown">
-            <a class="nav-link dropdown-toggle nav-profile" data-bs-toggle="dropdown" href="#" role="button"
-                aria-haspopup="false" aria-expanded="false">
+            <a class="nav-link dropdown-toggle nav-profile text-white-50" data-bs-toggle="dropdown" href="#"
+                role="button" aria-haspopup="false" aria-expanded="false">
                 <img src="<?=IMG . 'users' . US . 'avatar.png'?>"
-                    alt="user-image" class="rounded-circle">
+                    alt="user-image" class="rounded-circle img-fluid">
                 <span class="ms-1 d-none d-lg-inline">
                     <span class="user-name">Hi, Admin</span>
                 </span>
@@ -292,7 +292,7 @@
         </li>
         <li class="nav-item">
             <a href="#right-sidebar" class="nav-link" data-bs-toggle="modal" id="modalSetting">
-                <i class="fal fa-cog rotate"></i>
+                <i class="fal fa-cog rotate text-white-50"></i>
             </a>
         </li>
     </ul>

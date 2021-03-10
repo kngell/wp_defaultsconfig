@@ -1,35 +1,34 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/users/allusers', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/admin/users/allusers', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>All Users</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Dashbord</a></li>
-                        <li class="breadcrumb-item active">All Users</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+<div class="page-content">
+    <div class="row header justify-content-between mb-4 w-100">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb ps-0 fs-base">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item"><span>Users</span></li>
+                    <li class="breadcrumb-item active" aria-current="page">All users</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col text-end">
+            <h4 class="header-title h3">
+                Manage Users
+            </h4>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card card-solid">
                 <h5 class="card-header bg-primary d-flex">
-                    <span class="text-light lead">Manage Users</span>
-                    <span class="ml-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
+                    <span class="text-light lead">All Users</span>
+                    <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
                         </a>&nbsp;
                     </span>
@@ -90,15 +89,15 @@
             </div>
             <!-- /.card -->
         </div>
-    </section>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-<?php $this->end(); ?>
-<?php $this->start('footer') ?>
-<!----------custom--------->
-<script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/users/allusers', 'js') ?? ''?>">
-</script>
-<?php $this->end();
+    <?php $this->end(); ?>
+    <?php $this->start('footer') ?>
+    <!----------custom--------->
+    <script type="text/javascript"
+        src="<?= $this->asset('js/custom/admin/users/allusers', 'js') ?? ''?>">
+    </script>
+    <?php $this->end();

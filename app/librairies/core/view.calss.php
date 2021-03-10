@@ -150,11 +150,29 @@ class View
     }
 
     //Get assets
-    public function get_Asset($asset = '', $ext = '')
+    public function asset($asset = '', $ext = '')
     {
-        if (isset($this->ressources->$asset)) {
-            return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . $this->ressources->$asset->$ext ?? '' : $this->ressources->$asset->$ext ?? '';
+        $root = isset($asset) ? explode('/', $asset) : [];
+        if ($root) {
+            $path = '';
+            $check = array_shift($root);
+            foreach ($root as $value) {
+                $path .= $value;
+            }
+            switch ($check) {
+                case 'img':
+                    return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . IMG . $path : IMG . $asset;
+                break;
+                case 'fonts':
+                    return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . FONT . $path : FONT . $asset;
+                break;
+                default:
+                    if (isset($this->ressources->$asset)) {
+                        return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . $this->ressources->$asset->$ext ?? '' : $this->ressources->$asset->$ext ?? '';
+                    }
+            }
         }
+
         return '';
     }
 }

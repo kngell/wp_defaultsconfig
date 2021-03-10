@@ -8,7 +8,7 @@
                     <div class="col-7">
                         <h2 class="lead"><b>{{firstname}}&nbsp;{{lastname}}</b>
                         </h2>
-                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                        <ul class="ms-4 mb-0 fa-ul text-muted">
                             <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span>
                                 <b>Address:</b>
                                 {{address}}
@@ -23,8 +23,8 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                <div class="row justify-content-between">
+            <div class="card-footer d-flex">
+                <div class="row justify-content-between w-100 g-2">
                     <div class="col text-start">
                         <a href="{{users_profile}}" class="btn btn-sm btn-primary">
                             <i class="fas fa-user"></i> Edit Profile
@@ -34,7 +34,7 @@
                         </a>
                         <div id="alertErr"></div>
                     </div>
-                    <div class="col text-end">
+                    <div class="col text-end pt-2">
                         <form id="delete_user{{userID}}" class="{{formClass}}">
                             {{token}}
                             <input type="hidden" name='userID' value="{{userID}}" id="{{userID}}">

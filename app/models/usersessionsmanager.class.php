@@ -38,37 +38,53 @@ class UserSessionsManager extends Model
         $user_session = $m->visitor_cookie ? $this->getAllbyParams(['userID' => $m->userID]) : [];
         if ($user_session->count() > 1) {
             $user_session = array_map(function ($session) use ($m) {
-                $session->visitor_cookie != $m->visitor_cookie ? $session->delete() : '';
+                $m->visitor_cookie && $session->visitor_cookie != $m->visitor_cookie ? $session->delete() : '';
                 return $session;
             }, $user_session->get_results());
             $user_session = array_filter($user_session, function ($session) use ($m) {
                 return $session->visitor_cookie == $m->visitor_cookie;
             });
+            return $user_session ? $this->update_user_session(current($user_session), $m) : false;
+        } elseif ($user_session->count() == 1) {
+            $user_session = current($user_session->get_results());
+            return $this->update_user_session($user_session, $m);
+        } else {
+            return $this->create_user_session($m);
         }
-        if (!$user_session) {
-            $this->userID = $m->userID ?? '';
-            $this->remember_cookie = $m->remember_cookie ?? '';
-            $this->email = $m->email;
-            $this->user_agent = Session::uagent_no_version();
-            if (Cookies::exists(VISITOR_COOKIE_NAME)) {
-                if ($m->visitor_cookie != Cookies::get(VISITOR_COOKIE_NAME)) {
-                    $m->visitor_cookie = $this->visitor_cookie = Cookies::get(VISITOR_COOKIE_NAME);
-                    $m->id = $m->userID;
-                    $m->save();
-                } else {
-                    $this->visitor_cookie = $m->visitor_cookie;
-                    return $this->save();
-                }
-            } else {
-                $cookie = (new Token())->user_identifiant(24);
-                Cookies::set(VISITOR_COOKIE_NAME, $cookie, COOKIE_EXPIRY);
-                $m->visitor_cookie = $this->visitor_cookie = $cookie;
-                $m->id = $m->userID;
-                $m->save();
+    }
+
+    public function update_user_session($s = null, $u = null)
+    {
+        $save = false;
+        if ($u->remember_cookie) {
+            if ($s->remember_cookie != $u->remember_cookie) {
+                $s->remember_cookie = $u->remember_cookie;
+                $save = true;
             }
-            unset($m->id);
         }
-        return $m;
+        if ($u->visitor_cookie) {
+            if ($s->visitor_cookie != $u->visitor_cookie) {
+                $s->visitor_cookie = $u->visitor_cookie;
+                $save = true;
+            }
+        }
+        if ($u->email) {
+            if ($s->email != $u->email) {
+                $s->email = $u->email;
+                $save = true;
+            }
+        }
+        return $save ? $s->save() : '';
+    }
+
+    public function create_user_session($user = null)
+    {
+        $this->userID = $user->userID ?? '';
+        $this->remember_cookie = $user->remember_cookie ?? '';
+        $this->email = $user->email;
+        $this->user_agent = Session::uagent_no_version();
+        $this->visitor_cookie = $user->visitor_cookie;
+        return $this->save();
     }
 
     // public function check_session($obj1 = null, $obj2 = null)

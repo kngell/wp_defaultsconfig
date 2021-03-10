@@ -1,7 +1,7 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/calendar', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/admin/calendar', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
@@ -125,6 +125,6 @@
 <?php $this->start('footer') ?>
 <!----------custom--------->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/calendar', 'js') ?? ''?>">
+    src="<?= $this->asset('js/custom/admin/calendar', 'js') ?? ''?>">
 </script>
 <?php $this->end();

@@ -29,8 +29,13 @@ module.exports = {
       dependOn: "js/librairies/frontlib",
     },
     //Ecommerce - Profile page js
-    "js/custom/home/profile": {
-      import: ["js/custom/home/profile"],
+    "js/custom/home/account/account": {
+      import: ["js/custom/home/account/account"],
+      dependOn: "js/librairies/frontlib",
+    },
+    //Ecommerce - Profile page js
+    "js/custom/home/account/profile": {
+      import: ["js/custom/home/account/profile"],
       dependOn: "js/librairies/frontlib",
     },
   },

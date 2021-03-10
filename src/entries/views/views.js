@@ -56,4 +56,5 @@ import "views/home/product.php";
 import "views/home/cart.php";
 
 // home pages ecommerce account
-import "views/home/profile.php";
+import "views/home/account/account.php";
+import "views/home/account/profile.php";

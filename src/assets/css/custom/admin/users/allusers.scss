@@ -1,11 +1,21 @@
-.content {
+.page-content {
   & .card {
     & .card-body {
       & .card.bg-light {
         & .card-body {
           & .img-wrapper {
-            & img {
+            text-align: end !important;
+            & .img-circle {
               width: 80px;
+              border-radius: 50%;
+            }
+          }
+        }
+        & .card-footer {
+          .row {
+            .bg-teal {
+              color: #fff !important;
+              background-color: #20c997 !important;
             }
           }
         }

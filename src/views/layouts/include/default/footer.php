@@ -52,23 +52,23 @@
 
   <!-- Librairies -->
   <script type="text/javascript"
-      src="<?= $this->get_Asset('js/librairies/frontlib', 'js') ?? '' ?>">
+      src="<?= $this->asset('js/librairies/frontlib', 'js') ?? '' ?>">
   </script>
   <!-- Common vendor -->
   <script type="text/javascript"
-      src="<?= $this->get_Asset('commons/frontend/commonVendor', 'js') ?? '' ?>">
+      src="<?= $this->asset('commons/frontend/commonVendor', 'js') ?? '' ?>">
   </script>
   <!-- Custom Common Modules  -->
   <script type="text/javascript"
-      src="<?= $this->get_Asset('commons/frontend/commonCustomModules', 'js') ?? '' ?>">
+      src="<?= $this->asset('commons/frontend/commonCustomModules', 'js') ?? '' ?>">
   </script>
   <!-- Plugins -->
   <script type="text/javascript"
-      src="<?= $this->get_Asset('js/plugins/homeplugins', 'js') ?? '' ?>">
+      src="<?= $this->asset('js/plugins/homeplugins', 'js') ?? '' ?>">
   </script>
   <!-- Mainjs -->
   <script type="text/javascript"
-      src="<?= $this->get_Asset('js/main/frontend/main', 'js') ?? '' ?>">
+      src="<?= $this->asset('js/main/frontend/main', 'js') ?? '' ?>">
   </script>
   <?= $this->content('footer'); ?>
   </body>

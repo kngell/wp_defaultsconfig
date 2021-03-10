@@ -27,7 +27,7 @@
                     <li class="sidebar-item">
                         <a href="#homeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle collapsed">
-                            <i class="fal fa-tachometer"></i>
+                            <i class="fal fa-tachometer fa-lg"></i>
                             <span>Dashboard</span>
                         </a>
                         <ul class="sidebar-second-level collapse list-unstyled" id="homeSubmenu"
@@ -39,6 +39,46 @@
                             <li>
                                 <a
                                     href="<?=PROOT . 'admin' . US . 'index'?>">Ecommerce</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#usersManagement" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-id-card fa-lg"></i>
+                            <span>Users Management</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="usersManagement"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_allUsers'?>">All
+                                    users</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_deletedUsers'?>">Deleted
+                                    Users</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#productsManagement" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fab fa-product-hunt fa-lg"></i>
+                            <span>Products Management</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="productsManagement"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allcategories'?>">All
+                                    Categories</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allproducts'?>">All
+                                    Products</a>
                             </li>
                         </ul>
                     </li>

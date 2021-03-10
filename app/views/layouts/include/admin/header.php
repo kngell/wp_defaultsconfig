@@ -21,15 +21,15 @@ Website: https://teachprod.com
 
     <!-- Librairies -->
     <link
-        href="<?= $this->get_Asset('css/librairies/adminlib', 'css') ?? ''?>"
+        href="<?= $this->asset('css/librairies/adminlib', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
     <!-- Plugins css -->
     <link
-        href="<?= $this->get_Asset('css/plugins/adminplugins', 'css') ?? ''?>"
+        href="<?= $this->asset('css/plugins/adminplugins', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
     <!-- Main style -->
     <link
-        href="<?= $this->get_Asset('css/main/backend/admin/main', 'css') ?? ''?>"
+        href="<?= $this->asset('css/main/backend/admin/main', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
     <!-- Custom css -->
     <?= $this->content('head'); ?>

@@ -1,36 +1,37 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/products/categories', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/admin/products/categories', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
-<div class="content-wrapper">
+<div class="page-content">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Dashboard</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">allCategories</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+    <div class="row header justify-content-between mb-4 w-100">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb ps-0 fs-base">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item"><span>Products</span></li>
+                    <li class="breadcrumb-item active" aria-current="page">All Products</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col text-end">
+            <h4 class="header-title h3">
+                Manage Products
+            </h4>
+        </div>
     </div>
     <!-- /.content-header -->
     <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+    <div class="row mb-4 content">
+        <div class="col-12">
             <!-- Small boxes (Stat box) -->
             <div class="card border-primary">
                 <h5 class="card-header bg-primary d-flex">
                     <span class="text-light lead">Manage Categories</span>
-                    <span class="ml-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
+                    <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
                         </a>&nbsp;&nbsp;
                         <a href="" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-box"
@@ -89,13 +90,13 @@
         </div>
 
         <!----------End Add new post Modal-------->
-    </section>
-    <!-- /.content -->
-</div>
-<?php $this->end(); ?>
-<?php $this->start('footer') ?>
-<!----------custom--------->
-<script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/products/categories', 'js') ?? ''?>">
-</script>
-<?php $this->end();
+        </section>
+        <!-- /.content -->
+    </div>
+    <?php $this->end(); ?>
+    <?php $this->start('footer') ?>
+    <!----------custom--------->
+    <script type="text/javascript"
+        src="<?= $this->asset('js/custom/admin/products/categories', 'js') ?? ''?>">
+    </script>
+    <?php $this->end();

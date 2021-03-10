@@ -1,33 +1,33 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/users/profile', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/admin/users/profile', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>User Profile</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Dashbord</a></li>
-                        <li class="breadcrumb-item active">User Profile</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+<div class="page-content">
+    <div class="row header justify-content-between mb-4 w-100">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb ps-0 fs-base">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item"><span>Users</span></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col text-end">
+            <h4 class="header-title h3">
+                Manage Users
+            </h4>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
             <div class="card card-solid">
                 <h5 class="card-header bg-info d-flex">
-                    <span class="text-light lead">Profile Details</span>
-                    <span class="ml-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
+                    <span class="text-light lead">User profile</span>
+                    <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
                         </a>&nbsp;
                     </span>
@@ -40,7 +40,7 @@
                             </div>
                             <div class="card-body text-center">
                                 <img src="../../../assets/img/users/avatar.png" alt="Christina Mason"
-                                    class="img-fluid rounded-circle mb-2" width="128" height="128" />
+                                    class="img-fluid rounded-circle mb-2 p-image" />
                                 <h5 class="card-title mb-0">Christina Mason</h5>
                                 <div class="text-muted mb-2">Lead Developer</div>
 
@@ -96,15 +96,120 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-8 col-xl-9">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0 text-center">Update account</h5>
+                            </div>
+                            <div class="card-body">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                            aria-selected="true">Mes commandes</button>
+                                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-profile" type="button" role="tab"
+                                            aria-controls="nav-profile" aria-selected="false">Mon profil</button>
+                                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                                            data-bs-target="#nav-contact" type="button" role="tab"
+                                            aria-controls="nav-contact" aria-selected="false">Moyens de
+                                            payement</button>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                        aria-labelledby="nav-home-tab">
+
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                                        aria-labelledby="nav-profile-tab">
+                                        <form action="" novalidate>
+                                            <div class="row g-3">
+                                                <div class="col-sm-6">
+                                                    <label for="firstName" class="form-label">First Name</label>
+                                                    <input type="text" class="form-control" id="firstName"
+                                                        name="firstName" placeholder="John">
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="lastName" class="form-label">Last Name</label>
+                                                    <input type="text" class="form-control" id="lastName"
+                                                        name="lastName" placeholder="Smith">
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="userName" class="form-label">Username</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">@</span>
+                                                        <input type="text" class="form-control" id="userName"
+                                                            name="userName" placeholder="jsmith">
+                                                    </div>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label for="country" class="form-label">Country</label>
+                                                    <select class="form-control" id="country" name="country">
+                                                        <option value="">Choose...</option>
+                                                        <option value="Australia">Autralia</option>
+                                                        <option value="Australia">USA</option>
+                                                        <option value="Australia">China</option>
+                                                    </select>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="region" class="form-label">Region</label>
+                                                    <select class="form-control" id="region" name="region">
+                                                        <option value="">Choose...</option>
+                                                        <option value="Australia">IDF</option>
+                                                        <option value="Australia">Vaucluse</option>
+                                                        <option value="Australia">Val d4oise</option>
+                                                    </select>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="postcode" class="form-label">Code postal</label>
+                                                    <input type="number" class="form-control" id="postcode"
+                                                        name="postcode" placeholder="95000">
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                            <hr class="my-4">
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="sameAddress"
+                                                        name="sameAddress">
+                                                    <label for="sameAddress" class="form-check-label">Shipping address
+                                                        is the
+                                                        same
+                                                        as billing.</label>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="saveInfos"
+                                                        name="sameAddress">
+                                                    <label for="saveInfos" class="form-check-label">Save these
+                                                        infos.</label>
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                                        aria-labelledby="nav-contact-tab">...</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-</div>
-<?php $this->end(); ?>
-<?php $this->start('footer') ?>
-<!----------custom--------->
-<script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/users/profile', 'js') ?? ''?>">
-</script>
-<?php $this->end();
+        </section>
+    </div>
+    <?php $this->end(); ?>
+    <?php $this->start('footer') ?>
+    <!----------custom--------->
+    <script type="text/javascript"
+        src="<?= $this->asset('js/custom/admin/users/profile', 'js') ?? ''?>">
+    </script>
+    <?php $this->end();

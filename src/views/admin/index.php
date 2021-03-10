@@ -1,7 +1,7 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/admin/dashboard/dashboard', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/admin/dashboard/dashboard', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
@@ -325,6 +325,6 @@
 <?php $this->start('footer') ?>
 <!----------custom--------->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/admin/dashboard', 'js') ?? ''?>">
+    src="<?= $this->asset('js/custom/admin/dashboard', 'js') ?? ''?>">
 </script>
 <?php $this->end();

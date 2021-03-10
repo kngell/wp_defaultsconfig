@@ -1,7 +1,7 @@
 <?php $this->start('head'); ?>
 <!-------Accueil-------->
 <link
-    href="<?= $this->get_Asset('css/custom/home/cart', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/home/cart', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
@@ -25,6 +25,6 @@
 <?php $this->start('footer')?>
 <!-- Html visitors -->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/home/cart', 'js') ?? ''?>">
+    src="<?= $this->asset('js/custom/home/cart', 'js') ?? ''?>">
 </script>
 <?php $this->end();

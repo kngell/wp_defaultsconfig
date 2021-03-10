@@ -94,5 +94,5 @@ document.addEventListener("DOMContentLoaded", () => {
     new PhpPlugin(this);
     return this;
   };
-  $(".content").phpPlugin();
+  $(".page-content").phpPlugin();
 });

@@ -47,12 +47,10 @@ class AuthController extends Controller
     public function remember_check()
     {
         if ($this->request->exists('post')) {
-            if (Cookies::exists(REMEMBER_ME_COOKIE_NAME)) {
-                if ($userdata = AuthManager::rememberMe_checker()) {
-                    $this->jsonResponse(['result' => 'success', 'msg' => $userdata]);
-                } else {
-                    $this->jsonResponse(['result' => 'error', 'msg' => '']);
-                }
+            if ($userdata = AuthManager::rememberMe_checker()) {
+                $this->jsonResponse(['result' => 'success', 'msg' => $userdata]);
+            } else {
+                $this->jsonResponse(['result' => 'error', 'msg' => '']);
             }
         }
     }

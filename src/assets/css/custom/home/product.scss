@@ -1,8 +1,8 @@
 @import "corecss/_variables.scss";
 @import "corecss/_color.scss";
 @import "corecss/_tipography.scss";
-@import "./_header.scss";
-@import "./_top-sale.scss";
+@import "./partials/_header.scss";
+@import "./partials/_top-sale.scss";
 
 #product {
   .r_button {

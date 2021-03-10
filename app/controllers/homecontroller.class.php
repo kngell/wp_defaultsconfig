@@ -39,11 +39,18 @@ class HomeController extends Controller
     }
 
     //page account
+    public function account()
+    {
+        // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
+        $this->view_instance->set_pageTitle('Account');
+        $this->view_instance->render('home' . DS . 'account' . DS . 'profile');
+    }
+
+    //page profile
     public function profile()
     {
-        // dump($_SESSION);
+        // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
         $this->view_instance->set_pageTitle('Account');
-        $this->view_instance->user = $this->get_model('UsersManager', 'users')['users'];
-        $this->view_instance->render('home' . DS . 'profile');
+        $this->view_instance->render('home' . DS . 'account' . DS . 'profile');
     }
 }

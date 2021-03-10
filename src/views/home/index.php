@@ -1,7 +1,7 @@
 <?php $this->start('head'); ?>
 <!-------Costum-------->
 <link
-    href="<?= $this->get_Asset('css/custom/home/home', 'css') ?? ''?>"
+    href="<?= $this->asset('css/custom/home/home', 'css') ?? ''?>"
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
@@ -37,6 +37,6 @@
 <?php $this->start('footer') ?>
 <!----------custom--------->
 <script type="text/javascript"
-    src="<?= $this->get_Asset('js/custom/home/home', 'js') ?? ''?>">
+    src="<?= $this->asset('js/custom/home/home', 'js') ?? ''?>">
 </script>
 <?php $this->end();

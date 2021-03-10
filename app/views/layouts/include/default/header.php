@@ -14,15 +14,15 @@
     </title>
     <!-- Main style -->
     <link
-        href="<?= $this->get_Asset('css/librairies/frontlib', 'css') ?? '' ?>"
+        href="<?= $this->asset('css/librairies/frontlib', 'css') ?? '' ?>"
         rel="stylesheet" type="text/css">
     <!-- Plugins css -->
     <link
-        href="<?= $this->get_Asset('css/plugins/homeplugins', 'css') ?? '' ?>"
+        href="<?= $this->asset('css/plugins/homeplugins', 'css') ?? '' ?>"
         rel="stylesheet" type="text/css">
     <!-- Main style -->
     <link
-        href="<?= $this->get_Asset('css/main/frontend/main', 'css') ?? '' ?>"
+        href="<?= $this->asset('css/main/frontend/main', 'css') ?? '' ?>"
         rel="stylesheet" type="text/css">
 
     <?= $this->content('head'); ?>

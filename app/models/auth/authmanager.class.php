@@ -137,19 +137,25 @@ class AuthManager extends Model
                 Cookies::set($this->_cookieName, $rem_cookie, COOKIE_EXPIRY);
                 $this->remember_cookie = $rem_cookie;
                 $this->save();
-            } elseif ($this->remember_cookie != Cookies::get($this->_cookieName)) {
-                $this->remember_cookie = Cookies::get($this->_cookieName);
-                $this->save();
+            } else {
+                if ($this->remember_cookie != Cookies::get($this->_cookieName)) {
+                    $this->remember_cookie = Cookies::get($this->_cookieName);
+                    $this->save();
+                }
             }
         } else {
-            Cookies::exists(REMEMBER_ME_COOKIE_NAME) ? Cookies::delete($this->_cookieName) : '';
+            Cookies::exists($this->_cookieName) ? Cookies::delete($this->_cookieName) : '';
             $this->remember_cookie = null;
             $this->save();
         }
-        // Check for visitor identifiant
-        if (Cookies::exists(VISITOR_COOKIE_NAME) && $this->visitor_cookie != Cookies::get(VISITOR_COOKIE_NAME)) {
-            $this->visitor_cookie = Cookies::get(VISITOR_COOKIE_NAME);
-            $this->save();
+        // Check for visitor identifiers
+        if (Cookies::exists(VISITOR_COOKIE_NAME)) {
+            if ($this->visitor_cookie != Cookies::get(VISITOR_COOKIE_NAME)) {
+                $this->visitor_cookie = Cookies::get(VISITOR_COOKIE_NAME);
+                $this->save();
+            }
+        } else {
+            (new VisitorsManager())->add_new_visitor(H_visitors::getVisitorData('91.173.88.22'));
         }
         (new UserSessionsManager())->set_userSession($this);
         return  Session::set($this->_sessionName, $this->email) ?? false;

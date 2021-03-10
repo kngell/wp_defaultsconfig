@@ -29,7 +29,7 @@
     "AssocController": ["*"],
     "CommentsController": ["*"],
     "AssetsController": ["*"],
-    "HomeController": ["profile"]
+    "HomeController": ["profile", "account"]
   },
   "admin": {
     "denied": {},
