@@ -30,7 +30,7 @@ module.exports = {
     },
     //Ecommerce - Account Page
     "css/custom/home/account/account": {
-      import: ["css/custom/home/account/account.scss"],
+      import: ["css/custom/home/account/account.sass"],
       dependOn: "css/librairies/frontlib",
     },
     //Ecommerce - Account Page

@@ -3,16 +3,46 @@
 class TH_Admin
 {
     //=======================================================================
+    //User Groups and permissions
+    //=======================================================================
+
+    public static function groupsTable($data)
+    {
+        $output = '';
+        $output .= '<table class="table table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:10%" class="text-center">#</th>
+                            <th scope="col" style="width:20%">Name</th>
+                            <th scope="col" style=>Description</th>
+                            <th scope="col" style="width:20%">Parent Group</th>
+                            <th scope="col" style="width:20%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+        foreach ($data as $item) {
+            $active = $item->status == 1 ? "style='color:green'" : '';
+            $group = ((int)$item->parentID != 0) ? $item->getDetails($item->parentID)->name : '';
+            $output .= ' <tr>
+                            <th scope="row">' . $item->grID . '</th>
+                            <td>' . $item->name . '</td>
+                            <td>' . $item->description . '</td>
+                            <td>' . $group . '</td>
+                            <td>
+                            <a href="#" id="' . $item->grID . '" title="status" class="text-danger activateBtn"> <i class="fas fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
+                            <a href="#" id="' . $item->grID . '"  title="Edit permissions" class="text-primary editBtn mx-2" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="#" id="' . $item->grID . '" title="Delete permissions" class="text-danger deleteBtn"><i class="fas fa-trash-alt fa-lg"></i></a>
+                            </td>   
+                        </tr>';
+        }
+        $output .= '</tbody></table>';
+
+        return $output;
+    }
+
+    //=======================================================================
     //Categories table
     //=======================================================================
-    // public static function categoriesTable($data)
-    // {
-    //     $output ='';
-    //     foreach ($data as $categorie) {
-    //         $output .= $categorie->outputCategories();
-    //     }
-    //     return $output;
-    // }
 
     public static function categoriesTable($data)
     {

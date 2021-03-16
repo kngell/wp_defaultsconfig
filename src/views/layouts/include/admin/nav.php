@@ -12,6 +12,10 @@
         </div>
     </div>
     <ul class="list-unstyled top-right-menu">
+        <li class="nav-item text-white-50 me-5"><a
+                href="<?=PROOT . 'home'?>">
+                <span><i class="fad fa-home"></i></span>&nbsp;<span>Home</span></a>
+        </li>
         <li class="nav-item topbar-dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                 aria-expanded="false" id="emailsDropdown">
@@ -257,16 +261,17 @@
                 <img src="<?=IMG . 'users' . US . 'avatar.png'?>"
                     alt="user-image" class="rounded-circle img-fluid">
                 <span class="ms-1 d-none d-lg-inline">
-                    <span class="user-name">Hi, Admin</span>
+                    <span class="user-name">Bonjour, <?=AuthManager::currentUser()->firstName?></span>
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown dropdown-animate">
                 <div class="dropdown-header">
-                    <h6 class="text-center">Welcome !</h6>
+                    <h6 class="text-center">Bienvenu !</h6>
                 </div>
-                <a href="javascript:void(0);" class="dropdown-item">
+                <a href="<?=PROOT . 'home' . US . 'account'?>"
+                    class="dropdown-item">
                     <i class="fal fa-user-alt me-1"></i>
-                    <span>My Account</span>
+                    <span>Mon compte</span>
                 </a>
                 <a href="javascript:void(0);" class="dropdown-item">
                     <i class="fal fa-cog me-1"></i>
@@ -286,7 +291,7 @@
                 </a>
                 <a href="javascript:void(0);" class="dropdown-item">
                     <i class="fal fa-sign-out me-1"></i>
-                    <span>Sign out</span>
+                    <span>Logout</span>
                 </a>
             </div>
         </li>

@@ -80,7 +80,7 @@ var Logreg = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return Promise.all(/*! import() | logAndReg */[__webpack_require__.e("vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-dfa918"), __webpack_require__.e("logAndReg")]).then(__webpack_require__.bind(__webpack_require__, /*! ./logreg */ "./src/assets/js/core/logreg.js"));
+                return Promise.all(/*! import() | logAndReg */[__webpack_require__.e("vendors-node_modules_core-js_modules_es_array_for-each_js-node_modules_core-js_modules_es_arr-e754d7"), __webpack_require__.e("logAndReg")]).then(__webpack_require__.bind(__webpack_require__, /*! ./logreg */ "./src/assets/js/core/logreg.js"));
 
               case 2:
                 _yield$import = _context2.sent;

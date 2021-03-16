@@ -44,6 +44,16 @@ class Session
 
     public static function set_redirect($controller, $method)
     {
-        ($method == 'profile' && $controller == 'HomeController') ? self::set(REDIRECT, $method) : '';
+        $redirect_file = file_get_contents(APP . 'redirect.json');
+        $redirect = json_decode($redirect_file, true);
+        if (!self::exists(REDIRECT)) {
+            foreach ($redirect as $ctrl => $mth) {
+                if ($ctrl == $controller) {
+                    if (in_array($method, $redirect[$controller]) || in_array('*', $redirect[$controller])) {
+                        self::set(REDIRECT, 'redirect');
+                    }
+                }
+            }
+        }
     }
 }

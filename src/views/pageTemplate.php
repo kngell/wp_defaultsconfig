@@ -5,8 +5,14 @@
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
+<main id=main-site>
+    <!-- Content -->
 
 
+    <!-- Fin Content -->
+    <input type="hidden" id="ip_address" style="display:none"
+        value="<?=H_visitors::getIP()?>">
+</main>
 <?php $this->end(); ?>
 <?php $this->start('footer') ?>
 <!----------custom--------->

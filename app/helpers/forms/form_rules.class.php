@@ -1,8 +1,24 @@
 <?php
 class Form_rules
 {
-    //Register form validation rules
-    public static function register()
+    // =======================================================================
+    // Users
+    // =======================================================================
+    // Users groups
+    public static function groups()
+    {
+        return [
+            'name' => [
+                'display' => 'Group Name',
+                'required' => true,
+                'max' => 65,
+                'unique' => 'groups',
+            ],
+        ];
+    }
+
+    //Users datas
+    public static function users()
     {
         return [
             'terms' => [
@@ -11,13 +27,11 @@ class Form_rules
             ],
             'firstName' => [
                 'required' => true,
-                'min' => 2,
                 'max' => 64,
                 'display' => 'Firstname'
             ],
             'lastName' => [
                 'required' => true,
-                'min' => 2,
                 'max' => 64,
                 'display' => 'Lastname'
             ],

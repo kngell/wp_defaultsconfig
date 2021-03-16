@@ -4,13 +4,16 @@ class UserextradataManager extends Model
     protected $_colID = 'usdID';
     protected $_table = 'user_extra_data';
     protected $_colIndex = 'userID';
+    public $usdID;
     public $userID;
-    public $u_address;
-    public $u_drescr;
+    public $u_descr;
+    public $gender;
+    public $dob;
     public $u_function;
+    public $u_total_spend;
     public $date_enreg;
     public $updateAt;
-    public $u_total_spend;
+    public $deleted;
 
     //=======================================================================
     //construct

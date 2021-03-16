@@ -288,11 +288,11 @@ class AuthController extends Controller
                     Rooter::redirect('');
                 }
                 if (Session::exists(REDIRECT)) {
-                    $url = explode('/', $_SERVER['HTTP_REFERER']);
-                    if (array_pop($url) == Session::get(REDIRECT)) {
-                        Session::delete(REDIRECT);
-                        $this->jsonResponse(['result' => 'success', 'msg' => 'redirect']);
-                    }
+                    // $url = explode('/', $_SERVER['HTTP_REFERER']);
+                    // if (array_pop($url) == Session::get(REDIRECT)) {
+                    Session::delete(REDIRECT);
+                    $this->jsonResponse(['result' => 'success', 'msg' => 'redirect']);
+                    // }
                 }
                 $this->jsonResponse(['result' => 'success', 'msg' => 'no_redirect']);
             }

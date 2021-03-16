@@ -60,6 +60,11 @@
                                     href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_deletedUsers'?>">Deleted
                                     Users</a>
                             </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'permissions'?>">Group
+                                    and permissions</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="sidebar-item">

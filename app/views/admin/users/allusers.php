@@ -26,11 +26,13 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card card-solid">
-                <h5 class="card-header bg-primary d-flex">
-                    <span class="text-light lead">All Users</span>
+                <h5 class="card-header main-header">
+                    <span class="text-light lead">Manage Users</span>
                     <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
-                        </a>&nbsp;
+                        </a>&nbsp;&nbsp;
+                        <a href="" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-box"
+                            id="addNew"><i class="fas fa-plus-circle fa-lg"></i>&nbsp;Add new</a>
                     </span>
                 </h5>
                 <div id="globalErr"></div>
@@ -89,15 +91,73 @@
             </div>
             <!-- /.card -->
         </div>
-        </section>
-        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+</div>
+<!----------Add new user-------->
+<div class="modal fade" role="dialog" id="modal-box">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
+                <?=$this->profile_upload?>
+                <h5 class="modal-title"> New user</h5>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" id="add-user-frm" class="px-3 needs-validation"
+                    enctype="multipart/form-data">
+                    <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add-user-frm', $_SESSION[TOKEN_NAME])); ?>
+                    <input type="hidden" name="operation" id="operation">
+                    <input type="hidden" name="userID" id="userID"
+                        value="<?=AuthManager::$currentLoggedInUser->userID?>">
+                    <input type="hidden" name="date_enreg" id="date_enreg">
+                    <input type="hidden" name="updateAt" id="updateAt">
+                    <input type="hidden" name="deleted" id="deleted">
+                    <div id="alertErr"></div>
+                    <div class="row g-3">
+                        <div class="col-sm-6 mb-3">
+                            <input type="text" name="firstName" id="firstName" class="form-control "
+                                placeholder="Prénom">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <input type="text" name="lastName" id="lastName" class="form-control " placeholder="Nom">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <input type="text" name="userName" id="userName" class="form-control "
+                                placeholder="Identifiant">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <input type="text" name="email" id="email" class="form-control " placeholder="Email">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
 
-    <?php $this->end(); ?>
-    <?php $this->start('footer') ?>
-    <!----------custom--------->
-    <script type="text/javascript"
-        src="<?= $this->asset('js/custom/admin/users/allusers', 'js') ?? ''?>">
-    </script>
-    <?php $this->end();
+                    <div class="mb-3">
+                        <input type="text" name="phone" id="phone" class="form-control " placeholder="Téléphone">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <select class="form-select select2" multiple aria-label="multiple select example" name="acl[]"
+                        id="acl">
+                        <option value="1" data-custom-attribute="1">Vendor</option>
+                        <option value="2" data-custom-attribute="2">Cutomer</option>
+                        <option value="2" data-custom-attribute="3">Member</option>
+                        <option value="3" data-custom-attribute="4">Admin</option>
+                    </select>
+                    <div class="mb-3 text-center">
+                        <input type="submit" name="submitBtn" id="submitBtn" value="Add" class="button mt-3">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->end(); ?>
+<?php $this->start('footer') ?>
+<!----------custom--------->
+<script type="text/javascript"
+    src="<?= $this->asset('js/custom/admin/users/allusers', 'js') ?? ''?>">
+</script>
+<?php $this->end();

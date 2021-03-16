@@ -13,6 +13,8 @@ export function displayAllDetails(data, gestion) {
       session_id: data.session_id ? data.session_id : "",
       data_type: data.data_type ? data.data_type : "",
       return_mode: data.return_mode ? data.return_mode : "",
+      token: data.token ? data.token : "",
+      frm_name: data.frm_name ? data.frm_name : "",
     },
     success: function (response) {
       gestion(response, data.params ? data.params : "");
@@ -107,6 +109,7 @@ export function Call_controller(data, gestion) {
   if (data.id) formData.append("id", data.id);
   if (data.user_id) formData.append("id", data.user_id);
   if (data.method) formData.append("method", data.method);
+  if (data.select2) formData.append("select2", data.select2);
   $.ajax({
     url: BASE_URL + data.url,
     method: "post",
@@ -263,4 +266,44 @@ export function addCategorrie(catField, alertID) {
       },
     });
   }
+}
+export function select2AjaxParams(data) {
+  return {
+    url: BASE_URL + data.url,
+    type: "post",
+    dataType: "json",
+    delay: 250,
+    data: function (params) {
+      return {
+        searchTerm: params.term, // search term
+        table: data.table != "" ? data.table : "",
+        data_type: data.data_type != "" ? data.data_type : "",
+      };
+    },
+    processResults: function (response) {
+      if (response.result == "success") {
+        // var data = $.map(response.msg, function (obj) {
+        //   obj.id = obj.id || obj.text; // replace pk with your identifier
+        //   return obj;
+        // });
+        // //console.log(data);
+
+        return {
+          results: $.map(response.msg, function (obj) {
+            if (obj.id != 0) {
+              console.log(obj);
+              return { id: obj.id, text: obj.text };
+            } else {
+              return { id: obj.id, text: obj.text };
+            }
+          }),
+        };
+
+        // return {
+        //   results: data,
+        // };
+      }
+    },
+    cache: true,
+  };
 }

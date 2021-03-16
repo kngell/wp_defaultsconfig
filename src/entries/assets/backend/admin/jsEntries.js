@@ -48,5 +48,10 @@ module.exports = {
       import: ["js/custom/admin/users/profile"],
       dependOn: "js/librairies/adminlib",
     },
+    //Admin users permissions
+    "js/custom/admin/users/permissions": {
+      import: ["js/custom/admin/users/permissions"],
+      dependOn: "js/librairies/adminlib",
+    },
   },
 };

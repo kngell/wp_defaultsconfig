@@ -35,7 +35,7 @@ abstract class Model
         return $this->find(['return_mode' => 'class']);
     }
 
-    public function getHtmlData()
+    public function getHtmlData($params = [])
     {
     }
 

@@ -43,7 +43,7 @@ class FormsController extends Controller
             $table = $this->request->getAll('table');
             $_REQUEST['method'] = 'showDetails';
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            $output = FH::getShowAllData($this->model_instance[$table], $this->request, $_REQUEST);
+            $output = FH::getShowAllData($this->model_instance[$table], $this->request, $this->request->getAll());
             if ($output) {
                 $this->jsonResponse(['result' => 'success', 'msg' => $output]);
             } else {

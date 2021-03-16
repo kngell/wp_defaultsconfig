@@ -1,1 +1,1 @@
-import { Toast, Popover } from "bootstrap";
+import { Toast, Popover, Modal, Dropdown } from "bootstrap";

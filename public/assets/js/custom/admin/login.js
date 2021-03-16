@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return Promise.all(/*! import() | login */[__webpack_require__.e("vendors-node_modules_core-js_modules_es_array_find_js-node_modules_core-js_modules_es_array_f-3681fe"), __webpack_require__.e("login")]).then(__webpack_require__.bind(__webpack_require__, /*! corejs/logreg */ "./src/assets/js/core/logreg.js"));
+            return Promise.all(/*! import() | login */[__webpack_require__.e("vendors-node_modules_core-js_modules_es_array_find_js-node_modules_core-js_modules_es_array_f-89a5b4"), __webpack_require__.e("login")]).then(__webpack_require__.bind(__webpack_require__, /*! corejs/logreg */ "./src/assets/js/core/logreg.js"));
 
           case 2:
             login = _context.sent;

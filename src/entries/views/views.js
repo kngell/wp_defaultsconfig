@@ -29,6 +29,7 @@ import "views/admin/home/contact-us.php";
 //admin users page
 import "views/admin/users/allusers.php";
 import "views/admin/users/profile.php";
+import "views/admin/users/permissions.php";
 //=======================================================================
 //Home Ecommerce Pages and Layouts
 //=======================================================================
@@ -57,4 +58,3 @@ import "views/home/cart.php";
 
 // home pages ecommerce account
 import "views/home/account/account.php";
-import "views/home/account/profile.php";

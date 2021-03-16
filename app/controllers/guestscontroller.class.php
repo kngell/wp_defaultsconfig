@@ -11,10 +11,21 @@ class GuestsController extends Controller
     //Coutries
     //=======================================================================
 
-    public function countries()
+    public function get_countries()
     {
-        $countries = ($this->get_model('ContactsManager'))->get_countries();
-        $this->jsonResponse($countries);
+        $search = ucfirst($this->request->getAll('searchTerm'));
+        $data = file_get_contents(APP . 'librairies' . DS . 'database' . DS . 'json' . DS . 'countries.json');
+        $countries = array_filter(array_column(json_decode($data, 1), 'name'), function ($countrie) use ($search) {
+            return str_starts_with($countrie, $search);
+        });
+        $results = array_map(
+            function ($i, $map_countrie) {
+                return ['id' => $i, 'text' => $map_countrie];
+            },
+            array_keys($countries),
+            $countries
+        );
+        $this->jsonResponse(['result' => 'success', 'msg' => $results]);
     }
 
     //=======================================================================

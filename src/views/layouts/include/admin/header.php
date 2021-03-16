@@ -23,6 +23,11 @@ Website: https://teachprod.com
     <link
         href="<?= $this->asset('css/librairies/adminlib', 'css') ?? ''?>"
         rel="stylesheet" type="text/css">
+
+    <!-- Common modules css -->
+    <link
+        href="<?= $this->asset('commons/backend/admin/commoncss', 'css') ?? ''?>"
+        rel="stylesheet" type="text/css">
     <!-- Plugins css -->
     <link
         href="<?= $this->asset('css/plugins/adminplugins', 'css') ?? ''?>"

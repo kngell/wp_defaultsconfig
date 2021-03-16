@@ -134,13 +134,14 @@ class FH
         foreach ($items as $item => $rules) {
             $item = Input::sanitize($item);
             $display = $rules['display'];
-            foreach ($rules as $rule => $rule_value) {
-                $value = Input::sanitize(trim($source[$item]));
-                if ($rule === 'required' && empty($value)) {
-                    $requireMsg = ($item == 'terms') ? 'Please accept terms & conditions' : "{$display} is require";
-                    $obj->runValidation(new Requirevalidator($obj, ['field' => $item, 'msg' => $requireMsg]));
-                } elseif (!empty($value)) {
-                    switch ($rule) {
+            if (isset($source[$item])) {
+                foreach ($rules as $rule => $rule_value) {
+                    $value = Input::sanitize(trim($source[$item]));
+                    if ($rule === 'required' && empty($value)) {
+                        $requireMsg = ($item == 'terms') ? 'Please accept terms & conditions' : "{$display} is require";
+                        property_exists($obj, $item) ? $obj->runValidation(new Requirevalidator($obj, ['field' => $item, 'msg' => $requireMsg])) : '';
+                    } elseif (!empty($value)) {
+                        switch ($rule) {
                         case 'min':
                             $obj->runValidation(new Minvalidator($obj, ['field' => $item, 'rule' => $rule_value, 'msg' => "{$display} must be a minimum of {$rule_value} characters"]));
                             break;
@@ -162,26 +163,30 @@ class FH
                             $obj->runValidation(new UniqueValidator($obj, ['field' => $item, 'rule' => [$rule_value, $obj->get_colID()], 'msg' => "This {$item} already exist."]));
                             break;
                     }
+                    }
                 }
             }
         }
     }
 
     //get showAll data refactor
-    public static function getShowAllData($model, $request, $item)
+    public static function getShowAllData($model, $request, $params)
     {
         switch (true) {
-                    case isset($item['data_type']) && $item['data_type'] == 'values': //values or html template
-                        if (isset($item['return_mode']) && $item['return_mode'] == 'details') { // Detals or All
+                    case isset($params['data_type']) && $params['data_type'] == 'values': //values or html template
+                        if (isset($params['return_mode']) && $params['return_mode'] == 'details') { // Detals or all
                             return $model->getDetails($request->getAll('id'));
-                        } elseif (isset($item['return_mode']) && $item['return_mode'] == 'index') {
+                        } elseif (isset($params['return_mode']) && $params['return_mode'] == 'index') {
                             return $model->getAllbyIndex($request->getAll('id'));
                         } else {
                             return $model->getAllItem()->get_results();
                         }
                     break;
-                    case $item['data_type'] == 'template':
-                        return $model->getHtmlData($item);
+                    case $params['data_type'] == 'template':
+                        return $model->getHtmlData($params);
+                    break;
+                    case $params['data_type'] == 'select2': // Get select2 Data
+                        return $model->getSelect2Data($params);
                     break;
                 }
     }

@@ -88,9 +88,6 @@
                 </div>
             </div>
         </div>
-
-        <!----------End Add new post Modal-------->
-        </section>
         <!-- /.content -->
     </div>
     <?php $this->end(); ?>

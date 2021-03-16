@@ -10,7 +10,7 @@ module.exports = {
     },
     //Admin plugins
     "css/plugins/adminplugins": {
-      import: ["css/plugins_entries/adminplugins.scss"],
+      import: ["css/plugins_entries/adminplugins.sass"],
       dependOn: "css/librairies/adminlib",
     },
 
@@ -31,12 +31,17 @@ module.exports = {
     },
     //Admin users allusers
     "css/custom/admin/users/allusers": {
-      import: ["css/custom/admin/users/allusers.scss"],
+      import: ["css/custom/admin/users/allusers.sass"],
       dependOn: "css/librairies/adminlib",
     },
     //Admin users allusers
     "css/custom/admin/users/profile": {
       import: ["css/custom/admin/users/profile.scss"],
+      dependOn: "css/librairies/adminlib",
+    },
+    //Admin users permissions
+    "css/custom/admin/users/permissions": {
+      import: ["css/custom/admin/users/permissions.sass"],
       dependOn: "css/librairies/adminlib",
     },
   },

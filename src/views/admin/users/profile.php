@@ -25,7 +25,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card card-solid">
-                <h5 class="card-header bg-info d-flex">
+                <h5 class="card-header d-flex">
                     <span class="text-light lead">User profile</span>
                     <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back

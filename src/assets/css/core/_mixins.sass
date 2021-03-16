@@ -1,0 +1,89 @@
+
+// =============================================================================
+// Background image
+// =============================================================================
+=background($imgpath, $position: 0 0, $repeat: no-repeat) 
+  background: 
+    image: url($imgpath)
+    position: $position
+    repeat: $repeat
+    size: cover
+
+// =============================================================================
+// Box Shadow
+// =============================================================================
+=box-shadow($value) 
+  -webkit-box-shadow: $value
+  -moz-box-shadow: $value
+  box-shadow: $value
+// =============================================================================
+// Façonnage element
+// =============================================================================
+=box-definition($height:'',$width:'',$radius:'',$bg:'',$color:'')
+  height:$height
+  width: $width
+  border-radius:$radius
+  background-color:$bg 
+  color:$color
+// =============================================================================
+// Button
+// =============================================================================
+=btn-main($padding:'',$radius:'',$bg:'',$color:'',$hover-color:'')
+  padding: $padding
+  border-radius: $radius
+  background-color: $bg!important
+  color: $color
+  border-width: 0
+  border-style: none 
+  cursor: pointer
+  transition: .3s ease
+  outline: none !important
+  box-shadow: none
+  &:hover
+    background-color: lighten($hover-color, 20%)!important
+
+// =============================================================================
+// Upload image profile
+// =============================================================================
+=upload-profile($taille:'',$img_rad:'')
+  .upload-image-wrapper
+    position: relative
+    width:$taille
+    margin-left: auto
+    margin-right: auto
+    transition: filter 0.8s ease
+    &:hover 
+        filter: drop-shadow(1px 1px 22px #7584bb)
+        .camera-icon 
+            filter: invert(80%) !important
+    input[type=file]
+        position: absolute
+        top: 0
+        z-index: 10
+        width: $taille
+        height: 100%
+        margin-top: 0px
+        opacity: 0
+        // background: green
+        &::-webkit-file-upload-button 
+            visibility: hidden
+        &::before 
+            content: " "
+            display: inline-block
+            width: $taille
+            height: 100%
+            cursor: pointer
+            border-radius: $img_rad
+            // background: blue
+    .img 
+        width: $taille
+        object-fit: cover
+        border-radius: $img_rad
+    .camera-icon 
+        position: absolute
+        top: 35%
+        width: 40%!important
+        filter: invert(30%) !important
+    // .form-text
+    //   font-size: 50%
+

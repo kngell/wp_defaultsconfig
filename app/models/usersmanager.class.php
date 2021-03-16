@@ -9,16 +9,6 @@ class UsersManager extends Model
     public $lastName;
     public $userName;
     public $email;
-    public $address1;
-    public $address2;
-    public $ville;
-    public $zip_code;
-    public $region;
-    public $gender;
-    public $dob;
-    public $admin;
-    public $rank;
-    public $groupe;
     public $password;
     public $registerDate;
     public $updateAt;
@@ -32,7 +22,7 @@ class UsersManager extends Model
     public $deleted;
     public $acl;
     public $verified;
-    public $fb_access_token;
+    public $fb_access_token ;
 
     //=======================================================================
     //construct
@@ -143,5 +133,14 @@ class UsersManager extends Model
     {
         $this->sets_SoftDelete(true);
         return true;
+    }
+
+    //=======================================================================
+    //Get User form Template
+    //=======================================================================
+    public function getHtmlData($item = [])
+    {
+        $template = file_get_contents(FILES . 'template' . DS . 'e_commerce' . DS . 'account' . DS . 'userTemplate.php');
+        return $template;
     }
 }

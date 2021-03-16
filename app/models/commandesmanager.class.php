@@ -1,7 +1,5 @@
 <?php
 
-use Money\Money;
-
 class CommandesManager extends Model
 {
     protected $_colID = 'cmdID';
@@ -35,7 +33,7 @@ class CommandesManager extends Model
     //=======================================================================
     public function getHtmlData($item = [])
     {
-        $template = file_get_contents(FILES . 'template' . DS . 'home' . DS . 'boutique' . DS . 'commandesTemplate.php');
+        $template = file_get_contents(FILES . 'template' . DS . 'e_commerce' . DS . 'account' . DS . 'commandesTemplate.php');
         return $template;
     }
 }
