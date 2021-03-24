@@ -28,8 +28,8 @@
     <div class="row mb-4 content">
         <div class="col-12">
             <!-- Small boxes (Stat box) -->
-            <div class="card border-primary">
-                <h5 class="card-header bg-primary d-flex">
+            <div class="card border-primary" id="content-box">
+                <h5 class="card-header d-flex">
                     <span class="text-light lead">Manage Groups and Permissions</span>
                     <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
                             id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
@@ -45,56 +45,58 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-        <!----------Add new categorie Modal-------->
-        <div class="modal fade" role="dialog" id="modal-box">
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> Add new</h5>
-                        <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
+        </div>
+    </div>
+</div>
+<!----------Add new categorie Modal-------->
+<div class="modal fade" role="dialog" id="modal-box">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Add new</h5>
+                <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" id="groups-and-permissions-frm" class="px-3 needs-validation">
+                    <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'groups-and-permissions-frm', $_SESSION[TOKEN_NAME])); ?>
+                    <input type="hidden" name="operation" id="operation">
+                    <input type="hidden" name="grID" id="grID">
+                    <input type="hidden" name="date_enreg" id="date_enreg">
+                    <input type="hidden" name="updateAt" id="updateAt">
+                    <div id="alertErr"></div>
+                    <div class="form-group">
+                        <input type="text" name="name" id="name" class="form-control " placeholder="Group name">
+                        <div class="invalid-feedback"></div>
                     </div>
-                    <div class="modal-body">
-                        <form action="#" method="post" id="groups-and-permissions-frm" class="px-3 needs-validation">
-                            <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'groups-and-permissions-frm', $_SESSION[TOKEN_NAME])); ?>
-                            <input type="hidden" name="operation" id="operation">
-                            <input type="hidden" name="catID" id="grID">
-                            <input type="hidden" name="date_enreg" id="date_enreg">
-                            <input type="hidden" name="updateAt" id="updateAt">
-                            <div id="alertErr"></div>
-                            <div class="form-group">
-                                <input type="text" name="name" id="name" class="form-control " placeholder="Group name">
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="form-group">
-                                <textarea name="description" id="description" class="form-control ck-content"
-                                    placeholder="Group description..."></textarea>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="status" name="status">
-                                <label for="sameAddress" class="form-check-label">Active</label>
-                            </div>
-                            <div class="form-group select-box">
-                                <select class="form-select select_group" id="parentID" name="parentID"
-                                    aria-label="size 3 select example">
-                                </select>
-                                <span class="custom-arrow"></span>
-                            </div>
-                            <div class="form-group justify-content-between">
-                                <input type="submit" name="submitBtn" id="submitBtn" value="Enregistrer" class="button">
-                            </div>
-                        </form>
+                    <div class="form-group">
+                        <textarea name="description" id="description" class="form-control ck-content"
+                            placeholder="Group description..."></textarea>
+                        <div class="invalid-feedback"></div>
                     </div>
-                </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="status" name="status">
+                        <label for="sameAddress" class="form-check-label">Active</label>
+                    </div>
+                    <div class="form-group select-box">
+                        <select class="form-select select_group alert" id="parentID" name="parentID"
+                            aria-label="size 3 select example">
+                            <option value="0"></option>
+                        </select>
+                        <span class="custom-arrow"></span>
+                    </div>
+                    <div class="form-group justify-content-between">
+                        <input type="submit" name="submitBtn" id="submitBtn" value="Enregistrer" class="button">
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- /.content -->
     </div>
-    <?php $this->end(); ?>
-    <?php $this->start('footer') ?>
-    <!----------custom--------->
-    <script type="text/javascript"
-        src="<?= $this->asset('js/custom/admin/users/permissions', 'js') ?? ''?>">
-    </script>
-    <?php $this->end();
+</div>
+
+<?php $this->end(); ?>
+<?php $this->start('footer') ?>
+<!----------custom--------->
+<script type="text/javascript"
+    src="<?= $this->asset('js/custom/admin/users/permissions', 'js') ?? ''?>">
+</script>
+<?php $this->end();

@@ -24,6 +24,7 @@ export const error = (form, InputErr) => {
   var arrErr = [];
   for (const [key, value] of Object.entries(InputErr)) {
     var input = form.find("#" + key).addClass("is-invalid");
+
     input.parent().children("div.invalid-feedback").html(value);
     arrErr.push(key);
   }

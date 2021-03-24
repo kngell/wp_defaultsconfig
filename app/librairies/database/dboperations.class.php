@@ -56,11 +56,6 @@ class DBOperations extends Database
         }
     }
 
-    public function get($table, $where)
-    {
-        return $this->select($table, $where);
-    }
-
     //=======================================================================
     //Select/Find first
     //=======================================================================
@@ -82,6 +77,7 @@ class DBOperations extends Database
             $data = array_merge($data, ['return_type' => 'first']);
             $this->_count = $q->rowCount();
             $this->_results = $this->select_result($q, $data);
+            $this->_lastinsertID = $this->_con->lastInsertId();
         } else {
             $this->_error = true;
         }
@@ -93,17 +89,50 @@ class DBOperations extends Database
     }
 
     //=======================================================================
+    //Dynamique Select Join x table
+    //=======================================================================
+    // SELECT users.firstName, users.lastName,group_user.groupID FROM users INNER JOIN group_user ON group_user.userID = users.userID WHERE users.userID=200  AND  deleted=0
+    public function select_join($tables, $data = [])
+    {
+        $sql = '';
+        if (is_array($tables)) {
+            $sql = 'SELECT ';
+            $all_tables = array_keys($tables);
+            foreach ($all_tables  as $table) {
+                if ($tables[$table]) {
+                    foreach ($tables[$table] as $key => $value) {
+                        $separator = $table == end($all_tables) && $value == end($tables[$table]) ? ' ' : ', ';
+                        $sql .= $table . '.' . $value . $separator;
+                    }
+                }
+            }
+            $sql .= 'FROM ' . $all_tables[0] . ' ';
+            if (array_key_exists('join', $data)) {
+                foreach ($all_tables as $index => $tbl) {
+                    if ($index == 0) {
+                        continue;
+                    }
+                    $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['relation'][$index] . ' = ' . $all_tables[$index - 1] . '.' . $data['relation'][$index - 1] . ' ';
+                }
+            }
+        }
+        return $sql;
+    }
+
+    //=======================================================================
     //Query Select contruction
     //=======================================================================
 
     private function query_select_construction($table, $data)
     {
-        if (strpos($table, 'SELECT') !== false) {
-            $sql = $table;
-        } else {
-            $sql = ' SELECT ';
-            $sql .= array_key_exists('select', $data) ? $data['select'] : '*';
-            $sql .= ' FROM ' . $table;
+        if (!$sql = $this->select_join($table, $data)) {
+            if (strpos($table, 'SELECT') !== false) {
+                $sql = $table;
+            } else {
+                $sql = ' SELECT ';
+                $sql .= array_key_exists('select', $data) ? $data['select'] : '*';
+                $sql .= ' FROM ' . $table;
+            }
         }
         //Conditions
         if (array_key_exists('where', $data)) {
@@ -111,9 +140,10 @@ class DBOperations extends Database
             $i = 0;
             $op = isset($data['op']) ? $data['op'] : ' AND ';
             $comparator = isset($data['comparator']) ? $data['comparator'] : '=';
+            // $tbl = is_array($table) ? array_keys($table)[1] . '.' : '';
             foreach ($data['where'] as $key => $value) {
                 $add = ($i > 0) ? ' ' . $op . ' ' : '';
-                $sql .= ($comparator != '=') ? "$add" . "$key " . $comparator . " CONCAT('%',:$key,'%')" : "$add" . "$key=:$key";
+                $sql .= ($comparator != '=') ? "$add" . '.' . "$key " . $comparator . " CONCAT('%',:$key,'%')" : "$add" . "$key=:$key";
                 $i++;
             }
             if (isset($data['op']) || isset($data['comparator'])) {

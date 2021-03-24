@@ -13,10 +13,10 @@ class GuestsController extends Controller
 
     public function get_countries()
     {
-        $search = ucfirst($this->request->getAll('searchTerm'));
+        $search = strtolower($this->request->getAll('searchTerm'));
         $data = file_get_contents(APP . 'librairies' . DS . 'database' . DS . 'json' . DS . 'countries.json');
         $countries = array_filter(array_column(json_decode($data, 1), 'name'), function ($countrie) use ($search) {
-            return str_starts_with($countrie, $search);
+            return str_starts_with(strtolower($countrie), $search);
         });
         $results = array_map(
             function ($i, $map_countrie) {

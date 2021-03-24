@@ -1,5 +1,6 @@
 import { Add, displayAllDetails, Call_controller } from "corejs/form_crud";
 import owlCarousel from "owl.carousel";
+import "select2";
 document.addEventListener("DOMContentLoaded", function () {
   function PhpPlugin(element) {
     this.element = element;

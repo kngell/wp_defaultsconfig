@@ -19,7 +19,7 @@ class FormsController extends Controller
             $tableHTML = $table . 'Table';
             $tableClass = (isset($_REQUEST['user']) && $_REQUEST['user'] == 'admin') ? 'TH_Admin' : 'TH';
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            in_array($table, ['assoc', 'users', 'contacts']) ? $this->model_instance[$table]->sets_SoftDeleteOnTrue() : '';
+            in_array($table, ['assoc', 'users', 'contacts']) ? $this->model_instance[$table]->set_SoftDelete(true) : '';
             $output = $tableClass::$tableHTML(FH::getShowAllData($this->model_instance[$table], $this->request, $_REQUEST));
             if (isset($pagination) && $pagination) {
                 $output = TH::pagination($output, $this->model_instance[$table], $this->request->getAll());
@@ -64,19 +64,19 @@ class FormsController extends Controller
             $categories = ($table === 'posts' && array_key_exists('categorie', $_REQUEST)) ? array_values($_REQUEST['categorie']) : '';
             $data = $this->request->getAll();
             //$posturl = ($table == 'posts') ? H_upload::uploadPostUrl($data['postContent']) : '';
-            $SuccessMsg = H::get_successMsg($this->model_instance[$table], '', $this->_method);
             $this->model_instance[$table]->assign($data);
             $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance[$table]);
             if ($file['success']) {
                 $this->model_instance[$table] = $file['msg'];
                 method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
+                $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
                 if ($this->model_instance[$table]->validationPasses()) {
-                    if ($LastID = $this->model_instance[$table]->save()) {
+                    if ($LastID = $this->model_instance[$table]->save($data)) {
                         H_upload::manage_uploadImage($LastID, $table, $data);
                         (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID : '';
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
-                        $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $SuccessMsg . ' has been added');
-                        ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $SuccessMsg]);
+                        $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $table . ' has been added');
+                        ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'Le formulaire est vide!')]);
                     }
@@ -141,7 +141,7 @@ class FormsController extends Controller
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
             !empty($t_options) ? $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $t_options))) . 'Manager', $t_options) : '';
             if ($items = $this->model_instance[$table]->getDetails((int)$this->request->getAll('id'))) {
-                $options = (in_array($table, ['posts', 'sessions_formations'])) ? $this->model_instance[$table]->getSelectedOptions($this->model_instance[$t_options]->getAll(false)->get_results(), $items->getOptions($t_options)) : '';
+                $options = $t_options ? $this->model_instance[$t_options]->get_Options($items->get_selectedOptions()) : '';
                 $this->jsonResponse(['result' => 'success', 'msg' => ['items' => $items, 'selectedOptions' => $options]]);
             } else {
                 $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
@@ -160,10 +160,11 @@ class FormsController extends Controller
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
             $colID = $this->model_instance[$this->request->getAll('table')]->get_colID();
-            $this->model_instance[$table]->sets_SoftDeleteOnTrue();
+            $this->model_instance[$table]->set_SoftDelete(true);
             $categories = ($table === 'posts' && array_key_exists('categorie', $_REQUEST)) ? array_values($_REQUEST['categorie']) : '';
             $data = $this->request->getAll();
             $this->model_instance[$table]->assign($this->model_instance[$table]->getDetails($data[$colID]));
+            AuthManager::check_UserSession();
             $this->model_instance[$table]->assign($data);
             $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance[$table]);
             if ($file['success']) {
@@ -172,12 +173,11 @@ class FormsController extends Controller
                 $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
                 method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, $action ? Form_rules::$action() : Form_rules::$table()) : '';
                 if ($this->model_instance[$table]->validationPasses()) {
-                    if ($this->model_instance[$table]->save($colID)) {
+                    if ($this->model_instance[$table]->save($data)) {
                         H_upload::manage_uploadImage($this->model_instance[$table]->$colID, $table, $data);
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
-                        $SuccessMsg = H::get_successMsg($this->model_instance[$table], $action, $this->_method);
                         $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A' . $table . ' has been updated');
-                        $this->jsonResponse(['result' => 'success', 'msg' => $SuccessMsg]);
+                        $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
                     }
@@ -199,7 +199,7 @@ class FormsController extends Controller
         if ($this->request->exists('post')) {
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            if ($output = $this->model_instance[$table]->check($this->request->getAll('id'))) {
+            if ($output = $this->model_instance[$table]->check_forEmptyParent($this->request->getAll('id'))) {
                 $this->jsonResponse(['result' => 'success', 'msg' => FH::showMessage('light', $output)]);
             } else {
                 $this->jsonResponse(['result' => 'error', 'msg' => '']);
@@ -214,7 +214,7 @@ class FormsController extends Controller
         if ($this->request->exists('post')) {
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            in_array($table, ['contacts', 'assoc', 'users']) ? $this->model_instance[$this->request->getAll('table')]->sets_SoftDelete(true) : '';
+            in_array($table, ['contacts', 'assoc', 'users']) ? $this->model_instance[$this->request->getAll('table')]->set_SoftDelete(true) : '';
             $SuccessMsg = ($table != 'assoc') ? rtrim($table, 's') : 'Association';
             $data = $this->request->getAll();
             $method = isset($data['method']) ? $data['method'] : 'delete';

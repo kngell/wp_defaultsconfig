@@ -1,0 +1,91 @@
+<?php
+
+class ImageManager
+{
+    public $sourcePath = IMAGE_ROOT;
+    public $destinationPath = IMAGE_ROOT;
+
+    public function __construct($source = '', $destination = '')
+    {
+        $this->sourcePath = $source != '' ? $source : $this->sourcePath;
+        $this->destinationPath = $destination != '' ? $destination : $this->destinationPath;
+    }
+
+    //=======================================================================
+    //Images infos
+    //=======================================================================
+    public function get_imagesInfos($img_file = '')
+    {
+        $img = isset($this->sourcePath) ? $this->sourcePath . $img_file : $img_file;
+        if (exif_imagetype($img)) {
+            return getimagesize($img);
+        }
+        return false;
+    }
+
+    //=======================================================================
+    //Image resize
+    //=======================================================================
+    public function resizeImage($img_infos = [], $img = '', $dest_w = '', $dest_h = '')
+    {
+        if (isset($img_infos)) {
+            $width = $dest_w ? $dest_w : $img_infos[0];
+            $height = $dest_h ? $dest_h : $img_infos[1];
+            $newImg = imagecreatetruecolor($width, $height);
+            switch ($img_infos['mime']) {
+                case 'image/png':
+                    $sourceImg = imagecreatefrompng($this->sourcePath . $img);
+                    break;
+                case 'image/jpeg':
+                    $sourceImg = imagecreatefromjpeg($this->sourcePath . $img);
+                    break;
+                case 'image/gif':
+                    $sourceImg = imagecreatefromgif($this->sourcePath . $img);
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+            imagecopyresampled($newImg, $sourceImg, 0, 0, 0, 0, $width, $height, $img_infos[0], $img_infos[1]);
+            $this->destroyImage($sourceImg);
+            return $newImg;
+        }
+        return false;
+    }
+
+    //=======================================================================
+    //Image Save
+    //=======================================================================
+    public function saveImage($img_infos = [], $newImg = false, $img = false)
+    {
+        if (isset($img_infos) && isset($img)) {
+            switch ($img_infos['mime']) {
+                case 'image/png':
+                    imagepng($newImg, $this->destinationPath . $img);
+                    return imagedestroy($newImg);
+                    break;
+                case 'image/jpeg':
+                    return imagejpeg($newImg, $this->destinationPath . $img);
+                    break;
+                case 'image/gif':
+                    return imagegif($newImg, $this->destinationPath . $img);
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
+        return false;
+    }
+
+    //=======================================================================
+    //Image Destroy
+    //=======================================================================
+    public function destroyImage($img = '')
+    {
+        if (isset($img)) {
+            imagedestroy($img);
+        }
+        return true;
+    }
+}

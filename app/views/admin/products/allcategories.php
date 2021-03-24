@@ -13,13 +13,13 @@
                 <ol class="breadcrumb ps-0 fs-base">
                     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                     <li class="breadcrumb-item"><span>Products</span></li>
-                    <li class="breadcrumb-item active" aria-current="page">All Products</li>
+                    <li class="breadcrumb-item active" aria-current="page">All Categories</li>
                 </ol>
             </nav>
         </div>
         <div class="col text-end">
             <h4 class="header-title h3">
-                Manage Products
+                Manage Categories
             </h4>
         </div>
     </div>
@@ -45,55 +45,54 @@
                     </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
-        <!----------Add new categorie Modal-------->
-        <div class="modal fade" role="dialog" id="modal-box">
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-dark">
-                        <h5 class="modal-title text-light"> Add new</h5>
-                        <button type="button" class="close text-light" data-bs-dismiss="modal">&times;</button>
+        </div>
+    </div>
+</div><!-- /.container-fluid -->
+<!----------Add new categorie Modal-------->
+<div class="modal fade" role="dialog" id="modal-box">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Add/Update Categorie</h5>
+                <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation">
+                    <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'Categorie-frm', $_SESSION[TOKEN_NAME])); ?>
+                    <input type="hidden" name="operation" id="operation">
+                    <input type="hidden" name="catID" id="catID">
+                    <input type="hidden" name="date_enreg" id="date_enreg">
+                    <input type="hidden" name="updateAt" id="updateAt">
+                    <input type="hidden" name="status" id="status">
+                    <div id="alertErr"></div>
+                    <div class="form-group">
+                        <input type="text" name="categorie" id="categorie" class="form-control "
+                            placeholder="Catégorie">
+                        <div class="invalid-feedback"></div>
                     </div>
-                    <div class="modal-body">
-                        <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation">
-                            <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'Categorie-frm', $_SESSION[TOKEN_NAME])); ?>
-                            <input type="hidden" name="operation" id="operation">
-                            <input type="hidden" name="catID" id="catID">
-                            <input type="hidden" name="date_enreg" id="date_enreg">
-                            <input type="hidden" name="updateAt" id="updateAt">
-                            <input type="hidden" name="status" id="status">
-                            <div id="alertErr"></div>
-                            <div class="form-group">
-                                <input type="text" name="categorie" id="categorie" class="form-control "
-                                    placeholder="Catégorie">
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="form-group">
-                                <textarea name="description" id="description" class="form-control ck-content"
-                                    placeholder="Description..."></textarea>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                            <div class="form-group select-box">
-                                <select class="form-control" id="parentID" name="parentID">
+                    <div class="form-group">
+                        <textarea name="description" id="description" class="form-control ck-content"
+                            placeholder="Description..."></textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group select-box">
+                        <select class="form-control" id="parentID" name="parentID">
 
-                                </select>
-                                <span class="custom-arrow"></span>
-                            </div>
-                            <div class="form-group justify-content-between">
-                                <input type="submit" name="addCategorie" id="addCategorieBtn" value="Add Categorie"
-                                    class="btn btn-light text-light bg-dark btn-block">
-                            </div>
-                        </form>
+                        </select>
+                        <span class="custom-arrow"></span>
                     </div>
-                </div>
+                    <div class="form-group justify-content-between">
+                        <input type="submit" name="submitBtn" id="submitBtn" value="Submit" class="button">
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- /.content -->
     </div>
-    <?php $this->end(); ?>
-    <?php $this->start('footer') ?>
-    <!----------custom--------->
-    <script type="text/javascript"
-        src="<?= $this->asset('js/custom/admin/products/categories', 'js') ?? ''?>">
-    </script>
-    <?php $this->end();
+</div>
+<?php $this->end(); ?>
+<?php $this->start('footer') ?>
+<!----------custom--------->
+<script type="text/javascript"
+    src="<?= $this->asset('js/custom/admin/products/categories', 'js') ?? ''?>">
+</script>
+<?php $this->end();

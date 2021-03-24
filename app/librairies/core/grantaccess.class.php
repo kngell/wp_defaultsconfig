@@ -7,7 +7,7 @@ class GrantAccess
         $acl_file = file_get_contents(APP . 'acl.json');
         $acl = json_decode($acl_file, true);
 
-        $current_user_acls = ["Guest"];
+        $current_user_acls = ['Guest'];
         $grantAccess = false;
 
         if (Session::exists(CURRENT_USER_SESSION_NAME)) {
@@ -19,7 +19,7 @@ class GrantAccess
         }
         foreach ($current_user_acls as $level) {
             if (array_key_exists($level, $acl) && array_key_exists($controller, $acl[$level])) {
-                if (in_array($method, $acl[$level][$controller]) || in_array("*", $acl[$level][$controller])) {
+                if (in_array($method, $acl[$level][$controller]) || in_array('*', $acl[$level][$controller])) {
                     $grantAccess = true;
                     break;
                 }
@@ -36,6 +36,7 @@ class GrantAccess
         //dd($grantAccess);
         return $grantAccess;
     }
+
     public static function getMenu($menu)
     {
         $menuAry = [];
@@ -71,6 +72,7 @@ class GrantAccess
         return $menuAry;
         //dd($menuAry);
     }
+
     private static function get_link($value)
     {
         // check is an external link

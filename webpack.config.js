@@ -174,7 +174,7 @@ var adminAssetsConfig = merge(adminEntries, commonConfig, {
           reuseExistingChunk: true,
         },
         adminCustomModules: {
-          test: /[\\/]((admin).*)|((core).*)[\\/]/,
+          test: /[\\/]((admin).*)|((core).*)|((plugins).*)[\\/]/,
           name: "commons/backend/admin/commonCustomModules",
           chunks: "initial",
           minSize: 10000,
@@ -183,7 +183,7 @@ var adminAssetsConfig = merge(adminEntries, commonConfig, {
           reuseExistingChunk: true,
         },
         styles: {
-          test: /[\\/]node_modules[\\/]((?!@ckeditor).*)[\\/]/,
+          test: /[\\/]((node_modules).*)|((plugins).*)[\\/]((?!@ckeditor).*)[\\/]/,
           name: "commons/backend/admin/commoncss",
           type: "css/mini-extract",
           chunks: "initial",

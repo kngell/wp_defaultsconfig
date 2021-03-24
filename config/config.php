@@ -18,7 +18,8 @@ define('MODEL', ROOT . 'app' . DS . 'models' . DS);
 define('VIEW', ROOT . 'app' . DS . 'views' . DS);
 define('DATA', ROOT . 'app' . DS . 'data' . DS);
 define('CONTROLLER', ROOT . 'app' . DS . 'controllers' . DS);
-define('IMAGE_ROOT', dirname(__DIR__) . US . 'public' . US . 'assets' . US . 'img' . US);
+define('IMAGE_ROOT', dirname(__DIR__) . DS . 'public' . DS . 'assets' . DS . 'img' . DS);
+define('IMAGE_ROOT_SRC', dirname(__DIR__) . DS . 'src' . DS . 'assets' . DS . 'img' . DS);
 define('ACME_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'acme-challenge' . DS);
 define('UPLOAD_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'img' . DS . 'upload' . DS);
 define('LAZYLOAD_ROOT', ROOT . 'public' . DS . 'assets' . DS . 'lazyload' . DS);
@@ -44,7 +45,7 @@ define('DEFAULT_LAYOUT', 'default'); //if any layout is define in the controller
 // -----------------------------------------------------------------------
 // SCRIPT/CSS/IMG ACCESS
 // -----------------------------------------------------------------------
-define('PROOT', '/kngell_ecommerce/'); // set this to '/' for a live server
+define('PROOT', DS . 'kngell_ecommerce' . DS); // set this to '/' for a live server
 define('SCRIPT', dirname($_SERVER['SCRIPT_NAME']));
 define('CSS', SCRIPT . DS . 'assets' . DS . 'css' . DS);
 define('JS', SCRIPT . DS . 'assets' . DS . 'js' . DS);

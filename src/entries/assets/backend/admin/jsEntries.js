@@ -33,9 +33,29 @@ module.exports = {
       import: ["js/custom/admin/login"],
       dependOn: "js/librairies/adminlib",
     },
-    //Admin product categories
+    //Admin categories management
     "js/custom/admin/products/categories": {
       import: ["js/custom/admin/products/categories"],
+      dependOn: "js/librairies/adminlib",
+    },
+    //Admin units management
+    "js/custom/admin/products/allunits": {
+      import: ["js/custom/admin/products/allunits"],
+      dependOn: "js/librairies/adminlib",
+    },
+    //Admin all products
+    "js/custom/admin/products/allproducts": {
+      import: ["js/custom/admin/products/allproducts"],
+      dependOn: "js/librairies/adminlib",
+    },
+    //Admin product Details
+    "js/custom/admin/products/product_details": {
+      import: ["js/custom/admin/products/product_details"],
+      dependOn: "js/librairies/adminlib",
+    },
+    //Admin New products
+    "js/custom/admin/products/new_product": {
+      import: ["js/custom/admin/products/new_product"],
       dependOn: "js/librairies/adminlib",
     },
     //Admin users allusers

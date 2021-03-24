@@ -18,7 +18,7 @@ abstract class Model
     }
 
     //=======================================================================
-    //Gets
+    //Getterss
     //=======================================================================
     //get all tables
     public function getAll_tables()
@@ -27,12 +27,9 @@ abstract class Model
     }
 
     //get All Items
-    public function getAllItem($params = [])
+    public function getAllItem($params = [], $tables = [])
     {
-        if (!empty($params) && in_array($params['table'], ['sessions_formations', 'offre_emploi'])) {
-            return $this->getHtmlData($params);
-        }
-        return $this->find(['return_mode' => 'class']);
+        return $this->find($params ? array_merge(['return_mode' => 'class'], $params) : ['return_mode' => 'class'], !$tables ? [] : $tables);
     }
 
     public function getHtmlData($params = [])
@@ -40,52 +37,24 @@ abstract class Model
     }
 
     //GetAll By uerID
-    public function getAll($by_user = 0)
+    public function getAll($by_user, $params = [], $tables = [])
     {
-        return $this->find(H::setQueryData($by_user));
+        return $this->find($params ? array_merge($params, H::setQueryData($by_user)) : H::setQueryData($by_user), $tables ? $tables : '');
     }
 
     //GetAll interval min and max
-    public function getAll_MinMax($min = '', $max = '')
+    public function getAll_MinMax($min, $max, $params = [], $tables = [])
     {
-        return $this->find(['offset' => $min, 'limit' => $max, 'return_mode' => 'class', 'order_by' => $this->get_colID() . ' DESC']);
+        $data = $params ? array_merge(['offset' => $min, 'limit' => $max, 'return_mode' => 'class', 'order_by' => $this->get_colID() . ' DESC'], $params) : ['offset' => $min, 'limit' => $max, 'return_mode' => 'class', 'order_by' => $this->get_colID() . ' DESC'];
+        return $this->find($data, $tables ? $tables : '');
     }
 
     //getAll by ID
-    public function getAllbyIndex($index_value = '')
+    public function getAllbyIndex($index_value, $params = [], $tables = [])
     {
-        return $this->find(['where' => [$this->get_colIndex() => $index_value], 'return_mode' => 'class']);
-    }
-
-    //get selected options
-    public function getAll_inputSelectOptions($parentID = 0, $sub_option = '')
-    {
-        // $table = $this->get_tableName();
-        $options = $parentID == 0 ? $this->getAllItem()->get_results() : $this->getAllbyIndex($parentID)->get_results();
-        $my_options = '';
-        if ($options) {
-            $colID = $this->get_colID();
-            $colTitle = $this->get_colTitle();
-            foreach ($options as $option) {
-                $my_options .= '<option value="' . $option->$colID . '">' . $sub_option . $option->$colTitle . '</option>';
-                $my_options .= $parentID != 0 ? $this->get_Children($option, $sub_option) : '';
-            }
-        }
-        return $my_options;
-    }
-
-    //output nested Items
-    public function get_Children($option = null, $sub_option = '')
-    {
-        $item = '';
-        $colID = $option->get_colID();
-        $childrens = $this->getAllbyIndex($option->$colID)->get_results();
-        if ($childrens) {
-            foreach ($childrens as $children) {
-                $item .= $children->getAll_inputSelectOptions($children->parentID, $sub_option . '--- ');
-            }
-        }
-        return $item;
+        $colIndex = $this->get_colIndex();
+        $data = $params ? array_merge(['where' => [$colIndex => $index_value], 'return_mode' => 'class'], $params) : ['where' => [$colIndex => $index_value], 'return_mode' => 'class'];
+        return $colIndex != '' ? $this->find($data, $tables ? $tables : '') : null;
     }
 
     //Output parent
@@ -95,9 +64,9 @@ abstract class Model
     }
 
     //getAll by any column
-    public function getAllbyParams($params = [])
+    public function getAllbyParams($params = [], $tables = [])
     {
-        return $this->find(['where' => $params, 'return_mode' => 'class']);
+        return $this->find(['where' => $params, 'return_mode' => 'class'], $tables ? $tables : '');
     }
 
     //Get details by id
@@ -116,25 +85,25 @@ abstract class Model
     //get title
     public function get_colTitle()
     {
-        return $this->_colTitle;
+        return isset($this->_colTitle) ? $this->_colTitle : '';
     }
 
     //get results
     public function get_results()
     {
-        return $this->_results;
+        return isset($this->_results) ? $this->_results : [];
     }
 
     //get indexed colID
     public function get_colIndex()
     {
-        return $this->_colIndex;
+        return isset($this->_colIndex) ? $this->_colIndex : '';
     }
 
     //get col content
     public function get_colContent()
     {
-        return $this->_colContent;
+        return isset($this->_colContent) ? $this->_colContent : '';
     }
 
     // Check for unique identifiant
@@ -194,10 +163,10 @@ abstract class Model
         return (new DateTime($date))->format('d-m-Y');
     }
 
-    public function getfrontDate($date): string
-    {
-        return (new DateTime($date))->format('d/m/Y');
-    }
+    // public function getfrontDate($date): string
+    // {
+    //     return (new DateTime($date))->format('d/m/Y');
+    // }
 
     // post content 200 char
     public function getContentOverview($content, $length = '', $url = ''): string
@@ -206,42 +175,36 @@ abstract class Model
         return substr(strip_tags(htmlspecialchars_decode($content, ENT_NOQUOTES)), 0, empty($length) ? 200 : $length) . '<a href="' . $url . '" class="text-decoration-none">...</a>';
     }
 
-    //get Selected Options
-    public function getOptions($t_options = '')
+    //Get selected options
+    public function get_Options($selected_optons = [])
     {
-        switch ($t_options) {
-            case 'categories':
-                return $this->getpostCategorie();
-                break;
-            case 'programme_formation':
-                return $this->getProgrammeOption();
-                break;
-
-            default:
-                // code...
-                break;
-        }
+        $all_options = $this->getAllItem()->get_results();
+        return  [array_map(
+            function ($option) {
+                $colID = $option->get_colID();
+                $title = $option->get_colTitle();
+                return ['id' => (int)$option->$colID, 'text' => $option->$title];
+            },
+            $all_options
+        ), array_map(
+            function ($id) {
+                return $id;
+            },
+            array_keys($selected_optons)
+        )];
     }
 
-    // Selected categories
-    public function getSelectedOptions($allOptions, $selectedOptions)
+    //Get selected options
+    public function get_selectedOptions()
     {
-        $all = $allOptions;
-        foreach ($all as $option) {
-            $option->selected = '';
+        $colID = $this->get_colID();
+        $id = isset($this->parentID) ? $this->parentID : $this->$colID;
+        $selected_option = $id != '0' ? $this->getDetails($id, $colID) : null;
+        $colTitle = $this->_colTitle;
+        if ($selected_option) {
+            $response[$selected_option->$colID] = $selected_option->$colTitle;
         }
-        foreach ($all as $option) {
-            $colID = $colID ?? $option->get_colID();
-            foreach ($selectedOptions as $sc) {
-                if ($option->$colID == $sc->$colID) {
-                    $option->selected = 'selected';
-                } elseif ($option->selected != 'selected') {
-                    $option->selected = '';
-                }
-            }
-        }
-
-        return $all;
+        return isset($response) ? $response : [];
     }
 
     public function getpostCategorie()
@@ -249,6 +212,10 @@ abstract class Model
     }
 
     public function getProgrammeOption()
+    {
+    }
+
+    public function getGroupsOption()
     {
     }
 
@@ -268,7 +235,7 @@ abstract class Model
     }
 
     //set soft delete to true (=update)
-    public function sets_SoftDelete($value)
+    public function set_SoftDelete($value)
     {
         $this->_softDelete = $value;
     }
@@ -337,7 +304,7 @@ abstract class Model
     //=======================================================================
 
     //find all
-    public function find($params = [])
+    public function find($params = [], $tables = [])
     {
         $params = $this->set_deleted_Params($params);
         if (isset($params['return_mode']) && $params['return_mode'] == 'class') {
@@ -345,8 +312,7 @@ abstract class Model
                 $params = array_merge($params, ['class' => get_class($this)]);
             }
         }
-        //$resultsQuery = $this->_db->select($this->_table, $params);
-        $this->_results = $this->_db->select($this->_table, $params)->get_results();
+        $this->_results = $this->_db->select($tables ? $tables : $this->_table, $params)->get_results();
         $this->_count = $this->_db->count();
 
         return $this;
@@ -393,6 +359,24 @@ abstract class Model
         $this->{$name} = $value;
     }
 
+    // Find select2 data
+    public function getSelect2Data($params)
+    {
+        $search = strtolower($params['searchTerm']);
+        $data = $this->getAllItem()->get_results();
+        $colTitle = $this->get_colTitle();
+        $output = array_filter($data, function ($item) use ($search, $colTitle) {
+            return str_starts_with(strtolower($item->$colTitle), $search);
+        });
+        return array_map(
+            function ($group) use ($colTitle) {
+                $colID = $group->get_colID();
+                return ['id' => (int)$group->$colID, 'text' => $group->$colTitle];
+            },
+            $output
+        );
+    }
+
     //=======================================================================
     //Inserting Data
     //=======================================================================
@@ -427,6 +411,30 @@ abstract class Model
         $this->_count = $update->count();
 
         return $update;
+    }
+
+    //Update status
+    public function updateStatus($item = [])
+    {
+        $elts = $this->getDetails($item['id']);
+        $output = '';
+        if ($elts) {
+            if (!property_exists($elts, 'status')) {
+                return '';
+            } else {
+                $elts->status = $elts->status == 1 ? 0 : 1;
+            }
+            $elts->id = $item['id'];
+            $output = '';
+            if ($elts->save()) {
+                if ($elts->status == 1) {
+                    $output = 'green';
+                } else {
+                    $output = '#dc3545';
+                }
+            }
+        }
+        return $output;
     }
 
     //=======================================================================
@@ -464,40 +472,24 @@ abstract class Model
         return $item ? $item->delete() : false;
     }
 
-    //Delete Null Index
-    public function deleteAllNullIndex()
-    {
-        $sql = 'DELETE FROM ' . $this->_table . ' WHERE ' . $this->_Index . ' IS NULL';
-
-        return $this->execquery($sql);
-    }
-
-    //======================================================================
-    //Custom query exec
-    //=======================================================================
-
-    public function execquery($sql, $data = [], $cond = [])
-    {
-        return $this->_db->CustomQueryExec($sql, $data, $cond);
-    }
-
     //=======================================================================
     //Save data
     //=======================================================================
     //Save
-    public function save($col = '')
+    public function save($params = [])
     {
-        if ($data = $this->beforeSave()) {
+        if ($data = $this->beforeSave($params)) {
             $fields = H::getObjectProperties($this);
             if (property_exists($this, 'id') && $this->id != '') {
                 $fields = $this->beforeSaveUpadate($fields);
-                $save = $this->update([($col == '') ? $this->get_colID() : $col => $this->id], $fields);
-                $this->afterSave();
-                return ($save->count() > 0);
+                $save = $this->update([(!isset($params['colID'])) ? $this->get_colID() : $params['colID'] => $this->id], $fields);
             } else {
                 $fields = $this->beforeSaveInsert($fields);
-                $save = $fields ? $this->insert($fields) : $fields;
-                $this->afterSave();
+                $save = $this->insert($fields);
+            }
+            if ($save) {
+                $params['saveID'] = $save ?? '';
+                $this->afterSave($params);
                 return $save;
             }
         }
@@ -526,7 +518,13 @@ abstract class Model
     {
         $f = $fields;
         $current = new DateTime();
-        $f['updateAt'] = $current->format('Y-m-d H:i:s');
+        $key = current(array_filter(array_keys($fields), function ($field) {
+            return str_starts_with($field, 'update');
+        }));
+        if ($key && !is_array($key)) {
+            $f[$key] = $current->format('Y-m-d H:i:s');
+        }
+
         return $f;
     }
 
@@ -633,5 +631,54 @@ abstract class Model
     public function countByIndex($index)
     {
         return $this->find(['where' => [$this->get_colIndex() => $index], 'return_type' => 'count']);
+    }
+
+    //other related parent children related links
+    public function search_relatedLinks($id, $main_table, $colID)
+    {
+        $tables = $this->getAll_tables();
+        $links = false;
+        if ($tables) {
+            foreach ($tables as $table) {
+                $this->_table = $table->{'Tables_in_kngell_eshopping'};
+                if ($this->_table != $main_table) {
+                    $fields = [];
+                    $columns = $this->get_columns($this->_table);
+                    foreach ($columns as $column) {
+                        if ($column->Field == $colID) {
+                            $fields[$column->Field] = $id;
+                        };
+                    }
+                    if (!empty($fields)) {
+                        if ($links = $this->find(['where' => $fields])->count()) {
+                            break;
+                        }
+                    }
+                }
+            }
+            $this->_set_tableName($main_table);
+        }
+
+        return $links;
+    }
+
+    //check empty parent items, categories, brands, groups etc...
+    public function check_forEmptyParent($parentID = '')
+    {
+        $childItems = $this->getAllbyIndex($parentID)->get_results();
+        // $otherlink = $this->search_relatedLinks($parentID, $this->get_tableName(), $this->get_colID());
+        $output = '';
+        $output .= ($childItems) ? '<span class="lead text-black-50"> There are releted items : </span>' : '';
+        $output .= ($childItems) ? '<div class="py-2 text-gray ps-3">' : '';
+        if ($childItems) {
+            foreach ($childItems as $childItem) {
+                $ponctuation = $childItem === end($childItems) ? '.' : ',';
+                $coltitle = $childItem->get_colTitle();
+                $output .= '<p class="my-0 italic">' . $childItem->$coltitle . $ponctuation . '</p>';
+            }
+        }
+        $output .= ($childItems) ? '</div>' : '';
+        $output .= ($childItems) ? '<span class="text-center pt-3" style="font-size:.9rem">Do you really want to delete it ?</span>' : '';
+        return $output;
     }
 }

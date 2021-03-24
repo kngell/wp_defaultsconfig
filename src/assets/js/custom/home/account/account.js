@@ -1,7 +1,5 @@
 import { displayAllDetails, select2AjaxParams } from "corejs/form_crud";
-import { Tab } from "bootstrap";
 import { readurl } from "corejs/profile_img";
-import { BASE_URL } from "corejs/config";
 class Account {
   constructor(element) {
     this.element = element;
@@ -69,7 +67,7 @@ class Account {
         table: table,
       };
       //Activate select2 box for contries
-      phpPlugin.wrapper.find(".select2").select2({
+      phpPlugin.wrapper.find(".select_country").select2({
         placeholder: "Please select a country",
         minimumInputLength: 1,
         allowClear: true,

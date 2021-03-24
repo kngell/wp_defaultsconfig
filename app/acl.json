@@ -37,9 +37,15 @@
     "VisitorsController": ["*"],
     "TablesController": ["*"]
   },
-  "admin2": {
+  "user": {
     "denied": {},
-    "Admin2Controller": ["*"]
+    "AdminController": ["*"]
+  },
+  "customer": {
+    "denied": {}
+  },
+  "vendor": {
+    "denied": {}
   },
   "assoc": {
     "denied": {},

@@ -17,6 +17,7 @@ class H_upload
             if (in_array($fileType, $allowType)) {
                 //upload file in the server
                 if (move_uploaded_file($file['tmp_name'], $path[0] . $targetFilePath)) {
+                    self::syncronize_src_folder($path, $targetFilePath);
                     return $path[2] . $targetFilePath;
                 } else {
                     return 'error';
@@ -24,6 +25,20 @@ class H_upload
             } else {
                 return 'error';
             }
+        }
+    }
+
+    //synchronize image between src and public folder on dev mod
+    public static function syncronize_src_folder($path = [], $img = '')
+    {
+        if (isset($path) && isset($img)) {
+            $imgModel = new ImageManager($path[0], IMAGE_ROOT_SRC);
+            $img_infos = $imgModel->get_imagesInfos($img);
+            $new_img = $imgModel->resizeImage($img_infos, $img);
+            $img_save = $imgModel->saveImage($img_infos, $new_img, $img);
+            $imgModel->destroyImage($new_img);
+            $imgModel = null;
+            return true;
         }
     }
 
@@ -40,16 +55,6 @@ class H_upload
 
     public static function validate_and_upload_file($file, $model)
     {
-        $fileUploaderr = [
-            0 => 'No error. the upload is successfull!',
-            1 => 'The upload files exceed max file size specifify in php ini',
-            2 => 'The upload files exceed max file size specifify in in the form',
-            3 => 'The uploas is partial',
-            4 => 'No file was uploaded',
-            5 => 'Missing a temporary folder',
-            6 => 'Failed to upload',
-            7 => 'Bad file extension',
-        ];
         $model->fileErr = false;
         $name = array_keys($file)[0] ?? false;
         if (!$name) {
@@ -72,7 +77,7 @@ class H_upload
         }
         $actual_Path = self::modelImageField($model);
         if ($actual_Path != null && basename($actual_Path) != 'avatar.pnp') {
-            $del = file_exists(ROOT . ltrim($actual_Path, '/kngell/')) ? self::deleteImage($actual_Path, $model) : '';
+            $del = file_exists(rtrim(ROOT, PROOT) . $actual_Path) ? self::deleteImage($actual_Path, $model) : '';
         }
         $path = self::upload_img(self::get_path($model), $file[$name]);
         if ($path != '/kngell/error') {
@@ -85,8 +90,9 @@ class H_upload
     //Delete Image
     private static function deleteImage($path, $m)
     {
-        if ($m->getAllbyAnyColumn([self::get_imageKey($m) => $path])->count() <= 1) {
-            unlink(ROOT . ltrim($path, '/kngell/'));
+        if ($m->getAllbyParams([self::get_imageKey($m) => $path])->count() <= 1) {
+            unlink(rtrim(ROOT, PROOT) . $path);
+            unlink(rtrim(ROOT, PROOT) . str_replace('public', 'src', $path));
             return true;
         }
         return false;

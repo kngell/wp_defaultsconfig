@@ -55,56 +55,9 @@ class CategoriesManager extends Model
         return $results;
     }
 
-    //Search categories in all table
-    public function searchCategorie($id)
-    {
-        $tables = $this->getAll_tables();
-        $output = false;
-        foreach ($tables as $table) {
-            $this->_table = $table->{'Tables_in_kngell_eshopping'};
-            if ($this->_table != 'categories') {
-                $fields = [];
-                $columns = $this->get_columns($this->_table);
-                foreach ($columns as $column) {
-                    if ($column->Field == 'catID') {
-                        $fields[$column->Field] = $id;
-                    };
-                }
-                if (!empty($fields)) {
-                    if ($row = $this->find(['where' => $fields])->count()) {
-                        $output = true;
-                        break;
-                    }
-                }
-            }
-        }
-        $this->_table = 'categories';
-        return $output;
-    }
-
     //=======================================================================
     //Operations
     //=======================================================================
-    public function check($id = '', $params = [])
-    {
-        $categories = $this->getAllbyIndex($id)->get_results();
-        $output = '';
-        if ($categories) {
-            $otherslink = $this->searchCategorie($id);
-            $output .= '<h5> This category contains sub-categories : </h5>';
-
-            foreach ($categories as $categorie) {
-                $ponctuation = $categorie === end($categories) ? '.' : ',';
-                $output .= '<span class="py-0 text-gray font-italic">' . $categorie->categorie . $ponctuation . '</span>&nbsp;</br>';
-            }
-            if ($otherslink) {
-                $output .= '<h6>Its also used by pther links : </h6>';
-            }
-            $output .= '<h6 class="text-center pt-2">Do you really want to delete it ?</h6>';
-        }
-        return $output;
-    }
-
     //After delete categorie
     public function afterDelete($params = [])
     {
@@ -117,22 +70,5 @@ class CategoriesManager extends Model
             return $delete;
         }
         return true;
-    }
-
-    //Update active categories
-    public function categorieStatus($item = [])
-    {
-        $categorie = $this->getDetails($item['id']);
-        $categorie->status = $categorie->status == 1 ? 0 : 1;
-        $categorie->id = $item['id'];
-        $output = '';
-        if ($categorie->save()) {
-            if ($categorie->status == 1) {
-                $output = 'green';
-            } else {
-                $output = '#dc3545';
-            }
-        }
-        return $output;
     }
 }

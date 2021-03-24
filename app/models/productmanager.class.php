@@ -1,7 +1,5 @@
 <?php
 
-use Money\Money;
-
 class ProductManager extends Model
 {
     protected $_colID = 'item_id';

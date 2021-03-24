@@ -17,6 +17,19 @@ class Form_rules
         ];
     }
 
+    // Units validation
+    public static function units()
+    {
+        return [
+            'unit' => [
+                'display' => 'Unit',
+                'required' => true,
+                'max' => 65,
+                'unique' => 'units',
+            ],
+        ];
+    }
+
     //Users datas
     public static function users()
     {

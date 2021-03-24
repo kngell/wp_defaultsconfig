@@ -52,12 +52,21 @@
                             data-parent="#left-sidebar">
                             <li>
                                 <a
+                                    href="<?=PROOT . 'admin' . US . 'profile'?>">Profile</a>
+                            </li>
+                            <li>
+                                <a
                                     href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_allUsers'?>">All
                                     users</a>
                             </li>
                             <li>
                                 <a
                                     href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_deletedUsers'?>">Deleted
+                                    Users</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_adminUsers'?>">Admin
                                     Users</a>
                             </li>
                             <li>
@@ -82,8 +91,23 @@
                             </li>
                             <li>
                                 <a
+                                    href="<?=PROOT . 'admin' . US . 'allunits'?>">All
+                                    Units</a>
+                            </li>
+                            <li>
+                                <a
                                     href="<?=PROOT . 'admin' . US . 'allproducts'?>">All
                                     Products</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'product_details'?>">Product
+                                    Details</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'new_product'?>">Add
+                                    New Product</a>
                             </li>
                         </ul>
                     </li>

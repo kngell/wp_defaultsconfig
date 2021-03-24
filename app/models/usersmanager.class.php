@@ -20,7 +20,6 @@ class UsersManager extends Model
     public $token_expire;
     public $phone;
     public $deleted;
-    public $acl;
     public $verified;
     public $fb_access_token ;
 
@@ -31,44 +30,100 @@ class UsersManager extends Model
     public function __construct($user = '')
     {
         parent::__construct();
-        if ($user) {
-            if (is_int($user)) {
-                $cond = ['where' => ['userID' => $user], 'return_mode' => 'class', 'class' => 'UsersManager'];
-                $u = $this->_db->findFirst($this->_table, $cond);
-            } else {
-                $cond = ['where' => ['email' => $user], 'return_type' => 'single', 'return_mode' => 'class', 'class' => 'UsersManager'];
-                $u = $this->_db->select($this->_table, $cond);
-            }
-            if ($u) {
-                $this->_results = $this->_db->get_results();
-                foreach ($this->_results as $key => $val) {
-                    $this->$key = $val;
-                }
-            }
-        }
     }
 
     //=======================================================================
     //Manage users
     //=======================================================================
-
-    //Get all users
-    public function get_allUsers($start = '', $limit = '')
+    public function get_users($method, $start = '', $limit = '', $html = true)
     {
-        $this->_deleted_item = false;
-        $users = isset($start) && isset($limit) ? $this->getAll_MinMax($start, $limit)->get_results() : $this->getAllItem()->get_results();
-        $btn = ['text-danger', 'deleteBtn', 'delete_user'];
-        return $this->output_users($users, $btn);
+        $op = '';
+        switch ($method) {
+            case 'get_adminUsers':
+                $this->_deleted_item = false;
+                $op = ' == ';
+                $textClass = 'text-danger';
+                break;
+            case 'get_deletedUsers':
+                $this->_deleted_item = true;
+                $op = ' != ';
+                $textClass = 'text-secondary';
+                break;
+            default:
+                $this->_deleted_item = false;
+                $op = ' != ';
+                $textClass = 'text-danger';
+                break;
+        }
+        $tables = ['users' => ['*'], 'group_user' => ['groupID']];
+        $data = ['join' => 'LEFT JOIN', 'relation' => ['userID', 'userID']];
+        $data = !empty($limit) ? array_merge($data, ['start' => $start, 'limit' => $limit]) : $data;
+        $admin_group = (new GroupsManager)->getDetails('admin', 'name');
+        $all_users = $this->getAllItem($data, $tables)->get_results();
+        if ($all_users && $admin_group) {
+            $admin_users = array_unique(array_column($all_users, 'userID'));
+            $admin_users = array_filter($all_users, function ($user) use ($admin_group) {
+                return $user->groupID == $admin_group->grID;
+            });
+            $users = array_filter($all_users, function ($user) use ($admin_group, $op) {
+                return $user->groupID . $op . $admin_group->grID && $admin_group->status == 1;
+            });
+        }
+        $btn = [$textClass, 'deleteBtn', 'delete_user'];
+        $admin_group = null;
+        $all_users = null;
+        return $html ? $this->output_users($users, $btn) : count($users);
     }
 
-    //Restored users list
-    public function get_deletedUsers($start = '', $limit = '')
-    {
-        $this->_deleted_item = true;
-        $users = isset($start) && isset($limit) ? $this->getAll_MinMax($start, $limit)->get_results() : $this->getAllItem()->get_results();
-        $btn = ['text-secondary', 'restoreBtn', 'restore_user'];
-        return $this->output_users($users, $btn);
-    }
+    // //Get admin users
+    // public function get_adminUsers($start = '', $limit = '', $html = true)
+    // {
+    //     $all_users = $this->get_users($start, $limit);
+    //     $admin_group = (new GroupsManager)->getDetails('admin', 'name');
+    //     $users = [];
+    //     if ($all_users && $admin_group) {
+    //         $users = array_filter($all_users, function ($user) use ($admin_group) {
+    //             return $user->groupID == $admin_group->grID && $admin_group->status == 1;
+    //         });
+    //     }
+    //     $btn = ['text-danger', 'deleteBtn', 'delete_user'];
+    //     $admin_group = null;
+    //     $all_users = null;
+    //     return $html ? $this->output_users($users, $btn) : count($users);
+    // }
+
+    // //Get all users
+    // public function get_allUsers($start = '', $limit = '', $html = true)
+    // {
+    //     $all_users = $this->get_users($start, $limit);
+    //     $admin_group = (new GroupsManager)->getDetails('admin', 'name') ;
+    //     $users = [];
+    //     if ($all_users && $admin_group) {
+    //         $users = array_filter($all_users, function ($user) use ($admin_group) {
+    //             return ($user->groupID != $admin_group->grID) && $admin_group->status == 1;
+    //         });
+    //     }
+    //     $admin_group = null;
+    //     $btn = ['text-danger', 'deleteBtn', 'delete_user'];
+    //     return $html ? $this->output_users($users, $btn) : count($users);
+    // }
+
+    // //Restored users list
+    // public function get_deletedUsers($start = '', $limit = '', $html = true)
+    // {
+    //     $this->_deleted_item = true;
+    //     $all_users = $this->get_users($start, $limit);
+    //     $admin_group = (new GroupsManager)->getDetails('admin', 'name');
+    //     $users = [];
+    //     if ($all_users && $admin_group) {
+    //         $users = array_filter($all_users, function ($user) use ($admin_group) {
+    //             return ($user->groupID != $admin_group->grID) && $admin_group->status == 1;
+    //         });
+    //     }
+    //     $admin_group = null;
+    //     $btn = ['text-secondary', 'restoreBtn', 'restore_user'];
+    //     return $html ? $this->output_users($users, $btn) : count($users);
+    // }
 
     public function restore_User($id = [])
     {
@@ -131,7 +186,7 @@ class UsersManager extends Model
 
     public function beforeDelete()
     {
-        $this->sets_SoftDelete(true);
+        $this->set_SoftDelete(true);
         return true;
     }
 
@@ -142,5 +197,78 @@ class UsersManager extends Model
     {
         $template = file_get_contents(FILES . 'template' . DS . 'e_commerce' . DS . 'account' . DS . 'userTemplate.php');
         return $template;
+    }
+
+    //=======================================================================
+    //Set users permissions
+    //=======================================================================
+    // On insert
+    public function afterSave($params = [])
+    {
+        // parent::beforeSave();
+        if ($params) {
+            $select2_data = $params['select2'] ? json_decode($params['select2'], true) : [];
+            return $select2_data ? !$this->saveUserGroup($select2_data, $params['saveID'] ?? $params['userID']) : '';
+        }
+        return false;
+    }
+
+    //Save user permission group
+    public function saveUserGroup($params = [], $userID = '')
+    {
+        $user_roles = (new GroupUserManager())->getAllbyIndex($userID);
+        $user_group = (new GroupsManager())->getAllbyParams(['name' => strtolower($params[0]['text'])]);
+        $error = false;
+        $groupID = false;
+        if ($user_roles->count() >= 1) {
+            foreach ($user_roles->get_results() as $role) {
+                if (!$role->delete()) {
+                    $error = true;
+                    break;
+                }
+            }
+        }
+        if ($user_group->count() == 0) {
+            $user_group->name = strtolower($params[0]['text']);
+            $groupID = $user_group->save();
+        }
+        if ($params && $groupID) {
+            foreach ($params as $group) {
+                $user_roles->userID = $userID;
+                $user_roles->groupID = $groupID;
+                if (!$user_roles->save()) {
+                    $error = true;
+                    break;
+                }
+            }
+        }
+        $user_roles = null;
+        $user_group = null;
+        return $error;
+    }
+
+    //get selected option
+    public function get_selectedOptions($userID = '')
+    {
+        $tables = ['groups' => ['*'], 'group_user' => ['userID', 'groupID']];
+        $data = ['join' => 'INNER JOIN', 'relation' => ['grID', 'groupID'], 'where' => ['userID' => $userID ? $userID : $this->userID]];
+        $user_roles = (new GroupUserManager())->getAllItem($data, $tables);
+        $response = [];
+        if ($user_roles->count() >= 1) {
+            foreach ($user_roles->get_results() as $role) {
+                $response[$role->groupID] = $role->name;
+            }
+        }
+        $user_roles = null;
+        return $response ? $response : [];
+    }
+
+    public function get_successMessage($method = '', $action = '')
+    {
+        if ($method == 'update') {
+            return 'Profil mis a jour avec success!';
+        } else {
+            return 'Profil Ajouté avec Success!';
+        }
     }
 }

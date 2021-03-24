@@ -1,114 +1,75 @@
-import Swal from "sweetalert2";
+import Cruds from "corejs/module_crud.class";
 import { readurl } from "corejs/profile_img";
-import { Call_controller, ManageResponse } from "corejs/form_crud";
-import {
-  removeInvalidInput,
-  reset_invalid_input,
-} from "corejs/inputErrManager";
-
-class Allusers {
+class AllUsers {
   constructor(element) {
     this.element = element;
   }
-  init = () => {
-    this.setupVariables();
-    this.setupEvents();
+  _init = () => {
+    this._setupVariables();
+    this._setupEvents();
   };
-  setupVariables = () => {
-    this.wrapper = this.element.find("#users");
+  _setupVariables = () => {
+    this.wrapper = this.element.find("#allusers-wrapper");
     this.modalbox = this.element.find("#modal-box");
     this.modalform = this.element.find("#modal-box #add-user-frm");
   };
-  setupEvents = () => {
+  _setupEvents = () => {
     var phpPlugin = this;
 
     // Upload profile form-text font-size
     var fontSize = phpPlugin.modalbox.find(".upload-box").width() * 0.16 * 0.9;
     phpPlugin.modalbox.find(".form-text").css("font-size", fontSize);
-    //=======================================================================
-    //Delete User
-    //=======================================================================
-    phpPlugin.wrapper.on("submit", ".delete_user", function (e) {
-      e.preventDefault();
-      var data = {
-        url: "forms/delete",
-        id: $(this).find("input[name=userID]").val(),
-        table: "users",
-        frm: $(this),
-        params: $(this),
-        frm_Name: "#delete_user" + $(this).find("input[name=userID]").val(),
-      };
-      Swal.fire({
-        title: "Delete User?",
-        showCancelButton: true,
-        html: "<p>Really want to delete it? You can restore later!</p>",
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Delete!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Call_controller(data, manageR);
-          function manageR(response, elmt) {
-            if (response.result == "success") {
-              elmt.parents(".card.bg-light").parent().remove();
-            } else {
-            }
-          }
-        }
-      });
+    //init crud
+    let cruds = new Cruds({
+      table: "users",
+      wrapper: phpPlugin.wrapper,
+      form: phpPlugin.modalform,
+      modal: phpPlugin.modalbox,
+      select_tag: ".select_user_role",
     });
-    //=======================================================================
-    //Restore User
-    //=======================================================================
-    phpPlugin.wrapper.on("submit", ".restore_user", function (e) {
-      e.preventDefault();
-      var data = {
-        url: "forms/delete",
-        id: $(this).find("input[name=userID]").val(),
-        table: "users",
-        frm: $(this),
-        params: $(this),
-        frm_Name: "#delete_user" + $(this).find("input[name=userID]").val(),
-        method: "restore_User",
-      };
-      Swal.fire({
-        title: "Restore User?",
-        showCancelButton: true,
-        html: "<p>Really want to Restore it? You can delete later!</p>",
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Restore!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Call_controller(data, manageR);
-          function manageR(response, elmt) {
-            if (response.result == "success") {
-              elmt.parents(".card.bg-light").parent().remove();
-            } else {
-            }
-          }
-        }
-      });
+    //Select2 ajax
+    cruds._select2({
+      tbl_options: "groups",
+      placeholder: "Please select a user",
     });
-    //=======================================================================
-    //Select user Role
-    //=======================================================================
-    let select = phpPlugin.modalbox
-      .find(".select2")
-      .select2({
-        placeholder: "User rôle",
-        tags: true,
-        tokenSeparators: [",", " "],
-      })
-      .on("change", function () {
-        let change = $(this).find('[data-select2-tag="true"]:last-of-type');
-        console.log(change.val());
-      });
-    //=======================================================================
-    //Add new user
-    //=======================================================================
-    //Read upload profile
-
+    //set create/add function
+    cruds._set_addBtn();
+    //Add or update
+    cruds._add_update({
+      frm_name: "add-user-frm",
+      datatable: false,
+      modal: phpPlugin.modalbox,
+      swal: true,
+    });
+    //edit
+    cruds._edit({
+      frm_name: "add-user-frm",
+      tbl_option: "groups",
+      std_fields: [
+        "userID",
+        "date_enreg",
+        "updateAt",
+        "status",
+        "deleted",
+        "firstName",
+        "lastName",
+        "userName",
+        "email",
+        "phone",
+        "group",
+        "userName",
+        "email",
+        "phone",
+        "profileImage",
+      ],
+    });
+    //clean form
+    cruds._clean_form({ upload_img: ".upload-box .img" });
+    //delete items
+    cruds._delete({ swal: true, datatable: true });
+    //Activate item
+    cruds._active_inactive_elmt({ table: "categories" });
+    // Upload profile
     phpPlugin.modalbox
       .find('.upload-box input[type="file"]')
       .on("change", function () {
@@ -118,42 +79,8 @@ class Allusers {
           phpPlugin.modalbox.find(".upload-box .camera-icon")
         );
       });
-    //Add user
-    phpPlugin.modalform.on("submit", function (e) {
-      e.preventDefault();
-      var data = {
-        url: "forms/Add",
-        frm: phpPlugin.modalform,
-        frm_name: "add-user-frm",
-        table: "users",
-        select2: JSON.stringify(Object.values($("#acl").select2("data"))),
-      };
-      Call_controller(data, manageR);
-      function manageR(response) {
-        var rdata = {
-          frm: phpPlugin.modalform,
-          swal: Swal,
-          modalbox: phpPlugin.modalbox,
-          alertid: phpPlugin.modalform.find("#alertErr"),
-        };
-        ManageResponse(response, rdata);
-      }
-    });
-    //=======================================================================
-    //clean form
-    //=======================================================================
-    //remove invalid input on input focus
-    removeInvalidInput(phpPlugin.modalform);
-    //clean form on hide
-    phpPlugin.modalbox.on("hide.bs.modal", function () {
-      if (phpPlugin.modalform.find(".is-invalid").length != 0) {
-        reset_invalid_input(phpPlugin.modalform);
-      }
-      phpPlugin.modalform.trigger("reset");
-      phpPlugin.modalform.find("#parentID").empty();
-    });
   };
 }
 document.addEventListener("DOMContentLoaded", () => {
-  new Allusers($(".page-container")).init();
+  new AllUsers($(".page-container"))._init();
 });

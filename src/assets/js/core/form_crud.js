@@ -1,5 +1,4 @@
 import { BASE_URL } from "./config";
-import { add_inputs_errors, error, inputsArray } from "./inputErrManager";
 
 //display all details
 export function displayAllDetails(data, gestion) {
@@ -28,13 +27,13 @@ export function editForm(data, gestion) {
     method: "post",
     data: data.formData,
     success: function (response) {
-      gestion(response);
+      gestion(response, data.params ? data.params : "");
     },
   });
 }
 
 //display all Items
-export function displayAllItems(data) {
+export function displayAllItems(data, gestion) {
   $.ajax({
     url: BASE_URL + data.url,
     method: "post",
@@ -51,28 +50,11 @@ export function displayAllItems(data) {
       return_mode: data.return_mode ? data.return_mode : "",
     },
     success: function (response) {
-      if (response.result == "success") {
-        // debugger;
-        if (data.table === "comments") {
-          data.displayid.html(response.msg);
-        } else {
-          data.displayid.html(response.msg);
-          if (data.datatable) loadDatatables();
-        }
-      } else {
-        $(data.displayid).html(response.msg);
-      }
+      gestion(response, data.params ? data.params : "");
     },
   });
 }
-async function loadDatatables() {
-  const DataTable = await import(
-    /* webpackChunkName: "datatables" */ "datatables.net"
-  );
-  $("table").DataTable({
-    order: [0, "desc"],
-  });
-}
+
 //add Item
 export function Add(data, gestion) {
   var formData = new FormData(data.frm[0]);
@@ -82,6 +64,7 @@ export function Add(data, gestion) {
   if (data.start_date) formData.append("start_date", data.start_date);
   if (data.end_date) formData.append("end_date", data.end_date);
   if (data.imageUrlsAry) formData.append("imageUrlsAry", data.imageUrlsAry);
+  if (data.select2) formData.append("select2", data.select2);
   $.ajax({
     url: BASE_URL + data.url,
     method: "post",
@@ -121,43 +104,6 @@ export function Call_controller(data, gestion) {
     },
   });
 }
-//Manage item added/updated
-export function ManageResponse(response, data) {
-  switch (response.result) {
-    case "error-field":
-      add_inputs_errors(inputsArray(data.frm), error(data.frm, response.msg));
-      break;
-    case "success":
-      data.frm.trigger("reset");
-      if (data.login) {
-        data.loginbox.modal("hide");
-        window.location.reload();
-      }
-      if (data.swal) {
-        data.modalbox.modal("hide");
-        data.swal.fire("Success!", response.msg, "success");
-      } else {
-        if (data.alertsuccess) data.alertid.html(response.msg);
-      }
-      if (data.hasOwnProperty("imgarea")) {
-        data.imgarea.attr("src", data.imgvalue);
-      }
-      if (data.prepend) {
-        data.nested.prepend(response.msg);
-      } else {
-        if (data.prepend === false) {
-          data.nested.before(response.msg);
-          data.nested.hide();
-        }
-      }
-      if (data.display) data.display();
-      break;
-    case "error":
-      data.alertid.html(response.msg);
-      data.frm.trigger("reset");
-      break;
-  }
-}
 
 //delete
 export function Delete(data, displayItem) {
@@ -172,14 +118,7 @@ export function Delete(data, displayItem) {
           notification: data.notification,
         },
         success: function (response) {
-          if (response.result === "success") {
-            data.swal
-              ? data.swal.fire("Deleted!", response.msg, "success")
-              : "";
-            displayItem(data.params ? data.params : "");
-          } else {
-            data.alertID.html(response.msg);
-          }
+          displayItem(response, data.params ? data.params : "");
         },
       });
     }
@@ -202,13 +141,13 @@ function checkBeforeDelete(data) {
           resolve(result);
         });
     } else {
+      console.log(data);
       $.ajax({
         url: BASE_URL + data.url_check,
         method: "post",
         data: {
           id: data.id,
           table: data.table,
-          notification: data.notification,
         },
       })
         .done((response) => {
@@ -282,26 +221,15 @@ export function select2AjaxParams(data) {
     },
     processResults: function (response) {
       if (response.result == "success") {
-        // var data = $.map(response.msg, function (obj) {
-        //   obj.id = obj.id || obj.text; // replace pk with your identifier
-        //   return obj;
-        // });
-        // //console.log(data);
-
         return {
           results: $.map(response.msg, function (obj) {
             if (obj.id != 0) {
-              console.log(obj);
               return { id: obj.id, text: obj.text };
             } else {
               return { id: obj.id, text: obj.text };
             }
           }),
         };
-
-        // return {
-        //   results: data,
-        // };
       }
     },
     cache: true,

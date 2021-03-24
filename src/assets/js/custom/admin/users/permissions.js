@@ -4,6 +4,8 @@ import {
   displayAllItems,
   ManageResponse,
   select2AjaxParams,
+  editForm,
+  Delete,
 } from "corejs/form_crud";
 import {
   removeInvalidInput,
@@ -19,7 +21,7 @@ class Permissions {
     this.setupEvents();
   };
   setupVariables = () => {
-    this.wrapper = this.element.find(".content .card");
+    this.wrapper = this.element.find("#content-box");
     this.modalbox = this.element.find("#modal-box");
     this.modalform = this.element.find(
       "#modal-box #groups-and-permissions-frm"
@@ -55,6 +57,12 @@ class Permissions {
       }
       phpPlugin.modalform.trigger("reset");
       phpPlugin.modalform.find("#status").val(false);
+      phpPlugin.modalform.find(".select_group").empty();
+    });
+
+    //set create/add function
+    phpPlugin.wrapper.find("#addNew").on("click", function () {
+      phpPlugin.modalform.find("#operation").val("add");
     });
     // =======================================================================
     // Add or Update Plugin
@@ -90,17 +98,16 @@ class Permissions {
         phpPlugin.modalform.find("#submitBtn").val("Enregistrer");
         var rdata = {
           frm: phpPlugin.modalform,
-          swal: Swal,
           modalbox: phpPlugin.modalbox,
           alertid: phpPlugin.modalform.find("#alertErr"),
-          display: displayAll,
+          modalbox: phpPlugin.modalbox,
+          swal: Swal,
         };
         ManageResponse(response, rdata);
       }
     });
-    console.log($(".select2"));
     // Select parents Group
-    phpPlugin.modalform.find(".select_group").select2({
+    let select = phpPlugin.modalform.find(".select_group").select2({
       placeholder: "--- Please select parent group ---",
       maximumInputLength: 20,
       ajax: select2AjaxParams({
@@ -109,8 +116,76 @@ class Permissions {
         data_type: "select2",
       }),
     });
+
+    //=======================================================================
+    //Edit group
+    //=======================================================================
+
+    phpPlugin.wrapper.on("click", ".editBtn", function (e) {
+      e.preventDefault();
+      phpPlugin.modalform.find("#operation").val("update");
+      var data = {
+        url: "forms/edit",
+        formData:
+          phpPlugin.modalbox
+            .find("#groups-and-permissions-frm input[type=hidden]")
+            .serialize() +
+          "&" +
+          $.param({
+            id: $(this).attr("id"),
+            table: "groups",
+            frm_name: "groups-and-permissions-frm",
+            table_options: "groups",
+          }),
+      };
+      editForm(data, manageR);
+      function manageR(response) {
+        console.log(response);
+        if (response.result === "success") {
+          phpPlugin.modalform.find("#grID").val(response.msg.items.grID);
+          phpPlugin.modalform
+            .find("#date_enreg")
+            .val(response.msg.items.date_enreg);
+          phpPlugin.modalform
+            .find("#updateAt")
+            .val(response.msg.items.updateAt);
+          phpPlugin.modalform.find("#deleted").val(response.msg.items.deleted);
+          phpPlugin.modalform.find("#name").val(response.msg.items.name);
+          phpPlugin.modalform
+            .find("#description")
+            .val(response.msg.items.description);
+          phpPlugin.modalform.find("#status").val(response.msg.items.status);
+          //Select 2 set selected
+          $(response.msg.selectedOptions[0]).each(function () {
+            if (!$(select).find("option[value='" + this.id + "']").length) {
+              $(select).append(new Option(this.text, this.id, true, true));
+              $(select).val(response.msg.selectedOptions[1]).trigger("change");
+            }
+          });
+        } else {
+          phpPlugin.modalform.find("#alertErr").html(response.msg);
+        }
+      }
+    });
+
+    //=======================================================================
+    //Delete Group
+    //=======================================================================
+    phpPlugin.wrapper.on("click", ".deleteBtn", function (e) {
+      e.preventDefault();
+      var data = {
+        url: "forms/delete",
+        url_check: "forms/checkdelete",
+        id: $(this).attr("id"),
+        table: "groups",
+        notification: "admin",
+        swal: Swal,
+        alertID: phpPlugin.wrapper.find("#globalErr"),
+      };
+      Delete(data, displayAll);
+    });
   };
 }
 document.addEventListener("DOMContentLoaded", () => {
-  new Permissions($(".page-content")).init();
+  new Permissions($(".page-container")).init();
 });

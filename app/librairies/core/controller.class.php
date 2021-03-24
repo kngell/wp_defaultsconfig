@@ -43,14 +43,15 @@ abstract class Controller extends Application
         if (!empty($modelName) && class_exists($modelName)) {
             if (file_exists($modelName == 'AuthManager' ? MODEL . 'auth' . DS : MODEL . strtolower($modelName) . '.class.php')) {
                 // require_once MODEL . strtolower($modelName) . '.class.php';
-                if (!empty($model)) {
-                    $this->model_instance[$model] = !isset($this->model_instance[$model]) ? new $modelName() : $this->model_instance;
+                if (!empty($model) && !isset($this->model_instance[$model])) {
+                    $this->model_instance[$model] = new $modelName();
                 } elseif (!isset($this->model_instance)) {
                     $this->model_instance = new $modelName();
                 } else {
-                    if (!isset($this->model_instance[strtolower(rtrim($modelName, 'Manager'))])) {
-                        $this->model_instance[strtolower(rtrim($modelName, 'Manager'))] = new $modelName();
-                    }
+                    $this->model_instance = $this->model_instance;
+                    // if (!isset($this->model_instance[strtolower(rtrim($modelName, 'Manager'))])) {
+                    //     $this->model_instance[strtolower(rtrim($modelName, 'Manager'))] = new $modelName();
+                    // }
                 }
                 return $this->model_instance;
             } else {

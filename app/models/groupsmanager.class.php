@@ -5,6 +5,7 @@ class GroupsManager extends Model
     protected $_colID = 'grID';
     protected $_table = 'groups';
     protected $_colIndex = 'parentID';
+    protected $_colTitle = 'name';
     protected $_colContent = '';
     protected $_modelName;
     public $grID;
@@ -27,30 +28,55 @@ class GroupsManager extends Model
     //=======================================================================
     //Getters & setters
     //=======================================================================
-    public function getSelect2Data($params)
+
+    // //Get selected options
+    // public function get_selectedOptions()
+    // {
+    //     $selected_option = $this->parentID != '0' ? $this->getDetails($this->parentID, $this->_colID) : null;
+    //     $colID = $this->_colID;
+    //     $colTitle = $this->_colTitle;
+    //     if ($selected_option) {
+    //         $data[$selected_option->$colID] = $selected_option->$colTitle;
+    //         return $data;
+    //     }
+    //     return [];
+    // }
+
+    public function get_successMessage($method = '', $action = '')
     {
-        $search = strtolower($params['searchTerm']);
-        $data = $this->getAllItem()->get_results();
-        $output = array_filter($data, function ($item) use ($search) {
-            return str_starts_with(strtolower($item->name), $search);
-        });
-        return array_map(
-            function ($group) {
-                $colID = $group->get_colID();
-                return ['id' => (int)$group->$colID, 'text' => $group->name];
-            },
-            $output
-        );
+        if ($method == 'Add') {
+            return 'Groupe d\'utilisateur crée avec success';
+        } else {
+            return 'La group a été mise à jour.';
+        }
     }
 
     //=======================================================================
     //Operations
     //=======================================================================
+
+    // Insert
     public function beforeSave()
     {
         parent::beforeSave();
         if ($this->status == 'on') {
             $this->status = '1';
+        }
+        return true;
+    }
+
+    //delete
+    //After delete categorie
+    public function afterDelete($params = [])
+    {
+        $groups = $this->getAllbyIndex($params[$this->get_colID()])->get_results();
+        if ($groups) {
+            foreach ($groups as $group) {
+                $group->parentID = '0';
+                $colID = $group->get_colID();
+                $group->id = $group->$colID;
+                $group->save();
+            }
         }
         return true;
     }

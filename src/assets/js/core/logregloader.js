@@ -10,7 +10,7 @@ export default class Logreg {
     const { default: createEditor } = await import(
       /* webpackMode: "lazy" */
       /* webpackChunkName: "logAndReg" */
-      "./logreg"
+      "./login_register.class"
     );
     $.each(this.editors, async (i, ed) => {
       this.editor[ed] = await createEditor(ed);

@@ -15,7 +15,7 @@ class TablesController extends Controller
         if ($this->request->exists('post')) {
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            $this->model_instance[$table]->sets_SoftDelete(true);
+            $this->model_instance[$table]->set_SoftDelete(true);
             $data = $this->request->getAll();
             $method = $data['method'];
             if ($output = $this->model_instance[$table]->$method($data)) {

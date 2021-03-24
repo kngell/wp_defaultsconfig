@@ -44,9 +44,9 @@ class View
     public function render($viewname)
     {
         if ($this->view_file != $viewname) {
-            $this->view_file = $viewname;
+            $this->view_file = preg_replace("/\s+/", '', $viewname);
         }
-        if (file_exists(VIEW . $viewname . '.php')) {
+        if (file_exists(VIEW . $this->view_file . '.php')) {
             include VIEW . $this->view_file . '.php';
         // include VIEW . 'layouts' . DS . $this->_layout . '.php';
         } else {
@@ -157,7 +157,8 @@ class View
             $path = '';
             $check = array_shift($root);
             foreach ($root as $value) {
-                $path .= $value;
+                $separator = $value == end($root) ? '' : US;
+                $path .= $value . $separator;
             }
             switch ($check) {
                 case 'img':
@@ -168,7 +169,7 @@ class View
                 break;
                 default:
                     if (isset($this->ressources->$asset)) {
-                        return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . $this->ressources->$asset->$ext ?? '' : $this->ressources->$asset->$ext ?? '';
+                        return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . $this->ressources->$asset->$ext ?? '' : $this->ressources->$asset->$ext ?? '';
                     }
             }
         }

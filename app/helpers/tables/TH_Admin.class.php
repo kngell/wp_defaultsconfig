@@ -82,6 +82,42 @@ class TH_Admin
     }
 
     //=======================================================================
+    //Categories table
+    //=======================================================================
+
+    public static function unitsTable($data)
+    {
+        $output = '';
+        $output .= '<table class="table table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:2%" class="text-center">#</th>
+                            <th scope="col" style="width:30%">Unit</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" style="width:20%">Opérations</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+        foreach ($data as $item) {
+            $active = $item->status == 1 ? "style='color:green'" : '';
+            $txtactive = $item->status == 1 ? 'Active Unit' : 'Inactive Unit';
+            $output .= ' <tr>
+                            <th scope="row">' . $item->unID . '</th>
+                            <td>' . $item->unit . '</td>
+                            <td>' . $item->descr . '</td>
+                            <td>
+                            <a href="#" id="' . $item->unID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fas fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
+                            <a href="#" id="' . $item->unID . '"  title="Edit Unit" class="text-primary editBtn mx-2" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="#" id="' . $item->unID . '" title="Delete Unit" class="text-danger deleteBtn"><i class="fas fa-trash-alt fa-lg"></i></a>
+                            </td>   
+                        </tr>';
+        }
+        $output .= '</tbody></table>';
+
+        return $output;
+    }
+
+    //=======================================================================
     //Posts table
     //=======================================================================
 

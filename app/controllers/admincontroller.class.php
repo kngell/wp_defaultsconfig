@@ -36,6 +36,13 @@ class AdminController extends Controller
         $this->view_instance->render('admin' . DS . 'products' . DS . 'allcategories');
     }
 
+    // Units Management
+    public function allunits()
+    {
+        $this->view_instance->set_pageTitle('Units');
+        $this->view_instance->render('admin' . DS . 'products' . DS . 'allunits');
+    }
+
     public function login()
     {
         $this->view_instance->set_Layout('adminlogin');
@@ -68,7 +75,28 @@ class AdminController extends Controller
     public function permissions()
     {
         $this->view_instance->set_pageTitle('permissions');
-        $this->view_instance->options = ($this->get_model('GroupsManager'))->getAllItem()->get_results();
         $this->view_instance->render('admin' . DS . 'users' . DS . 'permissions');
+    }
+
+    // All product
+    public function allproducts()
+    {
+        $this->view_instance->set_pageTitle('AllProducts');
+        $this->view_instance->render('admin' . DS . 'products' . DS . 'allproducts');
+    }
+
+    // Product Details
+    public function product_details()
+    {
+        $this->view_instance->set_pageTitle('Product Details');
+        $this->view_instance->render('admin' . DS . 'products' . DS . 'product_details');
+    }
+
+    // Add new Product
+    public function new_product()
+    {
+        // dd(($this->get_model('UsersManager'))->get_Tables_Column('products'));
+        $this->view_instance->set_pageTitle('New Product');
+        $this->view_instance->render('admin' . DS . 'products' . DS . 'new_product');
     }
 }

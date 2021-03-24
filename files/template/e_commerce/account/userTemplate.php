@@ -161,7 +161,7 @@
                             <div class="col-md-12">
                                 <div class="input-box mb-3">
                                     <label for="country" class="form-label">Pays:</label>
-                                    <select class="select2 form-control" id="country" name="country">
+                                    <select class="select_country form-control" id="country" name="country">
                                         <option value='0'></option>
                                     </select>
                                 </div>

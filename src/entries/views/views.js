@@ -18,11 +18,14 @@ import "views/layouts/adminlogin.php";
 // Admin Pages
 import "views/admin/index.php";
 import "views/admin/analytics.php";
-import "views/admin/login.php";
 import "views/admin/calendar.php";
 
 // Admin pages products
 import "views/admin/products/allcategories.php";
+import "views/admin/products/allproducts.php";
+import "views/admin/products/product_details.php";
+import "views/admin/products/new_product.php";
+import "views/admin/products/allunits.php";
 
 //admin contact page
 import "views/admin/home/contact-us.php";

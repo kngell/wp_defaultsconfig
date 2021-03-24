@@ -11,32 +11,23 @@ class AuthManager extends Model
     protected $_count;
 
     public $userID;
-    public $oauth_provider;
-    public $oauth_uid;
-    public $admin;
-    public $rank;
     public $firstName;
     public $lastName;
     public $userName;
-    public $salt;
     public $email;
     public $password;
-    public $phone;
-    public $gender;
-    public $dob;
+    public $registerDate;
+    public $updateAt;
+    public $profileImage;
+    public $salt;
     public $token;
     public $visitor_cookie;
     public $remember_cookie;
     public $token_expire;
-    public $profileImage;
-    public $link;
-    public $registerDate;
-    public $updateAt;
-    public $verified;
+    public $phone;
     public $deleted;
-    public $groupe;
-    public $acl;
-    public $fb_access_token;
+    public $verified;
+    public $fb_access_token ;
 
     //=======================================================================
     //construct
@@ -49,15 +40,12 @@ class AuthManager extends Model
         $this->_cookieName = REMEMBER_ME_COOKIE_NAME;
         if ($user) {
             if (is_int($user)) {
-                $cond = ['where' => ['userID' => $user], 'return_mode' => 'class', 'class' => 'AuthManager'];
-                $u = $this->_db->findFirst($this->_table, $cond);
+                $u = $this->getDetails($user);
             } else {
-                $cond = ['where' => ['email' => $user], 'return_type' => 'single', 'return_mode' => 'class', 'class' => 'AuthManager'];
-                $u = $this->_db->select($this->_table, $cond);
+                $u = $this->getDetails($user, 'email');
             }
             if ($u) {
-                $this->_results = $this->_db->get_results();
-                foreach ($this->_results as $key => $val) {
+                foreach ($u as $key => $val) {
                     $this->$key = $val;
                 }
             }
@@ -101,10 +89,16 @@ class AuthManager extends Model
     public static function currentUser()
     {
         if (!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)) {
-            $U = new AuthManager((string) Session::get(CURRENT_USER_SESSION_NAME));
-            self::$currentLoggedInUser = $U;
+            self::$currentLoggedInUser = new AuthManager((string) Session::get(CURRENT_USER_SESSION_NAME));
         }
         return self::$currentLoggedInUser;
+    }
+
+    public static function check_UserSession($params = [])
+    {
+        if (isset($params['userID'])) {
+            (self::$currentLoggedInUser->userID == $params['userID'] && self::$currentLoggedInUser->email != $params['email']) ? Session::set(CURRENT_USER_SESSION_NAME, $params['email']) : '';
+        }
     }
 
     //=======================================================================
@@ -241,10 +235,7 @@ class AuthManager extends Model
     //=======================================================================
     public function acls()
     {
-        if (empty($this->acl)) {
-            return [];
-        }
-        return json_decode($this->acl, true);
+        return (new UsersManager())->get_selectedOptions($this->userID) ?? [];
     }
 
     //form validation

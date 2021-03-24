@@ -91,7 +91,7 @@ class AuthController extends Controller
             $this->model_instance['users']->setConfirm($this->request->getAll('password'));
             $this->model_instance['users']->cpassword = $this->request->getAll('cpassword');
             $this->model_instance['users']->terms = !isset($_POST['terms']) ? '' : $this->request->getAll('terms');
-            $this->model_instance['users']->validator($this->request->getAll(), Form_rules::register());
+            $this->model_instance['users']->validator($this->request->getAll(), Form_rules::users());
             $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance['users']);
             if ($file['success']) {
                 if ($this->model_instance['users']->validationPasses()) {
