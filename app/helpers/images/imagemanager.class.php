@@ -2,8 +2,8 @@
 
 class ImageManager
 {
-    public $sourcePath = IMAGE_ROOT;
-    public $destinationPath = IMAGE_ROOT;
+    public $sourcePath;
+    public $destinationPath;
 
     public function __construct($source = '', $destination = '')
     {
@@ -87,5 +87,13 @@ class ImageManager
             imagedestroy($img);
         }
         return true;
+    }
+
+    //=======================================================================
+    //Get Assets
+    //=======================================================================
+    public static function asset_img($img = '')
+    {
+        return ASSET_SERVICE_PROVIDER ? ASSET_SERVICE_PROVIDER . US . IMG . $img : IMG . $img;
     }
 }

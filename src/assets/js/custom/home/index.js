@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       loop: true,
       nav: true,
       dots: false,
+      margin: 15,
       responsive: responsive,
     });
 
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
       loop: true,
       nav: false,
       dots: true,
+      margin: 15,
       responsive: responsive,
     });
     //blog

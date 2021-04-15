@@ -9,7 +9,7 @@ class HomeController extends Controller
         if ($this->view_instance != null) {
             $this->view_instance->set_siteTitle("K'nGELL Ingénierie Logistique");
             //Ecommerce products
-            $this->view_instance->products = ($this->get_model('ProductManager', 'product')['product'])->getAllItem()->get_results();
+            $this->view_instance->products = ($this->get_model('ProductsManager', 'products')['products'])->get_Products();
             $this->view_instance->user_cart = ($this->get_model('CartManager', 'cart')['cart'])->CheckDuplicateTems() ?? [];
         }
     }
@@ -26,8 +26,8 @@ class HomeController extends Controller
     public function product($data = [])
     {
         $id = array_pop($data) ?? 1;
-        $this->view_instance->p_details = $this->model_instance['product']->getDetails($id);
-        $this->view_instance->set_pageTitle('Prodyct');
+        $this->view_instance->p_details = $this->model_instance['products']->getDetails($id);
+        $this->view_instance->set_pageTitle('Product');
         $this->view_instance->render('home' . DS . 'product');
     }
 

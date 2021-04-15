@@ -81,7 +81,9 @@ class AdminController extends Controller
     // All product
     public function allproducts()
     {
+        $this->view_instance->set_viewData($this->get_model('CategoriesManager')->getAllItem()->get_results());
         $this->view_instance->set_pageTitle('AllProducts');
+        $this->view_instance->dragAndDrop = file_get_contents(FILES . 'template' . DS . 'base' . DS . 'dragandDropTemplate.php');
         $this->view_instance->render('admin' . DS . 'products' . DS . 'allproducts');
     }
 

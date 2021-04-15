@@ -37,97 +37,39 @@ class UsersManager extends Model
     //=======================================================================
     public function get_users($method, $start = '', $limit = '', $html = true)
     {
-        $op = '';
+        $tables = ['groups' => ['*'], 'group_user' => ['userID']];
+        $data = ['join' => 'INNER JOIN', 'relation' => ['grID', 'groupID'], 'where' => ['name' => 'admin']];
+        $admin_group = (new GroupsManager)->getAllItem($data, $tables)->get_results();
         switch ($method) {
             case 'get_adminUsers':
                 $this->_deleted_item = false;
-                $op = ' == ';
                 $textClass = 'text-danger';
+                $where = $admin_group ? ['where' => ['groupID' => ['value' => array_column($admin_group, 'grID'), 'operator' => 'IN', 'tbl' => 'group_user']]] : [];
+                $style_restore = 'style="display:none"';
+                $style_edit = '';
                 break;
             case 'get_deletedUsers':
                 $this->_deleted_item = true;
-                $op = ' != ';
                 $textClass = 'text-secondary';
+                $style_restore = '';
+                $style_edit = 'style="display:none"';
                 break;
             default:
                 $this->_deleted_item = false;
-                $op = ' != ';
                 $textClass = 'text-danger';
+                $where = $admin_group ? ['where' => ['userID' => ['value' => array_column($admin_group, 'userID'), 'operator' => 'NOT IN', 'tbl' => 'users']]] : [];
+                $style_restore = 'style="display:none"';
+                $style_edit = '';
                 break;
         }
+
         $tables = ['users' => ['*'], 'group_user' => ['groupID']];
-        $data = ['join' => 'LEFT JOIN', 'relation' => ['userID', 'userID']];
+        $data = isset($where) && !empty($where) ? array_merge(['join' => 'LEFT JOIN', 'relation' => ['userID', 'userID'], 'group_by' => 'userID DESC'], $where) : ['join' => 'LEFT JOIN', 'relation' => ['userID', 'userID'], 'group_by' => 'userID DESC'];
         $data = !empty($limit) ? array_merge($data, ['start' => $start, 'limit' => $limit]) : $data;
-        $admin_group = (new GroupsManager)->getDetails('admin', 'name');
-        $all_users = $this->getAllItem($data, $tables)->get_results();
-        if ($all_users && $admin_group) {
-            $admin_users = array_unique(array_column($all_users, 'userID'));
-            $admin_users = array_filter($all_users, function ($user) use ($admin_group) {
-                return $user->groupID == $admin_group->grID;
-            });
-            $users = array_filter($all_users, function ($user) use ($admin_group, $op) {
-                return $user->groupID . $op . $admin_group->grID && $admin_group->status == 1;
-            });
-        }
-        $btn = [$textClass, 'deleteBtn', 'delete_user'];
+        $users = $this->getAllItem($data, $tables)->get_results();
+        $btn = [$textClass, $method, $style_restore, $style_edit];
         $admin_group = null;
-        $all_users = null;
         return $html ? $this->output_users($users, $btn) : count($users);
-    }
-
-    // //Get admin users
-    // public function get_adminUsers($start = '', $limit = '', $html = true)
-    // {
-    //     $all_users = $this->get_users($start, $limit);
-    //     $admin_group = (new GroupsManager)->getDetails('admin', 'name');
-    //     $users = [];
-    //     if ($all_users && $admin_group) {
-    //         $users = array_filter($all_users, function ($user) use ($admin_group) {
-    //             return $user->groupID == $admin_group->grID && $admin_group->status == 1;
-    //         });
-    //     }
-    //     $btn = ['text-danger', 'deleteBtn', 'delete_user'];
-    //     $admin_group = null;
-    //     $all_users = null;
-    //     return $html ? $this->output_users($users, $btn) : count($users);
-    // }
-
-    // //Get all users
-    // public function get_allUsers($start = '', $limit = '', $html = true)
-    // {
-    //     $all_users = $this->get_users($start, $limit);
-    //     $admin_group = (new GroupsManager)->getDetails('admin', 'name') ;
-    //     $users = [];
-    //     if ($all_users && $admin_group) {
-    //         $users = array_filter($all_users, function ($user) use ($admin_group) {
-    //             return ($user->groupID != $admin_group->grID) && $admin_group->status == 1;
-    //         });
-    //     }
-    //     $admin_group = null;
-    //     $btn = ['text-danger', 'deleteBtn', 'delete_user'];
-    //     return $html ? $this->output_users($users, $btn) : count($users);
-    // }
-
-    // //Restored users list
-    // public function get_deletedUsers($start = '', $limit = '', $html = true)
-    // {
-    //     $this->_deleted_item = true;
-    //     $all_users = $this->get_users($start, $limit);
-    //     $admin_group = (new GroupsManager)->getDetails('admin', 'name');
-    //     $users = [];
-    //     if ($all_users && $admin_group) {
-    //         $users = array_filter($all_users, function ($user) use ($admin_group) {
-    //             return ($user->groupID != $admin_group->grID) && $admin_group->status == 1;
-    //         });
-    //     }
-    //     $admin_group = null;
-    //     $btn = ['text-secondary', 'restoreBtn', 'restore_user'];
-    //     return $html ? $this->output_users($users, $btn) : count($users);
-    // }
-
-    public function restore_User($id = [])
-    {
-        return $this->update(['userID' => $id], ['deleted' => 0]);
     }
 
     //output users
@@ -159,13 +101,15 @@ class UsersManager extends Model
         $template = str_replace('{{firstname}}', $user->firstName ?? '', $template);
         $template = str_replace('{{lastname}}', $user->lastName ?? '', $template);
         $template = str_replace('{{userID}}', $user->userID, $template);
-        $template = str_replace('{{image}}', $user->profileImage ?? IMG . 'users' . US . 'avatar.png', $template);
+        $template = str_replace('{{method}}', $btn[1] ?? '', $template);
+        $template = str_replace('{{style_restore}}', $btn[2] ?? '', $template);
+        $template = str_replace('{{style_edit}}', $btn[3] ?? '', $template);
+        $template = str_replace('{{image}}', ImageManager::asset_img(!empty($user->profileImage) ? $user->profileImage : 'users.avatar.png'), $template);
         $template = str_replace('{{phone}}', $user->phone ?? '', $template);
         $template = str_replace('{{delBtnClass}}', $btn[0] ?? '', $template);
-        $template = str_replace('{{btn}}', $btn[1] ?? '', $template);
-        $template = str_replace('{{formClass}}', $btn[2] ?? '', $template);
         $template = str_replace('{{users_profile}}', PROOT . 'admin' . US . 'profile' . US . $user->userID, $template);
-        $template = str_replace('{{token}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'delete_user' . $user->userID, $_SESSION[TOKEN_NAME])), $template);
+        $template = str_replace('{{token_d}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'delete_user' . $user->userID, $_SESSION[TOKEN_NAME])), $template);
+        $template = str_replace('{{token_r}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'restore_user' . $user->userID, $_SESSION[TOKEN_NAME])), $template);
         return $template;
     }
 
@@ -184,10 +128,27 @@ class UsersManager extends Model
     //Manage deleted users
     //=======================================================================
 
-    public function beforeDelete()
+    public function beforeDelete($params = [])
     {
-        $this->set_SoftDelete(true);
-        return true;
+        if (isset($params['method'])) {
+            switch ($params['method']) {
+                case 'get_deletedUsers':
+                    if ((new Input())->csrfCheck($params['frm_name'], $params['csrftoken'])) {
+                        $this->set_SoftDelete(false);
+                    }
+                    break;
+                case 'restore_user':
+                    $this->set_SoftDelete(true);
+                    $params['restore'] = ['deleted' => 0];
+                    break;
+                default:
+                    // code...
+                    break;
+            }
+        } else {
+            $this->set_SoftDelete(true);
+        }
+        return $params;
     }
 
     //=======================================================================
@@ -232,14 +193,11 @@ class UsersManager extends Model
             $user_group->name = strtolower($params[0]['text']);
             $groupID = $user_group->save();
         }
-        if ($params && $groupID) {
-            foreach ($params as $group) {
-                $user_roles->userID = $userID;
-                $user_roles->groupID = $groupID;
-                if (!$user_roles->save()) {
-                    $error = true;
-                    break;
-                }
+        if ($groupID) {
+            $user_roles->userID = $userID;
+            $user_roles->groupID = $groupID;
+            if (!$user_roles->save()) {
+                $error = true;
             }
         }
         $user_roles = null;
@@ -251,7 +209,7 @@ class UsersManager extends Model
     public function get_selectedOptions($userID = '')
     {
         $tables = ['groups' => ['*'], 'group_user' => ['userID', 'groupID']];
-        $data = ['join' => 'INNER JOIN', 'relation' => ['grID', 'groupID'], 'where' => ['userID' => $userID ? $userID : $this->userID]];
+        $data = ['join' => 'INNER JOIN', 'rel' => ['grID', 'groupID'], 'where' => ['userID' => $userID ? $userID : $this->userID]];
         $user_roles = (new GroupUserManager())->getAllItem($data, $tables);
         $response = [];
         if ($user_roles->count() >= 1) {
@@ -263,12 +221,22 @@ class UsersManager extends Model
         return $response ? $response : [];
     }
 
-    public function get_successMessage($method = '', $action = '')
+    public function get_successMessage($method = '', $data = [])
     {
-        if ($method == 'update') {
-            return 'Profil mis a jour avec success!';
-        } else {
-            return 'Profil Ajouté avec Success!';
+        switch ($method) {
+            case 'update':
+                return 'Profil mis a jour avec success!';
+                break;
+            case 'delete':
+                if (isset($data['method']) && $data['method'] == 'restore_user') {
+                    return 'Utilisateur restauré avec success!';
+                } else {
+                    return 'Utilisateur Supprimé!';
+                }
+                break;
+            default:
+                return 'Utilisateur créee avec success!';
+                break;
         }
     }
 }

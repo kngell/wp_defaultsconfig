@@ -42,12 +42,19 @@ class GroupsManager extends Model
     //     return [];
     // }
 
-    public function get_successMessage($method = '', $action = '')
+    public function get_successMessage($method = '', $params = [])
     {
-        if ($method == 'Add') {
-            return 'Groupe d\'utilisateur crée avec success';
-        } else {
-            return 'La group a été mise à jour.';
+        switch ($method) {
+            case 'Add':
+                return 'Groupe d\'utilisateur crée avec success';
+                break;
+            case 'update':
+                return 'La group a été mise à jour.';
+                break;
+
+            default:
+                return 'Group d\'utilisateur supprimé avec success!';
+                break;
         }
     }
 
@@ -69,7 +76,7 @@ class GroupsManager extends Model
     //After delete categorie
     public function afterDelete($params = [])
     {
-        $groups = $this->getAllbyIndex($params[$this->get_colID()])->get_results();
+        $groups = $this->getAllbyIndex($params['id'])->get_results();
         if ($groups) {
             foreach ($groups as $group) {
                 $group->parentID = '0';

@@ -10,22 +10,12 @@ class H_upload
         //filename
         $filename = (pathinfo(basename($file['name']))['filename'] == 'image') ? self::rename_image($file) : basename($file['name']);
         $targetFilePath = $targetDir . DS . $filename;
-        $fileType = strtoupper(pathinfo($targetFilePath, PATHINFO_EXTENSION));
-        if (!empty($filename)) {
-            //allow certain files format
-            $allowType = ['JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX'];
-            if (in_array($fileType, $allowType)) {
-                //upload file in the server
-                if (move_uploaded_file($file['tmp_name'], $path[0] . $targetFilePath)) {
-                    self::syncronize_src_folder($path, $targetFilePath);
-                    return $path[2] . $targetFilePath;
-                } else {
-                    return 'error';
-                }
-            } else {
-                return 'error';
-            }
+        //upload file in the server
+        if (move_uploaded_file($file['tmp_name'], $path[0] . $targetFilePath)) {
+            self::syncronize_src_folder($path, $targetFilePath);
+            return $targetFilePath;
         }
+        return 'error';
     }
 
     //synchronize image between src and public folder on dev mod
@@ -52,48 +42,120 @@ class H_upload
     //=======================================================================
     //Validate and upload
     //=======================================================================
+    public static function upload_files($files, $model)
+    {
+        $paths = [];
+        $status = [];
+        if ($files) {
+            foreach ($files as $file) {
+                $result = self::validate_and_upload_file($file, $model);
+                if ($result['url'] != '') {
+                    $paths[] = $result['url'];
+                    $result['url'] = ImageManager::asset_img($result['url']);
+                }
+                $status[] = $result;
+            }
+            if ($paths) {
+                $real_paths = self::cleanFiles($paths, $model);
+                return ['success' => true, 'msg' => self::updateModel(serialize($paths), $model), 'upload_result' => $status];
+            }
+            return ['success' => false, 'msg' => FH::showMessage('danger', 'No files'), 'upload_result' => $status];
+        }
+        return ['success' => true, 'msg' => self::updateModel('', $model), 'upload_result' => $status];
+    }
 
+    // Clean files
+    public static function cleanFiles($paths, $m)
+    {
+        $actual_files = self::modelImageField($m);
+        if (isset($actual_files)) {
+            $real_paths = array_filter($actual_files, function ($path) use ($paths, $m) {
+                $u = explode(DS, $path);
+                $file = array_pop($u);
+                if (!in_array(array_pop($u) . DS . $file, $paths)) {
+                    $del = self::deleteImage(array_pop($u) . DS . $file, $m);
+                } else {
+                    return $path;
+                }
+            });
+            return $real_paths;
+        }
+        return false;
+    }
+
+    //Validate file
     public static function validate_and_upload_file($file, $model)
     {
-        $model->fileErr = false;
-        $name = array_keys($file)[0] ?? false;
-        if (!$name) {
-            $path = '';
-            return ['success' => true, 'msg' => self::updateModel($path, $model)];
+        $allowType = ['JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX'];
+        $status = [];
+        $filename = basename($file['name']);
+        $targetDir = self::get_path($model)[1];
+        $targetFilePath = $targetDir . DS . $filename;
+        $fileType = strtoupper(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+        $status = [
+            'name' => $file['name'],
+            'type' => $file['type'],
+            'url' => '',
+            'msg' => 'Invalid Type',
+            'status' => false
+        ];
+        //Validate type
+        if (!in_array($fileType, $allowType)) {
+            return $status;
         }
-        if ($name && $_FILES[$name]['size'] == 0) {
-            $imkKey = self::get_imageKey($model);
-            $actual_Path = $model->$imkKey;
-            if ($actual_Path == US . 'kngell' . US . 'public' . US . 'assets' . US . 'img' . US . 'user_profile' . US . 'avatar.png' || $actual_Path == '') {
-                $path = self::get_path($model)[0] . 'user_profile/avatar.png';
-                $path = PROOT . 'p' . ltrim($path, ROOT);
-                return ['success' => true, 'msg' => self::updateModel($path, $model)];
-            } else {
-                return ['success' => true, 'msg' => self::updateModel($actual_Path, $model)];
+        // Validate Size
+        $img_infos = (new ImageManager())->get_imagesInfos($file['tmp_name']);
+        if ($img_infos[0] > '1840' && $img_infos[1] > '860') {
+            $sttus['msg'] = 'Invalid Size';
+            return $status;
+        }
+        //Validate empty size
+        if ($file['size'] == 0) {
+            $mediaKey = self::get_mediaKey($model);
+            if ($mediaKey == 'profileImage' && $model->$mediaKey == '') {
+                $status['url'] = ImageManager::asset_img('users' . US . 'avatar.png');
+                return $status;
             }
         }
-        if ($file[$name]['size'] > 4000000) {
-            return ['success' => false, 'msg' => FH::showMessage('danger', 'La taille du fichier ne doit pas dépasser 4000 kb')];
-        }
+        //Validate existing file
         $actual_Path = self::modelImageField($model);
-        if ($actual_Path != null && basename($actual_Path) != 'avatar.pnp') {
-            $del = file_exists(rtrim(ROOT, PROOT) . $actual_Path) ? self::deleteImage($actual_Path, $model) : '';
+        // if (is_array($actual_Path)) {
+        //     foreach ($actual_Path as $url) {
+        //         $u = explode(DS, $url);
+        //         $file = array_pop($u);
+        //         if ($url != null && basename($url) != 'avatar.pnp') {
+        //             $del = file_exists(rtrim(ROOT, PROOT) . $url) ? self::deleteImage(array_pop($u) . DS . $file, $model) : '';
+        //         }
+        //     }
+        // }
+
+        if (isset($actual_Path) && file_exists(IMAGE_ROOT . $targetFilePath) && in_array(IMG . $targetFilePath, $actual_Path)) {
+            $status['msg'] = 'Succes';
+            $status['url'] = $targetFilePath;
+            $status['status'] = true;
+            return $status;
+            // self::deleteImage($targetFilePath, $model);
         }
-        $path = self::upload_img(self::get_path($model), $file[$name]);
-        if ($path != '/kngell/error') {
-            return ['success' => true, 'msg' => self::updateModel($path, $model)];
+        $path = self::upload_img(self::get_path($model), $file);
+        if ($path == 'error') {
+            $status['msg'] = 'Error moving file to Server';
         } else {
-            return ['success' => false, 'msg' => FH::showMessage('danger', 'le fichier doit être une image ou un pdf ')];
+            $status['msg'] = 'Success';
+            $status['url'] = $path;
+            $status['status'] = true;
         }
+        return $status;
     }
 
     //Delete Image
     private static function deleteImage($path, $m)
     {
-        if ($m->getAllbyParams([self::get_imageKey($m) => $path])->count() <= 1) {
-            unlink(rtrim(ROOT, PROOT) . $path);
-            unlink(rtrim(ROOT, PROOT) . str_replace('public', 'src', $path));
-            return true;
+        if ($m->getAllbyParams([self::get_mediaKey($m) => $path])->count() <= 1) {
+            if (file_exists(IMAGE_ROOT . $path)) {
+                unlink(IMAGE_ROOT . $path);
+                unlink(str_replace('public', 'src', IMAGE_ROOT) . $path);
+                return true;
+            }
         }
         return false;
     }
@@ -137,6 +199,9 @@ class H_upload
             case 'post_file_url':
                 $md->fileUrl = $path;
                 break;
+            case 'products':
+                $md->p_media = $path;
+                break;
 
             default:
                 // code...
@@ -146,7 +211,7 @@ class H_upload
     }
 
     //Get image key
-    private static function get_imageKey($model)
+    public static function get_mediaKey($model)
     {
         $table = $model->get_tableName();
         switch ($table) {
@@ -168,6 +233,9 @@ class H_upload
             case 'post_file_url':
                 return 'fileUrl';
                 break;
+            case 'products':
+                return 'p_media';
+                break;
             default:
                 // code...
                 break;
@@ -180,19 +248,22 @@ class H_upload
         $table = $model->get_tableName();
         switch ($table) {
             case 'realisations':
-                $path = [IMAGE_ROOT, 'brand', IMG];
+                $path = [IMAGE_ROOT, 'brand'];
                 break;
             case 'users':
-                $path = [IMAGE_ROOT, 'users', IMG];
+                $path = [IMAGE_ROOT, 'users'];
                 break;
             case 'posts':
-                $path = [IMAGE_ROOT, 'blog-post', IMG];
+                $path = [IMAGE_ROOT, 'blog-post'];
                 break;
             case 'candidatures':
-                $path = [UPLOAD_ROOT, 'candidats', UPLOAD];
+                $path = [IMAGE_ROOT, 'candidats'];
                 break;
             case 'post_file_url':
-                $path = [UPLOAD_ROOT, 'postsImg', UPLOAD];
+                $path = [IMAGE_ROOT, 'postsImg'];
+                break;
+            case 'products':
+                $path = [IMAGE_ROOT, 'products'];
                 break;
             default:
                 // code...
@@ -219,6 +290,9 @@ class H_upload
                 break;
             case 'post_file_url':
                 return $model->fileUrl;
+                break;
+            case 'products':
+                return $model->p_media;
                 break;
 
             default:
@@ -281,7 +355,7 @@ class H_upload
                     }
                 }
             }
-            $tempUrls->deleteAllNullIndex();
+            // $tempUrls->deleteAllNullIndex();
             self::removeUnusedUrls();
         }
     }

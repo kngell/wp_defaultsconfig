@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   //Import login system
   //=======================================================================
   (async () => {
-    const login = await import(/* webpackChunkName: "login" */ "corejs/logreg");
+    const login = await import(
+      /* webpackChunkName: "login" */ "corejs/login_register.class"
+    );
   })();
   //=======================================================================
   //Get visitors IP Adresss

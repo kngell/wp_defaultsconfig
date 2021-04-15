@@ -78,7 +78,10 @@
                                 placeholder="Description..."></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
-
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="status" name="status" value="1">
+                            <label for="status" class="form-check-label">Active</label>
+                        </div>
                         <div class="form-group justify-content-between">
                             <input type="submit" name="submitBtn" id="submitBtn" value="Submit" class="button">
                         </div>

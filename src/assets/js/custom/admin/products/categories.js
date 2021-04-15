@@ -1,4 +1,4 @@
-import Cruds from "corejs/module_crud.class";
+import Cruds from "corejs/crud_interface";
 class AllCategories {
   constructor(element) {
     this.element = element;
@@ -56,7 +56,11 @@ class AllCategories {
     //clean form
     cruds._clean_form();
     //delete items
-    cruds._delete({ swal: true, datatable: true });
+    cruds._delete({
+      swal: true,
+      datatable: true,
+      url_check: "forms/checkdelete",
+    });
     //Activate item
     cruds._active_inactive_elmt({ table: "categories" });
   };

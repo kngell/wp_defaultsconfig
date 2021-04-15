@@ -1,4 +1,5 @@
 <?php
+use Brick\Money\Money;
 
 class TH_Admin
 {
@@ -47,8 +48,8 @@ class TH_Admin
     public static function categoriesTable($data)
     {
         $output = '';
-        $output .= '<table class="table table-striped text-center">
-                    <thead>
+        $output .= '<table class="table table-bordered border-primary text-center">
+                    <thead class="table-dark">
                         <tr>
                             <th scope="col" style="width:2%" class="text-center">#</th>
                             <th scope="col" style="width:20%">Categorie</th>
@@ -118,6 +119,79 @@ class TH_Admin
     }
 
     //=======================================================================
+    //Categories table
+    //=======================================================================
+
+    public static function productsTable($data)
+    {
+        $output = '';
+        $output .= '<table id="ecommerce-datatable" class="table table-middle table-hover table-responsive">
+        <thead>
+            <tr>
+                <th class="no-sort">
+                    <label class="custom-checkbox"> <input type="checkbox"><span></span></label>
+                </th>
+                <th class="no-sort">Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Units Sold</th>
+                <th>Status</th>
+                <th class="text-center no-sort">Action</th>
+            </tr>
+        </thead>
+        <tbody>';
+        foreach ($data as $item) {
+            if ($item->p_status == 1) {
+                $status_class = 'bg-success';
+                $status_text = 'active';
+            } else {
+                $status_class = 'bg-secondary';
+                $status_text = 'inactive';
+            }
+            $media = !empty($item->p_media) ? ImageManager::asset_img(unserialize($item->p_media)[0]) : ImageManager::asset_img('products' . US . 'product-80x80.jpg');
+            $output .= '<tr>
+                <td>
+                    <label class="custom-checkbox">
+                        <input type="checkbox">
+                        <span></span>
+                    </label>
+                </td>
+                <td>
+                    <a href="ecommerce-product-detail.html">
+                        <img class="img-thumbnail" alt="Product" src="' . $media . '" width="48">
+                    </a>
+                </td>
+                <td><a href="' . PROOT . 'admin' . US . 'new_product' . '">' . $item->p_title . '</a></td>
+                <td>' . 'Categorie' . '</td>
+                <td>' . Money::of($item->p_regular_price, 'EUR') . '</td>
+                <td>' . $item->p_qty . '</td>
+                <td>2</td>
+                <td><span class="badge ' . $status_class . ' rounded">' . $status_text . '</span></td>
+                <td>
+                    <ul class="list-unstyled table-actions">
+                        <li><a href="#" id="' . $item->pdtID . '" title="Edit Product" class="editBtn" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fal fa-pen"
+                                   ></i></a></li>
+                        <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
+                                    data-bs-toggle="tooltip"></i></a></li>
+                        <li><a href="#"><i class="fal fa-chart-bar"
+                                    data-bs-original-title="Analytics"
+                                    data-bs-toggle="tooltip"></i></a></li>
+                        <li><a href="#"><i class="fal fa-clone"
+                                    data-bs-original-title="Duplicate"
+                                    data-bs-toggle="tooltip"></i></a></li>
+                        <li><a href="#" id="' . $item->pdtID . '" title="Delete Product" class="deleteBtn"><i class="fal fa-trash" data-bs-original-title="Archive"
+                                    data-bs-toggle="tooltip"></i></a></li>
+                    </ul>
+                </td>
+            </tr>';
+        }
+        $output .= '</tbody></table>';
+        return $output;
+    }
+
+    //=======================================================================
     //Posts table
     //=======================================================================
 
@@ -159,65 +233,7 @@ class TH_Admin
         return $output;
     }
 
-    //=======================================================================
-    //users table
-    //=======================================================================
-
-    public static function usersTable($data, $deletedUsers = false)
-    {
-        $output = '';
-        $output = '<table class="table table-stripped table-bordered text-center">
-    <thead>
-        <tr>
-            <th scope="col">UserID</th>
-            <th scope="col">Firsname</th>
-            <th scope="col">Lastname</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Photo</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Verified</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>';
-        foreach ($data as $row) {
-            $output .= '<tr>
-            <td>' . $row->userID . '</td>
-            <td>' . $row->firstName . '</td>
-            <td>' . $row->lastName . '</td>
-            <td>' . $row->email . '</td>
-            <td><img src="' . $row->profileImage . '" class="rounded-circle" width="40"></td>
-            <td>' . $row->phone . '</td>
-            <td>' . $row->gender . '</td>
-            <td>' . $row->verified . '</td>
-            ';
-            if (!$deletedUsers) {
-                $output .= '<td><a href="#" id="' . $row->userID . '" title="View Details"
-                    class="text-primary userDetailsIcon" data-toggle="modal" data-target="#userDetailsModal"><i
-                        class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;
-
-                <a href="#" id="' . $row->userID . '" title="Delete user" class="text-danger deleteUserIcon"><i
-                        class="fas fa-trash-alt fa-lg"></i></a>
-            </td>
-        </tr>';
-            } else {
-                $output .= '<td>
-            <a href="#" id="' . $row->userID . '" title="Restore user"
-                class="text-white restoreUserIcon badge badge-dark p-2"><i
-                    class="fas fa-trash-restore-alt fa-lg bg-success"></i></a>&nbsp;
-
-            <a href="#" id="' . $row->userID . '" title="Delete user" class="text-danger deleteUserIcon"><i
-                    class="fas fa-trash-alt fa-lg"></i></a>
-        </td>
-        </tr>';
-            }
-        }
-        $output .= '</tbody>
-</table>';
-        return $output;
-    }
-
+    // Feedback table
     public static function feedbackTable($data)
     {
         $output = '<table class="table table-stripped table-bordered text-center">

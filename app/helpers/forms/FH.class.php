@@ -131,10 +131,10 @@ class FH
         if (!isset($source['terms'])) {
             $source['terms'] = '';
         }
-        if (isset($source['select2']) && empty(json_decode($source['select2'], true))) {
-            $colTitle = $obj->get_colTitle();
-            $source[$colTitle] = $obj->$colTitle = '';
-        }
+        // if (isset($source['select2']) && empty(json_decode($source['select2'], true))) {
+        //     $colTitle = $obj->get_colTitle();
+        //     $source[$colTitle] = $obj->$colTitle;
+        // }
         foreach ($items as $item => $rules) {
             $item = Input::sanitize($item);
             $display = $rules['display'];

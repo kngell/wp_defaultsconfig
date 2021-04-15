@@ -1,4 +1,4 @@
-import Cruds from "corejs/module_crud.class";
+import Cruds from "corejs/crud_interface";
 import { readurl } from "corejs/profile_img";
 class AllUsers {
   constructor(element) {
@@ -66,7 +66,22 @@ class AllUsers {
     //clean form
     cruds._clean_form({ upload_img: ".upload-box .img" });
     //delete items
-    cruds._delete({ swal: true, datatable: true });
+    cruds._delete({
+      swal: true,
+      datatable: false,
+      dataType: "frm",
+    });
+
+    //restore users
+    cruds._restore({
+      swal: true,
+      datatable: false,
+      dataType: "frm",
+      resto_class: ".restore_user",
+      swal_button: "Restore",
+      swal_message: "You want to restore this user",
+      method: "restore_user",
+    });
     //Activate item
     cruds._active_inactive_elmt({ table: "categories" });
     // Upload profile

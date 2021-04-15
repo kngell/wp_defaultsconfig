@@ -61,10 +61,20 @@ export function Add(data, gestion) {
   formData.append("table", data.table);
   formData.append("notification", data.notification);
   formData.append("frm_name", data.frm_name);
-  if (data.start_date) formData.append("start_date", data.start_date);
-  if (data.end_date) formData.append("end_date", data.end_date);
-  if (data.imageUrlsAry) formData.append("imageUrlsAry", data.imageUrlsAry);
-  if (data.select2) formData.append("select2", data.select2);
+  if (data.hasOwnProperty("start_date"))
+    formData.append("start_date", data.start_date);
+  if (data.hasOwnProperty("end_date"))
+    formData.append("end_date", data.end_date);
+  if (data.hasOwnProperty("imageUrlsAry"))
+    formData.append("imageUrlsAry", data.imageUrlsAry);
+  if (data.hasOwnProperty("select2")) formData.append("select2", data.select2);
+  if (data.hasOwnProperty("categorie"))
+    formData.append("categorie", data.categorie);
+  if (data.hasOwnProperty("files")) {
+    for (let i = 0; i < data.files.length; i++) {
+      formData.append(data.files[i].name, data.files[i]);
+    }
+  }
   $.ajax({
     url: BASE_URL + data.url,
     method: "post",
@@ -93,6 +103,15 @@ export function Call_controller(data, gestion) {
   if (data.user_id) formData.append("id", data.user_id);
   if (data.method) formData.append("method", data.method);
   if (data.select2) formData.append("select2", data.select2);
+  if (data.hasOwnProperty("categorie"))
+    formData.append("categorie", data.categorie);
+  if (data.hasOwnProperty("tbl_options"))
+    formData.append("tbl_options", data.tbl_options);
+  if (data.hasOwnProperty("files")) {
+    for (let i = 0; i < data.files.length; i++) {
+      formData.append(data.files[i].name, data.files[i]);
+    }
+  }
   $.ajax({
     url: BASE_URL + data.url,
     method: "post",
@@ -112,11 +131,7 @@ export function Delete(data, displayItem) {
       $.ajax({
         url: BASE_URL + data.url,
         method: "post",
-        data: {
-          id: data.id,
-          table: data.table,
-          notification: data.notification,
-        },
+        data: data.serverData,
         success: function (response) {
           displayItem(response, data.params ? data.params : "");
         },
@@ -128,14 +143,22 @@ export function Delete(data, displayItem) {
 function checkBeforeDelete(data) {
   return new Promise((resolve, reject) => {
     if (!data.url_check) {
+      const html = () => {
+        const htw = document.createElement("div");
+        if (data.swal_message) {
+          return (htw.innerHTML = data.swal_message);
+        } else {
+          return (htw.innerHTML = "<p>You won't be able to revert this!</p>");
+        }
+      };
       data.swal
         .fire({
           title: "Are you sure?",
           showCancelButton: true,
-          html: "<p>You won't be able to revert this!</p>",
+          html: html(),
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Delete!",
+          confirmButtonText: data.swal_button ? data.swal_button : "Delete!",
         })
         .then((result) => {
           resolve(result);
@@ -145,10 +168,7 @@ function checkBeforeDelete(data) {
       $.ajax({
         url: BASE_URL + data.url_check,
         method: "post",
-        data: {
-          id: data.id,
-          table: data.table,
-        },
+        data: data.serverData,
       })
         .done((response) => {
           data.swal

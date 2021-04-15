@@ -5,6 +5,7 @@ class DBOperations extends Database
     private $_count = 0;
     private $_results = null;
     private $_lastinsertID = null;
+    private $_lastID = null;
     private $_error = false;
     private $_exec_data;
     private static $_instance = null;
@@ -112,7 +113,15 @@ class DBOperations extends Database
                     if ($index == 0) {
                         continue;
                     }
-                    $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['relation'][$index] . ' = ' . $all_tables[$index - 1] . '.' . $data['relation'][$index - 1] . ' ';
+                    switch (true) {
+                        case is_array($data['rel'][$index - 1]):
+                            $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['rel'][$index - 1][count($all_tables)-count($data['rel'])] . ' = ' . $all_tables[$index - 1] . '.' . $data['rel'][$index - 1][count($all_tables)-count($data['rel']) - 1] . ' ';
+                            break;
+
+                        default:
+                        $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['rel'][$index] . ' = ' . $all_tables[$index - 1] . '.' . $data['rel'][$index - 1] . ' ';
+                            break;
+                    }
                 }
             }
         }
@@ -139,11 +148,24 @@ class DBOperations extends Database
             $sql .= ' WHERE ';
             $i = 0;
             $op = isset($data['op']) ? $data['op'] : ' AND ';
-            $comparator = isset($data['comparator']) ? $data['comparator'] : '=';
-            // $tbl = is_array($table) ? array_keys($table)[1] . '.' : '';
             foreach ($data['where'] as $key => $value) {
                 $add = ($i > 0) ? ' ' . $op . ' ' : '';
-                $sql .= ($comparator != '=') ? "$add" . '.' . "$key " . $comparator . " CONCAT('%',:$key,'%')" : "$add" . "$key=:$key";
+                if (is_array($value)) {
+                    $tbl = isset($value['tbl']) ? $value['tbl'] . '.' : '';
+                    switch (true) {
+                        case isset($value['operator']) && in_array($value['operator'], ['NOT IN', 'IN']):
+                            $sql .= "$add" . $tbl . $key . ' ' . $value['operator'] . ' (' . ":$key" . ')';
+                            break;
+                        case isset($value['operator']) && $value['operator'] == '!=':
+                            $sql .= "$add" . $tbl . $key . '!=' . ":$key";
+                            break;
+                        default:
+                            $sql .= "$add" . $tbl . $key . '=' . ":$key";
+                            break;
+                    }
+                } else {
+                    $sql .= "$add" . $key . '=' . ":$key";
+                }
                 $i++;
             }
             if (isset($data['op']) || isset($data['comparator'])) {
@@ -386,9 +408,8 @@ class DBOperations extends Database
         //execquery
         if ($q = $this->execQuery($sql, $data)) {
             //result
-            $this->_lastinsertID = $this->_con->lastInsertId();
-
-            return $this->_lastinsertID;
+            $this->_lastinsertID = $this->_count = $this->_con->lastInsertId();
+            return $this;
         } else {
             $this->_error = true;
             return false;
@@ -407,7 +428,7 @@ class DBOperations extends Database
 
     public function update($table, $data, $cond)
     {
-        if (!empty($data) && is_array($data)) {
+        if (isset($data) && is_array($data)) {
             $keyValues = '';
             $whereCond = '';
 
@@ -441,7 +462,7 @@ class DBOperations extends Database
         } else {
             $this->_error = true;
         }
-        return $this ;
+        return $this;
     }
 
     //=======================================================================
@@ -456,24 +477,23 @@ class DBOperations extends Database
 
     public function delete($table, $data = [])
     {
-        if (!empty($data) && is_array($data)) {
+        if (isset($data['where']) && is_array($data['where'])) {
             $whereCond = ' WHERE ';
             $i = 0;
-            foreach ($data as $key => $val) {
+            foreach ($data['where'] as $key => $val) {
                 $add = ($i > 0) ? ' AND ' : '';
                 $whereCond .= "$add" . "$key=:$key";
                 $i++;
             }
         }
-
         $sql = 'DELETE FROM ' . $table . $whereCond;
 
-        if ($q = $this->execQuery($sql, $data)) {
-            $this->_results = $q->rowCount();
+        if ($q = $this->execQuery($sql, $data['where'])) {
+            $this->_count = $q->rowCount();
         } else {
             $this->_error = true;
         }
-        return $this->_results;
+        return $this;
     }
 
     //=======================================================================
@@ -482,6 +502,11 @@ class DBOperations extends Database
     public function get_results()
     {
         return $this->_results;
+    }
+
+    public function get_lastID()
+    {
+        return $this->_lastinsertID;
     }
 
     //=======================================================================
@@ -530,11 +555,14 @@ class DBOperations extends Database
         return $this->_query->rollBack();
     }
 
-    public function CustomQueryExec($sql, $data = [], $cond = [])
+    public function customQueryExec($sql, $data = [], $cond = [])
     {
-        if ($q = $this->execQuery($sql, $data, $cond)) {
-            return $q->rowCount();
-        };
-        return false;
+        if ($q = $this->execQuery($sql, isset($data['where']) ? $data['where'] : [], $cond)) {
+            $this->_results = $this->select_result($q, $data);
+            $this->_count = $q->rowCount();
+            return $this;
+        } else {
+            return $this->_error;
+        }
     }
 }

@@ -55,13 +55,23 @@ class CategoriesManager extends Model
         return $results;
     }
 
+    // Get succes message
+    public function get_successMessage($method = '', $action = '')
+    {
+        if ($method == 'update') {
+            return 'Categorie mise a jour avec success!';
+        } else {
+            return 'Categorie Ajouté avec Success!';
+        }
+    }
+
     //=======================================================================
     //Operations
     //=======================================================================
     //After delete categorie
     public function afterDelete($params = [])
     {
-        $categories = $this->getAllbyIndex($params[$this->get_colID()])->get_results();
+        $categories = $this->getAllbyIndex($params['where'][$this->get_colID()])->get_results();
         if ($categories) {
             foreach ($categories as $categorie) {
                 $key = $categorie->get_colID();

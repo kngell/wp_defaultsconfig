@@ -57,23 +57,26 @@
                 <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation">
+                <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation" novalidate>
                     <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'Categorie-frm', $_SESSION[TOKEN_NAME])); ?>
                     <input type="hidden" name="operation" id="operation">
                     <input type="hidden" name="catID" id="catID">
                     <input type="hidden" name="date_enreg" id="date_enreg">
                     <input type="hidden" name="updateAt" id="updateAt">
-                    <input type="hidden" name="status" id="status">
                     <div id="alertErr"></div>
                     <div class="form-group">
-                        <input type="text" name="categorie" id="categorie" class="form-control "
-                            placeholder="Catégorie">
-                        <div class="invalid-feedback"></div>
+                        <input type="text" name="categorie" id="categorie" class="form-control " placeholder="Catégorie"
+                            aria-describedby="categorie-feedback">
+                        <div class="invalid-feedback" id="categorie-feedback"></div>
                     </div>
                     <div class="form-group">
                         <textarea name="description" id="description" class="form-control ck-content"
-                            placeholder="Description..."></textarea>
-                        <div class="invalid-feedback"></div>
+                            placeholder="Description..." aria-describedby="drescription-feedback"></textarea>
+                        <div class="invalid-feedback" id="drescription-feedback"></div>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="status" name="status" value="1">
+                        <label for="status" class="form-check-label">Active</label>
                     </div>
                     <div class="form-group select-box">
                         <select class="form-control" id="parentID" name="parentID">

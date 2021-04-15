@@ -1,10 +1,10 @@
-import Dropzone from 'dropzone';
+import Dropzone from "dropzone";
 
 class DemoAddProduct {
   constructor() {}
 
   init() {
-    // this.configurationDemo();
+    // this.configuration();
   }
 }
 

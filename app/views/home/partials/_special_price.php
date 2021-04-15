@@ -5,7 +5,7 @@
             <div id="filters" class="button-group ms-auto float-end">
                 <?php
             $brands = array_unique(array_map(function ($prod) {
-                return $prod->item_brand;
+                return $prod->categorie;
             }, $this->products));
             sort($brands);
             ?>
@@ -20,16 +20,16 @@
             <?php shuffle($this->products) ?>
             <?php array_map(function ($product) { ?>
             <div
-                class="grid-item border <?= $product->item_brand ?? 'Brand' ?>">
+                class="grid-item border <?= $product->categorie ?? 'Brand' ?>">
                 <div class="item py-2" style="width:200px">
                     <div class="product font-rale ">
                         <a
-                            href="<?= PROOT ?>home/product/<?= $product->item_id ?>"><img
-                                src="<?= IMG . $product->item_image ?? '../../../assets/img/products/1.png' ?>"
-                                alt="<?= $product->item_name ?? 'Unknown' ?>"
+                            href="<?= PROOT ?>home/product/<?= $product->pdtID ?>"><img
+                                src="<?= IMG . unserialize($product->p_media)[0] ?? '../../../assets/img/products/1.png' ?>"
+                                alt="<?= $product->p_title ?? 'Unknown' ?>"
                                 class="img-fluid"></a>
                         <div class="text-center">
-                            <h6><?= $product->item_name ?? 'Unknown' ?>
+                            <h6><?= $product->p_title ?? 'Unknown' ?>
                             </h6>
                             <div class="rating text-warning font-size-12">
                                 <span><i class="fas fa fa-star"></i></span>
@@ -39,15 +39,15 @@
                                 <span><i class="far fa-star"></i></span>
                             </div>
                             <div class="price py-2">
-                                <span>EUR<?= $product->item_price ?? 0 ?></span>
+                                <span>EUR<?= $product->p_regular_price ?? 0 ?></span>
                             </div>
                             <form class="add_to_cart_frm">
                                 <input type="hidden" name="item_id"
-                                    value="<?= $product->item_id ?? 1 ?>">
+                                    value="<?= $product->pdtID ?? 1 ?>">
                                 <input type="hidden" name="user_id" value="1">
-                                <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $product->item_id ?? 1, $_SESSION[TOKEN_NAME])); ?>
+                                <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $product->pdtID ?? 1, $_SESSION[TOKEN_NAME])); ?>
                                 <?php
-                                    if (in_array($product->item_id, $this->user_cart)) {
+                                    if (in_array($product->pdtID, $this->user_cart)) {
                                         echo ' <button type="submit" class="btn btn-success font-size-12">In the cart</button>';
                                     } else {
                                         echo '<button type="submit" class="btn btn-warning font-size-12">Add to

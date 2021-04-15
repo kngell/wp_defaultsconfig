@@ -10,7 +10,8 @@
   "minimum-stability": "stable",
   "require": {
     "phpmailer/phpmailer": "^6.1",
-    "sendgrid/sendgrid": "~7"
+    "sendgrid/sendgrid": "~7",
+    "brick/money": "^0.5.1"
   },
   "autoload": {
     "classmap": [

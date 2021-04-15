@@ -63,6 +63,7 @@
                     <input type="hidden" name="grID" id="grID">
                     <input type="hidden" name="date_enreg" id="date_enreg">
                     <input type="hidden" name="updateAt" id="updateAt">
+                    <input type="hidden" name="deleted" id="deleted">
                     <div id="alertErr"></div>
                     <div class="form-group">
                         <input type="text" name="name" id="name" class="form-control " placeholder="Group name">
@@ -74,8 +75,8 @@
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="status" name="status">
-                        <label for="sameAddress" class="form-check-label">Active</label>
+                        <input type="checkbox" class="form-check-input" id="status" name="status" value="1">
+                        <label for="status" class="form-check-label">Active</label>
                     </div>
                     <div class="form-group select-box">
                         <select class="form-select select_group alert" id="parentID" name="parentID"

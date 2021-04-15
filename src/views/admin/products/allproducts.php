@@ -10,9 +10,9 @@
     <div class="page-content">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb ps-0 fs-base">
-                <li class="breadcrumb-item"><a href="#">FlexAdmin</a></li>
-                <li class="breadcrumb-item"><span>Ecommerce</span></li>
-                <li class="breadcrumb-item active" aria-current="page">Products</li>
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><span>Products</span></li>
+                <li class="breadcrumb-item active" aria-current="page">All Products</li>
             </ol>
         </nav>
         <div class="row header justify-content-between mb-4">
@@ -25,933 +25,50 @@
         </div>
         <div class="row mb-4">
             <div class="col-12">
-                <div class="input-group">
-                    <button class="btn btn-highlight" type="button"><i class="fal fa-plus-circle"></i> <span
-                            class="d-none d-md-inline">Add Product</span></button>
-                    <button class="btn btn-highlight" type="button"><i class="fal fa-file-import"></i> <span
-                            class="d-none d-md-inline">Import</span></button>
-                    <button class="btn btn-highlight" type="button"><i class="fal fa-arrow-to-bottom"></i> <span
-                            class="d-none d-md-inline">Export</span></button>
-                    <button class="btn btn-highlight" type="button"><i class="fal fa-list-ul"></i> <span
-                            class="d-none d-md-inline">Customize Columns</span></button>
-                    <button type="button" class="btn btn-highlight dropdown-toggle dropdown-toggle-split"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fal fa-pen"></i> <span class="d-none d-md-inline">Bulk Actions</span>
-                    </button>
-                    <ul class="dropdown-menu" style="">
-                        <li><a class="dropdown-item" href="#">Delete</a></li>
-                        <li><a class="dropdown-item" href="#">Update Statuses</a></li>
-                        <li><a class="dropdown-item" href="#">Create Notes</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="ecommerce-datatable" class="table table-middle table-hover table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th class="no-sort">
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </th>
-                                        <th class="no-sort">Image</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Units Sold</th>
-                                        <th>Status</th>
-                                        <th class="text-center no-sort">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <a href="ecommerce-product-detail.html">
-                                                <img class="img-thumbnail" alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48">
-                                            </a>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html">Blue Dress For Woman</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$19</td>
-                                        <td>32</td>
-                                        <td>2</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Lether Gray Tuxedo</a></td>
-                                        <td>Classic Pullover Hoodie</td>
-                                        <td>$25</td>
-                                        <td>56</td>
-                                        <td>43</td>
-                                        <td><span class="badge bg-danger rounded">Deactive</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Woman Full Sliv Dress</a></td>
-                                        <td>Classic Pullover Hoodie</td>
-                                        <td>$21</td>
-                                        <td>44</td>
-                                        <td>19</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Light Blue Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$23</td>
-                                        <td>44</td>
-                                        <td>0</td>
-                                        <td><span class="badge bg-danger rounded">Deactive</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Blue Dress For Woman</a></td>
-                                        <td>Classic Pullover Hoodie</td>
-                                        <td>$26</td>
-                                        <td>23</td>
-                                        <td>1</td>
-                                        <td><span class="badge bg-warning rounded">Pending</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Blue Casual Check Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$19</td>
-                                        <td>14</td>
-                                        <td>5</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">White Black Line Dress</a></td>
-                                        <td>Classic Pullover Hoodie</td>
-                                        <td>$18</td>
-                                        <td>19</td>
-                                        <td>23</td>
-                                        <td><span class="badge bg-danger rounded">Deactive</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Men Blue Jins Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$21</td>
-                                        <td>76</td>
-                                        <td>145</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Woman Full Sliv Dress</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$27</td>
-                                        <td>22</td>
-                                        <td>86</td>
-                                        <td><span class="badge bg-warning rounded">Pending</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Red & Black Check Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$16</td>
-                                        <td>28</td>
-                                        <td>18</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Men Blue Jins Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$19</td>
-                                        <td>15</td>
-                                        <td>92</td>
-                                        <td><span class="badge bg-warning rounded">Pending</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Military And Veterans T-shirts</a>
-                                        </td>
-                                        <td>Classic Tee</td>
-                                        <td>$17.99</td>
-                                        <td>44</td>
-                                        <td>11</td>
-                                        <td><span class="badge bg-danger rounded">Deactive</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Just Eat It! Hamburger</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$18</td>
-                                        <td>67</td>
-                                        <td>35</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">I'm Just Here For The Boos</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$21</td>
-                                        <td>16</td>
-                                        <td>67</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Patriotic Dog Paw</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$22</td>
-                                        <td>61</td>
-                                        <td>13</td>
-                                        <td><span class="badge bg-danger rounded">Deactive</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">T-Shirt Form Girls</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$23</td>
-                                        <td>39</td>
-                                        <td>45</td>
-                                        <td><span class="badge bg-warning rounded">Pending</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">T-Shirt Form Girls</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$17</td>
-                                        <td>23</td>
-                                        <td>23</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Blue Dress For Woman</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$18</td>
-                                        <td>48</td>
-                                        <td>25</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Woman Full Sliv Dress</a></td>
-                                        <td>Classic Pullover Hoodie</td>
-                                        <td>$21</td>
-                                        <td>35</td>
-                                        <td>44</td>
-                                        <td><span class="badge bg-danger rounded">Deactive</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Woman Full Sliv Dress</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$23</td>
-                                        <td>9</td>
-                                        <td>11</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Blue Casual Check Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$24</td>
-                                        <td>56</td>
-                                        <td>12</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Men Blue Jins Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$25</td>
-                                        <td>16</td>
-                                        <td>45</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Blue Dress For Woman</a></td>
-                                        <td>Classic Pullover Hoodie</td>
-                                        <td>$23</td>
-                                        <td>76</td>
-                                        <td>56</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">T-Shirt Form Girls</a></td>
-                                        <td>Pillow</td>
-                                        <td>$25</td>
-                                        <td>45</td>
-                                        <td>15</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label class="custom-checkbox">
-                                                <input type="checkbox">
-                                                <span></span>
-                                            </label>
-                                        </td>
-                                        <td><a href="ecommerce-product-detail.html"><img class="img-thumbnail"
-                                                    alt="Product"
-                                                    src="<?=$this->asset('img/products/product-80x80.jpg')?>"
-                                                    width="48"></a></td>
-                                        <td><a href="ecommerce-product-detail.html">Light Blue Shirt</a></td>
-                                        <td>Classic Tee</td>
-                                        <td>$26</td>
-                                        <td>34</td>
-                                        <td>35</td>
-                                        <td><span class="badge bg-success rounded">Active</span></td>
-                                        <td>
-                                            <ul class="list-unstyled table-actions">
-                                                <li><a href="ecommerce-add-product.html"><i class="fal fa-pen"
-                                                            data-bs-original-title="Edit"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-cog" data-bs-original-title="Settings"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-chart-bar"
-                                                            data-bs-original-title="Analytics"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-clone"
-                                                            data-bs-original-title="Duplicate"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                                <li><a href="#"><i class="fal fa-trash" data-bs-original-title="Archive"
-                                                            data-bs-toggle="tooltip"></i></a></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div class="card card-solid" id="allproducts-wrapper">
+                    <h5 class="card-header main-header">
+                        <span class="lead">
+                            <div class="input-group">
+                                <button class="btn btn-highlight" type="button"><i class="fal fa-plus-circle"></i> <span
+                                        class="d-none d-md-inline"
+                                        onclick="window.location.href='<?='new_product'?>';">Add
+                                        Product</span></button>
+                                <button class="btn btn-highlight" type="button"><i class="fal fa-file-import"></i> <span
+                                        class="d-none d-md-inline">Import</span></button>
+                                <button class="btn btn-highlight" type="button"><i class="fal fa-arrow-to-bottom"></i>
+                                    <span class="d-none d-md-inline">Export</span></button>
+                                <button class="btn btn-highlight" type="button"><i class="fal fa-list-ul"></i> <span
+                                        class="d-none d-md-inline">Customize Columns</span></button>
+                                <button type="button" class="btn btn-highlight dropdown-toggle dropdown-toggle-split"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fal fa-pen"></i> <span class="d-none d-md-inline">Bulk Actions</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Delete</a></li>
+                                    <li><a class="dropdown-item" href="#">Update Statuses</a></li>
+                                    <li><a class="dropdown-item" href="#">Create Notes</a></li>
+                                </ul>
+                            </div>
+                        </span>
+                        <span class="ms-auto"> <a href="javascript:history.go(-1)" class="btn btn-light btn-secondary"
+                                id="back"><i class="far fa-arrow-alt-circle-left fa-lg"></i></i>&nbsp;Back
+                            </a>&nbsp;&nbsp;
+                            <a href="" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-box"
+                                id="addNew"><i class="fas fa-plus-circle fa-lg"></i>&nbsp;Add new</a>
+                        </span>
+                    </h5>
+                    <div id="globalErr"></div>
+                    <div class="card-body pb-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive" id="showAll">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -960,40 +77,366 @@
     </div>
     <!----------Add new categorie Modal-------->
     <div class="modal fade" role="dialog" id="modal-box">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
             <div class="modal-content">
-                <div class="modal-header bg-dark">
-                    <h5 class="modal-title text-light"> Add new</h5>
-                    <button type="button" class="close text-light" data-bs-dismiss="modal">&times;</button>
+                <div class="modal-header">
+                    <h5 class="modal-title"> Add new</h5>
+                    <button type="button" class="btn-close text-light" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation">
-                        <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'Categorie-frm', $_SESSION[TOKEN_NAME])); ?>
+                    <form action="#" method="post" id="new-product-frm" class="px-3 needs-validation"
+                        enctype='multipart/form-data' novalidate>
+                        <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'new-product-frm', $_SESSION[TOKEN_NAME])); ?>
                         <input type="hidden" name="operation" id="operation">
-                        <input type="hidden" name="catID" id="catID">
-                        <input type="hidden" name="date_enreg" id="date_enreg">
-                        <input type="hidden" name="updateAt" id="updateAt">
-                        <input type="hidden" name="status" id="status">
+                        <input type="hidden" name="pdtID" id="pdtID">
+                        <input type="hidden" name="created_at" id="created_at">
+                        <input type="hidden" name="updated_at" id="updated_at">
+                        <input type="hidden" name="deleted" id="deleted">
                         <div id="alertErr"></div>
-                        <div class="form-group">
-                            <input type="text" name="categorie" id="categorie" class="form-control "
-                                placeholder="Catégorie">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group">
-                            <textarea name="description" id="description" class="form-control ck-content"
-                                placeholder="Description..."></textarea>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="form-group select-box">
-                            <select class="form-control" id="parentID" name="parentID">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label for="p_title">Title <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="p_title" id="p_title">
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="product-description">Description <span
+                                                            class="text-danger"></span></label>
+                                                    <textarea class="form-control ck-content" name="p_descr"
+                                                        id="p_descr" rows="3"></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="product-description">Short Description <span
+                                                            class="text-danger">*</span></label>
+                                                    <input class="form-control ck-content" name="p_short_descr"
+                                                        id="p_short_descr">
+                                                    <div class="invalid-feedback"></div>
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="text-center">Media</h4>
+                                        <?=$this->dragAndDrop?>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Pricing</h4>
+                                        <div class="row border-bottom mb-3">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-price">Regular Price</label>
+                                                    <input class="form-control" type="text" name="p_regular_price"
+                                                        id="p_regular_price">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-compare-price">Compare at price</label>
+                                                    <input class="form-control" type="text" name="p_compare_price"
+                                                        id="p_compare_price">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row mt-3">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-cost-per-item">Cost per item</label>
+                                                    <input class="form-control" type="text" name="p_cost_per_item"
+                                                        id="p_cost_per_item">
+                                                    <span class="help-block">
+                                                        <small>Customers won’t see this</small>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                            <div class="col-lg-6 d-flex align-items-center">
+                                                <label class="custom-checkbox">
+                                                    <input type="checkbox" class="form-check-input" name="p_charge_tax"
+                                                        id="p_charge_tax"> Charge
+                                                    tax on this product
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Inventory</h4>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class=" mb-3">
+                                                    <label for="product-sku">SKU (Stock Keeping Unit)</label>
+                                                    <input class="form-control" type="text" name="p_sku" id="p_sku">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-bar-code">Barcode (ISBN, UPC, GTIN,
+                                                        etc.)</label>
+                                                    <input class="form-control" type="text" name="p_barre_code"
+                                                        id="p_barre_code">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row border-bottom mb-3 pb-3">
+                                            <div class="col-12">
+                                                <label class="custom-checkbox">
+                                                    <input type="checkbox" class="form-check-input" name="p_track_qty"
+                                                        id="p_track_qty" checked> Track quantity
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="custom-checkbox">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        name="p_continious_sell" id="p_continious_sell" checked>
+                                                    Continue
+                                                    selling when out
+                                                    of stock
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- end row -->
+                                        <h5 class="mt-3">QUANTITY</h5>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-quantity">Stock quantity</label>
+                                                    <input class="form-control" type="number" name="p_qty" id="p_qty">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-backorder">Allow backorder</label>
+                                                    <select class="form-select" name="p_back_border" id="p_back_border">
+                                                        <option selected>No not allow</option>
+                                                        <option>Allow, but notify customer</option>
+                                                        <option>Allow</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-threshold">Low stock threshold</label>
+                                                    <input class="form-control" type="number" name="p_stock_threshold"
+                                                        id="p_stock_threshold">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="mb-3">Shipping</h4>
+                                        <div class="row border-bottom mb-3 pb-3">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label for="product-weight">Weight (kg)</label>
+                                                    <input class="form-control" type="text" name="p_weight"
+                                                        id="p_weight">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row border-bottom mb-3 pb-3">
+                                            <label for="product-length"
+                                                class="col-lg-2 col-form-label fw-700">Dimensions
+                                                (cm)</label>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <input class="form-control" type="text" name="p_lenght"
+                                                            id="p_lenght" placeholder="Length">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input class="form-control" type="text" name="p_width"
+                                                            id="p_width" placeholder="Width">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input class="form-control" type="text" name="p_height"
+                                                            id="p_height" placeholder="Height">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-3">
+                                                    <label for="product-shipping-class">Shipping Class</label>
+                                                    <select class="form-select select2-shipping" name="p_shipping_class"
+                                                        id="p_shipping_class">
+                                                        <option selected>No shipping class</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Variants</h4>
+                                        <!-- Loop true options -->
+                                        <div class="row mb-3">
+                                            <div class="form-group">
+                                                <label for="p_variant_title">Option 1</label>
+                                            </div>
+                                            <!-- end form-group -->
+                                            <div class="col-3">
+                                                <input class="form-control" type="text" value="Size"
+                                                    name="p_variant_title" id="p_variant_title"
+                                                    form="product-variant-frm">
+                                            </div>
+                                            <!-- end col -->
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" name="p_variant_value"
+                                                    id="p_variant_value" placeholder="Separate options with a comma"
+                                                    form="product-variant-frm">
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
 
-                            </select>
-                            <span class="custom-arrow"></span>
-                        </div>
-                        <div class="form-group justify-content-between">
-                            <input type="submit" name="addCategorie" id="addCategorieBtn" value="Add Categorie"
-                                class="btn btn-light text-light bg-dark btn-block">
+                                        <!-- end row -->
+                                        <button class="btn btn-sm btn-outline-highlight" type="button"
+                                            form="product-variant-frm"><i class="fal fa-plus-circle"></i> Add
+                                            another option</button>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <!-- end col -->
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Organization</h4>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group mb-3">
+                                                    <label for="product-type">Product type</label>
+                                                    <input class="form-control" type="text" id="product-type">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group mb-3">
+                                                    <label for="product-vendor">Vendor</label>
+                                                    <input class="form-control" type="text" id="product-vendor">
+                                                </div>
+                                            </div>
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Product categories</h4>
+                                        <div id="check-box-wrapper">
+                                            <?php array_map(function ($cat) {?>
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox"
+                                                    value="<?=$cat->catID?>"
+                                                    name='categorie[]' class="categorie">
+                                                <?=$cat->categorie?>
+                                                <span></span>
+                                            </label>
+                                            <?php }, $this->view_data)?>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-highlight" type="button"><i
+                                                class="fal fa-plus-circle"></i> Add new
+                                            category</button>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4>Product tags</h4>
+                                        <form class="">
+                                            <div class="d-flex align-items-center">
+                                                <div class="form-group me-1 flex-grow-1">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                                <button type="button" class="btn btn-sm btn-outline-highlight">
+                                                    Add
+                                                </button>
+                                            </div>
+                                            <span class="fs-sm"><i>Separate tags with commas</i></span>
+                                            <div class="product-tags mt-2">
+                                                <span class="badge bg-highlight"><a href="javascript:void(0);"><i
+                                                            class="fal fa-times"></i></a>
+                                                    T-shirt</span>
+                                                <span class="badge bg-highlight"><a href="javascript:void(0);"><i
+                                                            class="fal fa-times"></i></a>
+                                                    Christmas</span>
+                                                <span class="badge bg-highlight"><a href="javascript:void(0);"><i
+                                                            class="fal fa-times"></i></a>
+                                                    Lorem</span>
+                                                <span class="badge bg-highlight"><a href="javascript:void(0);"><i
+                                                            class="fal fa-times"></i></a>
+                                                    Ipsum</span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                                <div class="card">
+                                    <div class="card-body d-flex justify-content-between">
+                                        <button class="btn btn-outline-highlight" type="button">Save Draft</button>
+                                        <button class="btn btn-highlight" id="save-all" type="submit"><i
+                                                class="fal fa-save"></i>
+                                            Save</button>
+                                    </div>
+                                    <!-- end card-body -->
+                                </div>
+                                <!-- end card -->
+                            </div>
+                            <!-- end col -->
                         </div>
                     </form>
                 </div>

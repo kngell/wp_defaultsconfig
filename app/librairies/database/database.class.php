@@ -47,13 +47,13 @@ abstract class Database
             //Bind conditions
             if (!empty($cond)) {
                 foreach ($cond as $key => $val) {
-                    $this->bind(":$key", $val);
+                    $this->bind(":$key", is_array($val) ? $val['value'] : $val);
                 }
             }
             //Bind params
             if (array_key_exists('where', $data)) {
-                foreach ($data['where'] as $key => $value) {
-                    $this->bind(":$key", $value);
+                foreach ($data['where'] as $key => $val) {
+                    $this->bind(":$key", is_array($val) ? $val['value'] : $val);
                 }
                 unset($data['where']);
             }
@@ -62,7 +62,21 @@ abstract class Database
             if (!empty($data)) {
                 //dd( $data );
                 foreach ($data as $key => $val) {
-                    $this->bind(":$key", $val);
+                    if (is_array($val)) {
+                        switch (true) {
+                            case isset($val['operator']) && $val['operator'] == '!=':
+                                $this->bind(":$key", $val['value']);
+                                break;
+                            case isset($val['operator']) && in_array($val['operator'], ['NOT IN', 'IN']):
+                                $this->bind(":$key", implode("', '", $val['value']));
+                                break;
+                            default:
+                                $this->bind(":$key", $val['value']);
+                                break;
+                        }
+                    } else {
+                        $this->bind(":$key", $val);
+                    }
                 }
             }
         } else {
@@ -95,7 +109,7 @@ abstract class Database
     protected function bind($param, $value, $type = null)
     {
         switch (is_null($type)) {
-                case is_int($value):
+                case is_numeric($value):
                     $type = PDO::PARAM_INT;
                 break;
                 case is_bool($value):

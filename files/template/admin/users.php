@@ -35,14 +35,22 @@
                         <div id="alertErr"></div>
                     </div>
                     <div class="col text-end pt-2 action">
-                        <div id="edit_user{{userID}}" class="edit-user">
-                            <button type="button" class="editBtn" data-bs-toggle="modal" data-bs-target="#modal-box"> <i
-                                    class="far fa-edit fa-lg"></i></button>
-                        </div>
-                        <form id="delete_user{{userID}}" class="{{formClass}}">
-                            {{token}}
+                        <form id="restore_user{{userID}}" class="restore_user pe-1 me-2" {{style_restore}}>
+                            {{token_r}}
                             <input type="hidden" name='userID' value="{{userID}}">
-                            <button type="submit" class="{{delBtnClass}} {{btn}}"><i
+                            <input type="hidden" name='user-method' value="{{method}}">
+                            <button type="submit" class="{{delBtnClass}} restoreBtn" title="Restore"><i
+                                    class="fad fa-trash-undo-alt fa-lg"></i></button>
+                        </form>
+                        <div id="edit_user{{userID}}" class="edit-user" {{style_edit}}>
+                            <button type="button" class="editBtn" data-bs-toggle="modal" data-bs-target="#modal-box"
+                                title="Edit"> <i class="far fa-edit fa-lg"></i></button>
+                        </div>
+                        <form id="delete_user{{userID}}" class="delete_user">
+                            {{token_d}}
+                            <input type="hidden" name='userID' value="{{userID}}">
+                            <input type="hidden" name='user-method' value="{{method}}">
+                            <button type="submit" class="{{delBtnClass}} deleteBtn"><i
                                     class="fas fa-trash-alt fa-lg"></i></button>
                         </form>
                     </div>

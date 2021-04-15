@@ -7,6 +7,7 @@ abstract class Model
     protected $_softDelete = false;
     protected $_deleted_item = false;
     protected $update = true;
+    protected $_lastID = false;
     protected $_results;
     protected $_count;
     protected $validates = true;
@@ -54,7 +55,7 @@ abstract class Model
     {
         $colIndex = $this->get_colIndex();
         $data = $params ? array_merge(['where' => [$colIndex => $index_value], 'return_mode' => 'class'], $params) : ['where' => [$colIndex => $index_value], 'return_mode' => 'class'];
-        return $colIndex != '' ? $this->find($data, $tables ? $tables : '') : null;
+        return !empty($colIndex) ? $this->find($data, $tables ? $tables : '') : null;
     }
 
     //Output parent
@@ -329,11 +330,16 @@ abstract class Model
         $params = $this->set_deleted_Params($params);
         $resultQuery = $this->_db->findFirst($this->_table, $params);
         if (!$resultQuery) {
-            return false;
+            return null;
         }
         $resultQuery->_count = $this->_db->count();
-
+        $resultQuery = $this->afterFind($resultQuery);
         return $resultQuery;
+    }
+
+    public function afterFind($r = null)
+    {
+        return $r;
     }
 
     //Count rows/records
@@ -386,8 +392,8 @@ abstract class Model
             return false;
         }
         $insert = $this->_db->create($this->_table, $fields);
-        $this->_count = $this->_db->count();
-
+        $this->_count = $insert->count();
+        $this->_lastID = $insert->get_lastID();
         return $insert;
     }
 
@@ -445,19 +451,19 @@ abstract class Model
     {
         $colID = $this->get_colID();
         $id = ($id == '') ? $this->$colID : $id;
-        $params = array_merge($params, [$this->get_colID() => $id]);
-        if ($this->beforeDelete()) {
+        $params = array_merge($params, ['where' => [$this->get_colID() => $id]]);
+        if ($params = $this->beforeDelete($params)) {
             if ($this->_softDelete) {
-                $delete = $this->_db->update($this->_table, ['deleted' => 1], $params);
+                $delete = $this->_db->update($this->_table, isset($params['restore']) ? $params['restore'] : ['deleted' => 1], $params['where']);
             } else {
                 $delete = $this->_db->delete($this->_table, $params);
             }
         }
-        if ($delete) {
+        if ($delete->count() > 0) {
             $del_actions = $this->afterDelete($params);
         }
 
-        return $del_actions ? $del_actions : $delete;
+        return isset($del_actions) ? $del_actions : $delete;
     }
 
     //Delete Cart =>Ecommerce
@@ -487,7 +493,7 @@ abstract class Model
                 $fields = $this->beforeSaveInsert($fields);
                 $save = $this->insert($fields);
             }
-            if ($save) {
+            if ($save->count() > 0) {
                 $params['saveID'] = $save ?? '';
                 $this->afterSave($params);
                 return $save;
@@ -556,9 +562,9 @@ abstract class Model
     }
 
     //Before delete
-    public function beforeDelete()
+    public function beforeDelete($params = [])
     {
-        return true;
+        return $params;
     }
 
     //After delete
@@ -665,7 +671,7 @@ abstract class Model
     //check empty parent items, categories, brands, groups etc...
     public function check_forEmptyParent($parentID = '')
     {
-        $childItems = $this->getAllbyIndex($parentID)->get_results();
+        $childItems = property_exists($this, '_colIndex') ? $this->getAllbyIndex($parentID)->get_results() : [];
         // $otherlink = $this->search_relatedLinks($parentID, $this->get_tableName(), $this->get_colID());
         $output = '';
         $output .= ($childItems) ? '<span class="lead text-black-50"> There are releted items : </span>' : '';

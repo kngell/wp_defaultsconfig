@@ -48,7 +48,12 @@ abstract class Controller extends Application
                 } elseif (!isset($this->model_instance)) {
                     $this->model_instance = new $modelName();
                 } else {
-                    $this->model_instance = $this->model_instance;
+                    if ($this->model_instance->_model_Name == $modelName) {
+                        $this->model_instance = $this->model_instance;
+                    } else {
+                        $this->model_instance = new $modelName();
+                    }
+
                     // if (!isset($this->model_instance[strtolower(rtrim($modelName, 'Manager'))])) {
                     //     $this->model_instance[strtolower(rtrim($modelName, 'Manager'))] = new $modelName();
                     // }
@@ -71,6 +76,7 @@ abstract class Controller extends Application
     {
         header('Access-Control-Allow-Origin: *');
         header('Content-type: application/json; charset=UTF-8');
+        header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         http_response_code(200);
         echo json_encode($resp);
         exit;

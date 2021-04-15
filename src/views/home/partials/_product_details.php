@@ -2,7 +2,7 @@
     <div class="container w-75">
         <div class="row r_button">
             <div class="col-sm-6 h-100">
-                <img src="<?= IMG . $this->p_details->item_image ?? '../../../assets/img/products/1.png' ?>"
+                <img src="<?= isset($this->p_details->p_media) ? IMG . unserialize($this->p_details->p_media) : ImageManager::asset_img('products/1.png') ?>"
                     alt="Product" class="img-fluid">
                 <div class="row pt-4 font-size-16 font-baloo mb-3">
                     <div class="col">
@@ -14,11 +14,12 @@
                     <div class="col">
                         <form class="add_to_cart_frm">
                             <input type="hidden" name="item_id"
-                                value="<?= $this->p_details->item_id ?? 1 ?>">
+                                value="<?= $this->p_details->pdtID ?? 1 ?>">
                             <input type="hidden" name="user_id" value="1">
-                            <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $this->p_details->item_id ?? 1, $_SESSION[TOKEN_NAME])); ?>
+                            <?php $pdtID = $this->p_details->pdtID ?? 1?>
+                            <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $pdtID, $_SESSION[TOKEN_NAME])); ?>
                             <?php
-                            if (in_array($this->p_details->item_id, $this->user_cart)) {
+                            if (isset($this->p_details->pdtID) && in_array($this->p_details->pdtID, $this->user_cart)) {
                                 echo ' <button type="submit" class="btn btn-success font-size-14 form-control">In the cart</button>';
                             } else {
                                 echo '<button type="submit" class="btn btn-warning font-size-14 form-control">Add to
@@ -30,7 +31,7 @@
                 </div>
             </div>
             <div class="col-sm-6 py-5 h-100">
-                <h5 class="font-baloo font-size-20"><?= $this->p_details->item_name ?? 'Unknown' ?>
+                <h5 class="font-baloo font-size-20"><?= $this->p_details->p_title ?? 'Unknown' ?>
                 </h5>
                 <small>By <?= $this->p_details->item_brand ?? 'Brand' ?></small>
                 <div class="d-flex">

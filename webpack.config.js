@@ -49,6 +49,17 @@ var viewsConfig = Object.assign({}, commonConfig, {
     filename: "[name].js",
   },
 });
+
+//=======================================================================
+//Image Config
+//=======================================================================
+var ImageConfig = Object.assign({}, commonConfig, {
+  entry: "entries/images/images.js",
+  output: {
+    path: path.resolve(__dirname, "public", "assets", "img"),
+    filename: "[name].js",
+  },
+});
 //=======================================================================
 //Assets Config
 //=======================================================================
@@ -276,6 +287,7 @@ module.exports = () => {
     case "development":
       return [
         merge(viewsConfig, developmentConfig),
+        merge(ImageConfig, developmentConfig),
         merge(fontendAssetsConfig, developmentConfig),
         merge(membersAssetsConfig, developmentConfig),
         merge(adminAssetsConfig, developmentConfig),
@@ -283,6 +295,7 @@ module.exports = () => {
     case "production":
       return [
         merge(viewsConfig, productionConfig),
+        merge(ImageConfig, productionConfig),
         merge(fontendAssetsConfig, productionConfig),
         merge(membersAssetsConfig, productionConfig),
         merge(adminAssetsConfig, productionConfig),

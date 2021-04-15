@@ -9,20 +9,20 @@ class Input
     //Sanitize Helper
     private static function validate_input_text($textValue)
     {
-        if (!empty($textValue)) {
-            switch (true) {
-               case is_bool($textValue):
-                   return filter_var($textValue, FILTER_VALIDATE_BOOLEAN);
+        switch (true) {
+            case is_bool($textValue):
+                return filter_var($textValue, FILTER_VALIDATE_BOOLEAN);
                 break;
-                case is_int($textValue):
+            case is_numeric($textValue):
                    return filter_var($textValue, FILTER_SANITIZE_NUMBER_INT);
                 break;
-               default:
-                    return trim($textValue);
+            case is_string($textValue):
+                    return filter_var($textValue, FILTER_SANITIZE_STRING);
+                 break;
+            default:
+                    return '';
                 break;
-           }
         }
-        return '';
     }
 
     private static function validate_input_email($emailValue)

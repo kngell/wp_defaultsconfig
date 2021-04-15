@@ -1,6 +1,6 @@
 import { BASE_URL } from "corejs/config";
 import { Add, Call_controller } from "corejs/form_crud";
-import { reset_invalid_input } from "corejs/inputErrManager";
+import input from "corejs/inputErrManager";
 import { readurl } from "corejs/profile_img";
 class Login_And_Register {
   constructor(element) {
@@ -29,13 +29,13 @@ class Login_And_Register {
     //refresh login & register frm on hide and show
     phpLR.logbox.on("hide.bs.modal", function () {
       if (phpLR.loginfrm.find(".is-invalid").length != 0) {
-        reset_invalid_input(phpLR.loginfrm);
+        input.reset_invalid_input(phpLR.loginfrm);
       }
     });
     //Reset register form invalid input on hide modal
     phpLR.regbox.on("hide.bs.modal", function () {
       if (phpLR.regfrm.find(".is-invalid").length != 0) {
-        reset_invalid_input(phpLR.regfrm);
+        input.reset_invalid_input(phpLR.regfrm);
       }
     });
     //Reset register form on shown
@@ -96,7 +96,12 @@ class Login_And_Register {
           phpLR.regfrm.trigger("reset");
           phpLR.regfrm.find("#regAlert").html(response.msg);
         } else {
-          phpLR.regfrm.find("#regAlert").html(response.msg);
+          if (response.result == "error-field") {
+            input.error(phpLR.loginfrm, response.msg);
+          } else {
+            phpLR.loginfrm.find("#loginAlert").html(response.msg);
+          }
+          s;
         }
       }
     });
@@ -128,7 +133,11 @@ class Login_And_Register {
           phpLR.logbox.modal("hide");
           window.location.reload();
         } else {
-          phpLR.loginfrm.find("#loginAlert").html(response.msg);
+          if (response.result == "error-field") {
+            input.error(phpLR.loginfrm, response.msg);
+          } else {
+            phpLR.loginfrm.find("#loginAlert").html(response.msg);
+          }
         }
       }
     });
@@ -148,7 +157,11 @@ class Login_And_Register {
           phpLR.forgotfrm.trigger("reset");
           phpLR.forgotfrm.find("#regAlert").html(response.msg);
         } else {
-          phpLR.forgotfrm.find("#regAlert").html(response.msg);
+          if (response.result == "error-field") {
+            input.error(phpLR.loginfrm, response.msg);
+          } else {
+            phpLR.loginfrm.find("#loginAlert").html(response.msg);
+          }
         }
       }
     });

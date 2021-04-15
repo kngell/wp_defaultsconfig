@@ -2,7 +2,7 @@
 class Form_rules
 {
     // =======================================================================
-    // Users
+    // Users section
     // =======================================================================
     // Users groups
     public static function groups()
@@ -93,37 +93,6 @@ class Form_rules
         ];
     }
 
-    //Add categories rules
-    public static function categories()
-    {
-        return [
-            'categorie' => [
-                'display' => 'Categorie',
-                'required' => true,
-                'unique' => 'categorie',
-                'max' => 155
-            ],
-        ];
-    }
-
-    public static function admin_login()
-    {
-        return [
-            'username' => [
-                'display' => 'Username',
-                'required' => true,
-                'min' => 5,
-                'max' => 65
-            ],
-            'password' => [
-                'display' => 'Password',
-                'required' => true,
-                'min' => 5,
-                'max' => 65
-            ]
-        ];
-    }
-
     public static function change_pass_admin_user()
     {
         return [
@@ -172,6 +141,58 @@ class Form_rules
                 'min' => 5,
                 'matches' => 'password'
             ]
+        ];
+    }
+
+    public static function admin_login()
+    {
+        return [
+            'username' => [
+                'display' => 'Username',
+                'required' => true,
+                'min' => 5,
+                'max' => 65
+            ],
+            'password' => [
+                'display' => 'Password',
+                'required' => true,
+                'min' => 5,
+                'max' => 65
+            ]
+        ];
+    }
+
+    // =======================================================================
+    // Product section
+    // =======================================================================
+    //Add categories rules
+    public static function categories()
+    {
+        return [
+            'categorie' => [
+                'display' => 'Categorie',
+                'required' => true,
+                'unique' => 'categorie',
+                'max' => 155
+            ],
+        ];
+    }
+
+    public static function products()
+    {
+        return [
+            'p_title' => [
+                'display' => 'Product title',
+                'required' => true,
+                'min' => 2,
+                'max' => 150
+            ],
+            'p_short_descr' => [
+                'display' => 'Product short description',
+                'required' => true,
+                'min' => 2,
+                'max' => 255
+            ],
         ];
     }
 }

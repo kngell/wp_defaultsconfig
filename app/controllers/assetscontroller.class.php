@@ -76,4 +76,8 @@ class AssetsController extends Controller
             exit;
         }
     }
+
+    public function dropzoneupload()
+    {
+    }
 }
