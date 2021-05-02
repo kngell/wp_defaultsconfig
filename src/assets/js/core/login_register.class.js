@@ -89,11 +89,13 @@ class Login_And_Register {
       };
       Add(inputData, gestionR);
       function gestionR(response) {
+        phpLR.regfrm.find("#register-btn").val("Enregistrer");
         if (response.result == "success") {
           phpLR.regbox
             .find(".upload-profile-image .img")
             .attr("src", response.img ? response.img : "");
           phpLR.regfrm.trigger("reset");
+          phpLR.regbox.find(".input-group").remove();
           phpLR.regfrm.find("#regAlert").html(response.msg);
         } else {
           if (response.result == "error-field") {
@@ -101,7 +103,6 @@ class Login_And_Register {
           } else {
             phpLR.loginfrm.find("#loginAlert").html(response.msg);
           }
-          s;
         }
       }
     });

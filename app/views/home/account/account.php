@@ -11,17 +11,23 @@
         <div class="row wrapper">
             <div class="col-md-3 mini-profile-wrapper" id="mini-profile">
                 <!--====== mini-profile Start ======-->
-                <div class="card mini-profile">
+                <?php $user = $this->view_data->get_single_user(AuthManager::currentUser()->userID)?>
+                <div class="card mini-profile" style="width:18rem;">
                     <div class="card-header mini-profile-header">
                         <div class="mini-profile-cover-photo"></div>
                         <div class="mini-profile-author d-sm-flex">
+                            <input type="hidden" id="userID" name="userID"
+                                value="<?=AuthManager::currentUser()->userID?>">
                             <div class="text-center mini-profile-photo">
-                                <img src="/kngell_ecommerce/public/assets/img/profile-photo.png" alt="mini-profile Photo"
-                                    class="img-fluid">
+                                <img src="<?=$user->profileImage ? IMG . unserialize($user->profileImage)[0] : IMG . 'users' . US . 'avatar.png'?>"
+                                    alt="mini-profile Photo" class="img-fluid">
                             </div>
                             <div class="mini-profile-name">
-                                <h4 class="name">Musa Ahmed</h4>
-                                <p class="email">musa@email.com</p>
+                                <h4 class="name"><span><?=$user->firstName?></span>&nbsp;
+                                    <span><?=$user->lastName?></span>
+                                </h4>
+                                <p class="email"><?=$user->email?>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -39,7 +45,7 @@
                                     <h6 class="title">Profession:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>Consultant</p>
+                                    <p><?=$user->u_function?>
                                 </div>
                             </div>
 
@@ -48,7 +54,8 @@
                                     <h6 class="title">Phone:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>+123 456 789 0234</p>
+                                    <p><?=$user->phone?>
+                                    </p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -56,7 +63,8 @@
                                     <h6 class="title">Gender:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>Male</p>
+                                    <p><?=$user->gender?>
+                                    </p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -64,7 +72,8 @@
                                     <h6 class="title">Birthday:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>04 January 1992</p>
+                                    <p><?=$user->dob?>
+                                    </p>
                                 </div>
                             </div>
                         </div>

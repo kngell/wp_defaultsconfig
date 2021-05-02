@@ -35,7 +35,15 @@
                                     <h6 class="title">Nom:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>Musa Ahmed</p>
+                                    <p>{{nom}}</p>
+                                </div>
+                            </div>
+                            <div class="single-details-item d-flex flex-wrap">
+                                <div class="details-title">
+                                    <h6 class="title">Profession:</h6>
+                                </div>
+                                <div class="details-content media-body">
+                                    <p>{{profession}}</p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -43,7 +51,7 @@
                                     <h6 class="title">Email:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>musa@email.com</p>
+                                    <p>{{email}}</p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -51,7 +59,7 @@
                                     <h6 class="title">Téléphone:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>+123 456 789 0234</p>
+                                    <p>{{phone}}</p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -59,7 +67,7 @@
                                     <h6 class="title">Address:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>Company Inc., 8901 Marmora Road, Glasgow, D04 89GR.</p>
+                                    <p>{{address}}</p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -67,7 +75,7 @@
                                     <h6 class="title">Genre:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>Male</p>
+                                    <p>{{gender}}</p>
                                 </div>
                             </div>
                             <div class="single-details-item d-flex flex-wrap">
@@ -75,7 +83,7 @@
                                     <h6 class="title">Birthday:</h6>
                                 </div>
                                 <div class="details-content media-body">
-                                    <p>04 January 1992</p>
+                                    <p>{{dob}}</p>
                                 </div>
                             </div>
                         </div>
@@ -92,8 +100,16 @@
         <div class="tab-pane" id="edit-profile" role="tabpanel" aria-labelledby="edit-profile-tab">
             <div class="row g-0">
                 <div class="user-form-box">
-                    <form needs-validation>
-                        <h5 class="">Identifiants</h5>
+                    <form action="#" method="post" class="needs-validation" novalidate enctype="multipart/form-data"
+                        id="user-profile-frm">
+                        {{csrftoken}}
+                        <input type="hidden" name="userID" id="userID" value="{{userID}}">
+                        <input type="hidden" name="date_enreg" id="registerDate" value="{{registerDate}}">
+                        <input type="hidden" name="updateAt" id="updateAt" value="{{updateAt}}">
+                        <input type="hidden" name="deleted" id="deleted" value="{{deleted}}">
+                        <input type="hidden" name="usdID" id="usdID" value="{{usdID}}">
+                        <div id="alertErr"></div>
+                        <h5 class="">Profile</h5>
                         <hr class="mb-3 mt-2">
                         <div class="row g-3">
                             <div class="col-md-10">
@@ -103,7 +119,7 @@
                                             <label for="firstName" class="form-label">Prénom: <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control" type="text" id="firstName" name="firstName"
-                                                placeholder="John">
+                                                placeholder="John" value="{{firstName}}">
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
@@ -112,15 +128,15 @@
                                             <label for="lastName" class="form-label">Nom: <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control" type="text" id="lastName" name="lastName"
-                                                placeholder="Smith">
+                                                placeholder="Smith" value="{{lastName}}">
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-box">
-                                            <label for="phone" class="form-label">Téléphone: <span
-                                                    class="text-danger">*</span></label>
-                                            <input class="form-control" type="text" id="phone" name="phone">
+                                            <label for="phone" class="form-label">Téléphone:</label>
+                                            <input class="form-control" type="text" id="phone" name="phone"
+                                                value="{{phone}}">
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
@@ -128,8 +144,10 @@
                                         <div class="input-box">
                                             <label for="email" class="form-label">Courriel: <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" type="email" id="email" name="email">
-                                            <div class="invalid-feedback"></div>
+                                            <input class="form-control" type="email" id="email" name="email"
+                                                value="{{email}}">
+                                            <div class=" invalid-feedback">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -144,8 +162,7 @@
                                                     src="/kngell_ecommerce/public/assets/img/camera/camera-solid.svg"
                                                     alt="camera" />
                                             </div>
-                                            <img src="/kngell_ecommerce/public/assets/img/users/avatar.png" class="img"
-                                                alt="profile" />
+                                            <img src="{{profileImage}}" class="img" alt="profile" />
                                             <small class="form-text text-black-50">Choose Profile</small>
                                             <label for="upload-profile"></label>
                                             <input type="file" class="form-control upload-profile" name="profileUpload"
@@ -155,14 +172,39 @@
                                 </div>
                             </div>
                         </div>
-                        <h5 class="">Adresse personnelle</h5>
+                        <div class="row g-3 mb-3">
+                            <div class="col">
+                                <div class="input-box">
+                                    <label for="u_function" class="form-label">Profession:</label>
+                                    <input class="form-control" type="text" id="u_function" name="u_function"
+                                        value="{{profession}}">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-box">
+                                    <label for="gender" class="form-label">Genre:</label>
+                                    <input class="form-control" type="text" id="gender" name="gender"
+                                        value="{{gender}}">
+                                    <div class=" invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-box">
+                                    <label for="dob" class="form-label">Birthday:</label>
+                                    <input class="form-control" type="date" id="dob" name="dob" value="{{dob}}">
+                                    <div class=" invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="">Adresse</h5>
                         <hr class="mb-3 mt-0">
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <div class="input-box mb-3">
-                                    <label for="country" class="form-label">Pays:</label>
-                                    <select class="select_country form-control" id="country" name="country">
-                                        <option value='0'></option>
+                                    <label for="pays" class="form-label">Pays:</label>
+                                    <select class="select_country form-control" id="pays" name="pays">
                                     </select>
                                 </div>
                             </div>
@@ -170,21 +212,10 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="input-box mb-3">
-                                    <label for="address1" class="form-label">Adresse ligne 1:</label>
-                                    <input class="form-control" type="text"
-                                        placeholder="Street address, P.O. box, company name, c/o" id="address1"
-                                        name="address1">
-                                    <div class="invalid-feedback"></div>
-                                </div>
-                            </div>
-                        </div> <!-- end row -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input-box mb-3">
-                                    <label for="address2" class="form-label">Adresse ligne 2:</label>
-                                    <input class="form-control" type="text"
-                                        placeholder="Apartment, suite, unit, building, floor, etc." id="address2"
-                                        name="address2">
+                                    <label for="address" class="form-label">Adresse :</label>
+                                    <textarea class="form-control" type="text"
+                                        placeholder="Street address, P.O. box, company name, c/o" id="address"
+                                        name="address">{{address}}</textarea>
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
@@ -193,21 +224,23 @@
                             <div class="col-md-4">
                                 <div class="input-box mb-3">
                                     <label for="ville" class="form-label">Ville:</label>
-                                    <input class="form-control" type="text" id="ville" name="ville">
+                                    <input class="form-control" type="text" id="ville" name="ville" value="{{ville}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-box mb-3">
                                     <label for="region" class="form-label">Region:</label>
-                                    <input class="form-control" type="text" id="region" name="region">
+                                    <input class="form-control" type="text" id="region" name="region"
+                                        value="{{region}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-box mb-3">
                                     <label for="zip_code" class="form-label">Code Postal:</label>
-                                    <input class="form-control" type="text" id="zip_code" name="zip_code">
+                                    <input class="form-control" type="text" id="zip_code" name="zip_code"
+                                        value="{{zip_code}}">
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
@@ -215,22 +248,23 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="sameAddress" name="sameAddress">
-                                    <label for="sameAddress" class="form-check-label">Définir comme adresse de livraison
+                                    <input type="checkbox" class="form-check-input" id="principale" name="principale"
+                                        {{checked}}>
+                                    <label for="principale" class="form-check-label">Définir comme adresse de livraison
                                         par
                                         defaut</label>
                                     <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                         </div> <!-- end row -->
-                        <h5 class="mt-3">Texte libre</h5>
+                        <h5 class="mt-3">Commentaire</h5>
                         <hr class="mb-3">
                         <div class="row">
                             <div class="col-12">
                                 <div class="input-box mb-3">
-                                    <label for="autres_notes" class="form-label">Mes notes:</label>
-                                    <textarea class="form-control ck_content" id="autres_notes" rows="3"
-                                        placeholder="Write some note.." name="autres_notes"></textarea>
+                                    <label for="u_descr" class="form-label">Mes notes:</label>
+                                    <textarea class="form-control ck_content" id="u_descr" rows="3"
+                                        placeholder="Write some note.." name="u_descr">{{u_descr}}</textarea>
                                 </div>
                             </div>
                         </div> <!-- end row -->

@@ -81,4 +81,18 @@ class CategoriesManager extends Model
         }
         return true;
     }
+
+    //=======================================================================
+    //Get Select2 fields Names
+    //=======================================================================
+    public function get_fieldName($table)
+    {
+        switch ($table) {
+                case 'categories':
+                    return 'parentID';
+                break;
+                default:
+                break;
+            }
+    }
 }

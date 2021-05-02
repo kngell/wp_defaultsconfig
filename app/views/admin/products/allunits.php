@@ -68,7 +68,7 @@
                         <input type="hidden" name="deleted" id="deleted">
                         <div id="alertErr"></div>
                         <div class="select-box mb-3">
-                            <select class="form-control select_unit" id="unit" name="unit">
+                            <select class="form-control unit" id="unit" name="unit">
                             </select>
                             <div class="invalid-feedback"></div>
                             <span class="custom-arrow"></span>

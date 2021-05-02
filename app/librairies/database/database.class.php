@@ -109,7 +109,7 @@ abstract class Database
     protected function bind($param, $value, $type = null)
     {
         switch (is_null($type)) {
-                case is_numeric($value):
+                case is_int($value):
                     $type = PDO::PARAM_INT;
                 break;
                 case is_bool($value):

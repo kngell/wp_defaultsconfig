@@ -1,6 +1,5 @@
 import {
   displayAllItems,
-  select2AjaxParams,
   Add,
   Call_controller,
   editForm,
@@ -41,48 +40,15 @@ export default class Cruds {
     }
     async function _loadDatatables() {
       const DataTable = await import(
-        /* webpackChunkName: "datatables" */ "datatables.net"
+        /* webpackChunkName: "datatables" */ "datatables.net-responsive-dt"
       );
-      var table = $("table").DataTable({
+      $("table").DataTable({
         order: [0, "desc"],
         pagingType: "full_numbers",
-        columnDefs: [
-          {
-            targets: [0],
-            orderData: [0, 1],
-          },
-          {
-            targets: [1],
-            orderData: [1, 0],
-          },
-          {
-            targets: [4],
-            orderData: [4, 0],
-          },
-        ],
         stateSave: true,
+        responsive: true,
       });
     }
-  };
-
-  //=======================================================================
-  //Select2 Ajax method
-  //=======================================================================
-  _select2 = (params) => {
-    let select = this.modal.find(this.select).select2({
-      placeholder: "---" + params.placeholder + "---",
-      maximumInputLength: 20,
-      tags: true,
-      tokenSeparators: [",", " "],
-      allowClear: true,
-      ajax: select2AjaxParams({
-        url: "forms/showDetails",
-        table: params.tbl_options != "" ? params.tbl_options : "",
-        data_type: "select2",
-      }),
-    });
-
-    return select;
   };
   //=======================================================================
   //Add or update table
@@ -93,6 +59,7 @@ export default class Cruds {
     let form = this.form;
     wrapper.find("#addNew").on("click", function () {
       form.find("#operation").val("add");
+      form.children(".mb-3").first().find("input").focus();
     });
   };
   //get selected categories
@@ -109,12 +76,20 @@ export default class Cruds {
       return "";
     }
   };
+  _get_select2_data = (params) => {
+    let select_data = [];
+    $(params).each(function () {
+      if ($("." + this).length != 0) {
+        select_data[this] = Object.values($("." + this).select2("data"));
+      }
+    });
+    return select_data;
+  };
   //add or update
   _add_update = (params) => {
     let plugin = this;
     plugin.form.on("submit", function (e) {
       e.preventDefault();
-      console.log(params.dropzone);
       plugin.form.find("#submitBtn").val("Please wait...");
       var data = {
         url:
@@ -124,12 +99,9 @@ export default class Cruds {
         frm: plugin.form,
         frm_name: params.frm_name,
         table: plugin.table,
-        select2: plugin.select
-          ? JSON.stringify(Object.values($(plugin.select).select2("data")))
-          : "",
         categorie: plugin._get_selected_categories(params.categorie),
-        select2: plugin.select
-          ? JSON.stringify(Object.values($(plugin.select).select2("data")))
+        select2: params.hasOwnProperty("select")
+          ? plugin._get_select2_data(params.select)
           : "",
       };
       switch (plugin.form.find("#operation").val()) {
@@ -137,7 +109,6 @@ export default class Cruds {
           if (params.hasOwnProperty("dropzone")) {
             Add({ ...data, ...{ files: params.dropzone.files } }, manageR);
           } else {
-            console.log("ici");
             Add(data, manageR);
           }
           break;
@@ -154,6 +125,7 @@ export default class Cruds {
       }
       function manageR(response) {
         plugin.form.find("#submitBtn").val("Submit");
+        console.log(response);
         switch (response.result) {
           case "error-field":
             input.error(plugin.modal, response.msg);
@@ -178,6 +150,10 @@ export default class Cruds {
                 params.nested.hide();
               }
             }
+            break;
+          case "error-file":
+            params.dropzone._manageErrors(response.msg);
+            params.dropzone._removeErrMsg();
             break;
           default:
             plugin.form.find("#alertErr").html(response.msg);
@@ -264,7 +240,7 @@ export default class Cruds {
             table: plugin.table,
             tbl_options: params.hasOwnProperty("tbl_options")
               ? params.tbl_options
-              : plugin.table,
+              : "",
             frm_name: params.frm_name,
           }),
         params: params.std_fields,
@@ -274,23 +250,31 @@ export default class Cruds {
         if (response.result === "success") {
           $(std_fields).each(function (i, field) {
             switch (true) {
-              case $("#" + this).is($(plugin.select)):
-                $(response.msg.selectedOptions[0]).each(function () {
-                  if (
-                    !$(plugin.select).find("option[value='" + this.id + "']")
-                      .length
-                  ) {
-                    $(plugin.select).append(
-                      new Option(this.text, this.id, false, false)
+              case $("#" + this).hasClass("select2-hidden-accessible"):
+                let select_field = this;
+                if (response.msg.selectedOptions.hasOwnProperty(select_field)) {
+                  if (response.msg.selectedOptions[select_field].length != 0) {
+                    $(response.msg.selectedOptions[select_field][0]).each(
+                      function () {
+                        let select = plugin.form.find("." + select_field);
+                        if (
+                          !select.find("option[value='" + this.id + "']").length
+                        ) {
+                          select.append(
+                            new Option(this.text, this.id, false, true)
+                          );
+                          select.val(
+                            response.msg.selectedOptions[select_field][1]
+                          );
+                          select.trigger("change");
+                        }
+                      }
                     );
-                    $(plugin.select).val(response.msg.selectedOptions[1]);
-                    $(plugin.select).trigger("change");
                   }
-                });
+                }
                 break;
               case this == "p_media" && plugin.table == "products":
                 var dz = params.dropzone;
-                console.log(dz.files);
                 $(dz.element).find(".message").hide();
                 dz.files = [];
                 $.each(response.msg.items[field], function (key, value) {
@@ -322,6 +306,8 @@ export default class Cruds {
                 if ($("#" + this).is(":checkbox")) {
                   if (response.msg.items[field] == "on") {
                     $("#" + this).prop("checked", true);
+                  } else {
+                    $("#" + this).prop("checked", false);
                   }
                 } else {
                   $("#" + this).val(response.msg.items[field]);
@@ -329,13 +315,16 @@ export default class Cruds {
                 break;
             }
           });
-          if (response.msg.selectedOptions.length > 0) {
-            if (params.hasOwnProperty("categorieElement")) {
-              response.msg.selectedOptions[1].forEach((cat) => {
-                params.categorieElement
-                  .find("input[value='" + cat + "']")
-                  .prop("checked", true);
-              });
+
+          if (response.msg.selectedOptions.hasOwnProperty("categorie")) {
+            if (response.msg.selectedOptions["categorie"].length > 0) {
+              if (params.hasOwnProperty("categorieElement")) {
+                response.msg.selectedOptions["categorie"][1].forEach((cat) => {
+                  params.categorieElement
+                    .find("input[value='" + cat + "']")
+                    .prop("checked", true);
+                });
+              }
             }
           }
         } else {
@@ -418,6 +407,7 @@ export default class Cruds {
   //=======================================================================
   _clean_form = (data = {}) => {
     let modal = this.modal;
+    let form = this.form;
     let select = data.select ? data.select : this.select;
     //remove invalid input on input focus
     input.removeInvalidInput(modal);
@@ -426,8 +416,7 @@ export default class Cruds {
       if (modal.find(".is-invalid").length != 0) {
         input.reset_invalid_input(modal);
       }
-      modal.find("#new-product-frm")[0].reset();
-      // modal.find("input textarea").val("reset");
+      form[0].reset();
       select != "" ? modal.find(select).empty() : "";
       select != "" ? modal.find(select).trigger("input") : "";
       data.upload_img ? modal.find(data.upload_img).attr("src", AVATAR) : "";
@@ -437,6 +426,11 @@ export default class Cruds {
           .find(".gallery-wrapper .gallery_item")
           .remove();
         $(data.dropzone.element).find(".message").show();
+      }
+      if (data.hasOwnProperty("select")) {
+        $(data.select).each(function () {
+          form.find("." + this).empty();
+        });
       }
     });
   };

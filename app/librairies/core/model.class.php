@@ -1,4 +1,5 @@
 <?php
+use Brick\Money\Money;
 
 abstract class Model
 {
@@ -21,6 +22,12 @@ abstract class Model
     //=======================================================================
     //Getterss
     //=======================================================================
+    // Get model Name
+    public function get_modeName()
+    {
+        return $this->_modelName;
+    }
+
     //get all tables
     public function getAll_tables()
     {
@@ -118,7 +125,7 @@ abstract class Model
     }
 
     //get tables coloumn
-    public function get_Tables_Column($table)
+    public function get_Tables_Columns($table)
     {
         $column = $this->setTableColumns($table);
         foreach ($column as $key => $val) {
@@ -158,6 +165,12 @@ abstract class Model
         return $this->_db;
     }
 
+    //get currency
+    public function get_currency($p)
+    {
+        return Money::of($p, 'EUR');
+    }
+
     //get date time format
     public function getDate($date): string
     {
@@ -177,14 +190,17 @@ abstract class Model
     }
 
     //Get selected options
-    public function get_Options($selected_optons = [])
+    public function get_Options($selected_optons = [], $m = null)
     {
-        $all_options = $this->getAllItem()->get_results();
+        $all_options = $m->getAllItem()->get_results();
+        if (!$selected_optons) {
+            return [];
+        }
         return  [array_map(
             function ($option) {
                 $colID = $option->get_colID();
                 $title = $option->get_colTitle();
-                return ['id' => (int)$option->$colID, 'text' => $option->$title];
+                return ['id' => (int)$option->$colID, 'text' => $this->htmlDecode($option->$title)];
             },
             $all_options
         ), array_map(
@@ -199,13 +215,27 @@ abstract class Model
     public function get_selectedOptions()
     {
         $colID = $this->get_colID();
-        $id = isset($this->parentID) ? $this->parentID : $this->$colID;
-        $selected_option = $id != '0' ? $this->getDetails($id, $colID) : null;
         $colTitle = $this->_colTitle;
-        if ($selected_option) {
-            $response[$selected_option->$colID] = $selected_option->$colTitle;
+        $response = [];
+        if (isset($this->parentID)) {
+            $selected_option = $this->getDetails($this->parentID, $colID);
+            if ($selected_option) {
+                $response[$selected_option->$colID] = $this->htmlDecode($selected_option->$colTitle);
+            }
+        } else {
+            $response[$this->$colID] = $this->htmlDecode($this->$colTitle);
         }
-        return isset($response) ? $response : [];
+        return $response;
+    }
+
+    //Get countrie
+    public function get_countrie($ctr = '')
+    {
+        $data = file_get_contents(APP . 'librairies' . DS . 'database' . DS . 'json' . DS . 'countries.json');
+        $country = array_filter(array_column(json_decode($data, 1), 'name'), function ($countrie) use ($ctr) {
+            return $countrie == $ctr;
+        }, ARRAY_FILTER_USE_KEY);
+        return $country;
     }
 
     public function getpostCategorie()
@@ -348,6 +378,11 @@ abstract class Model
         return $this->_count;
     }
 
+    public function htmlDecode($str)
+    {
+        return !empty($str) ? htmlspecialchars_decode(html_entity_decode($str), ENT_QUOTES) : false;
+    }
+
     //populate data
     public function populateObjData($result)
     {
@@ -369,7 +404,8 @@ abstract class Model
     public function getSelect2Data($params)
     {
         $search = strtolower($params['searchTerm']);
-        $data = $this->getAllItem()->get_results();
+        $where = isset($params['parentID']) && $params['parentID'] != '' ? ['company' => $params['parentID']] : [];
+        $data = $where ? $this->getAllbyParams($where)->get_results() : $this->getAllItem()->get_results() ;
         $colTitle = $this->get_colTitle();
         $output = array_filter($data, function ($item) use ($search, $colTitle) {
             return str_starts_with(strtolower($item->$colTitle), $search);
@@ -377,7 +413,7 @@ abstract class Model
         return array_map(
             function ($group) use ($colTitle) {
                 $colID = $group->get_colID();
-                return ['id' => (int)$group->$colID, 'text' => $group->$colTitle];
+                return ['id' => (int)$group->$colID, 'text' => $this->htmlDecode($group->$colTitle)];
             },
             $output
         );
@@ -451,7 +487,7 @@ abstract class Model
     {
         $colID = $this->get_colID();
         $id = ($id == '') ? $this->$colID : $id;
-        $params = array_merge($params, ['where' => [$this->get_colID() => $id]]);
+        $params = !$id ? $params : array_merge($params, ['where' => [$this->get_colID() => $id]]);
         if ($params = $this->beforeDelete($params)) {
             if ($this->_softDelete) {
                 $delete = $this->_db->update($this->_table, isset($params['restore']) ? $params['restore'] : ['deleted' => 1], $params['where']);
@@ -481,7 +517,7 @@ abstract class Model
     //=======================================================================
     //Save data
     //=======================================================================
-    //Save
+    //Master Save
     public function save($params = [])
     {
         if ($data = $this->beforeSave($params)) {
@@ -500,6 +536,30 @@ abstract class Model
             }
         }
         return $data;
+    }
+
+    //Partial save
+    public function partial_save($data = [], $params = [], $table = '', $index = '')
+    {
+        if (!empty($table)) {
+            $m = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager';
+            $p_data = (new $m())->getAllbyParams($params);
+            if ($p_data->count() > 0) {
+                $colID = $p_data->get_colID();
+                $p_data = current($p_data->get_results());
+                $p_data->id = $p_data->$colID;
+            } else {
+                $p_data->tbl = $table;
+                $p_data->relID = $index;
+            }
+            $p_data->assign($data);
+            if ($p_data->save()->count() > 0) {
+                $p_data = null;
+                return true;
+            }
+            $p_data = null;
+        }
+        return false;
     }
 
     //before save

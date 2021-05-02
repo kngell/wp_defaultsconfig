@@ -1,17 +1,27 @@
 import Cruds from "corejs/crud_interface";
+import select2 from "corejs/select2_manager";
 class AllCategories {
   constructor(element) {
     this.element = element;
   }
+  //=======================================================================
+  //Init
+  //=======================================================================
   _init = () => {
     this._setupVariables();
     this._setupEvents();
   };
+  //=======================================================================
+  //Setup variables
+  //=======================================================================
   _setupVariables = () => {
     this.wrapper = this.element.find(".card");
     this.modalbox = this.element.find("#modal-box");
     this.modalform = this.element.find("#modal-box #Categorie-frm");
   };
+  //=======================================================================
+  //Setup events
+  //=======================================================================
   _setupEvents = () => {
     var phpPlugin = this;
     //inti crud
@@ -25,7 +35,8 @@ class AllCategories {
     //display All items
     cruds._displayAll({ datatable: true });
     //Select2 ajax
-    cruds._select2({
+    new select2()._init({
+      element: phpPlugin.modalform.find("#parentID"),
       tbl_options: "categories",
       placeholder: "Please select a categorie",
     });
@@ -42,7 +53,7 @@ class AllCategories {
     //edit
     cruds._edit({
       frm_name: "Categorie-frm",
-      tbl_option: "",
+      tbl_options: "categories",
       std_fields: [
         "catID",
         "date_enreg",

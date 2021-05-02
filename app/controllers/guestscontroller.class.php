@@ -37,7 +37,7 @@ class GuestsController extends Controller
             $table = $this->request->getAll('table');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
             $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
-            $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance[$table]);
+            $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
             $data = $this->request->getAll();
             if ($file['success']) {
                 $this->model_instance[$table]->assign($data);

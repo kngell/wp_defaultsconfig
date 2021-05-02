@@ -52,12 +52,13 @@
                             data-parent="#left-sidebar">
                             <li>
                                 <a
-                                    href="<?=PROOT . 'admin' . US . 'profile'?>">Profile</a>
+                                    href="<?=PROOT . 'admin' . US . 'profile'?>">User
+                                    Profile</a>
                             </li>
                             <li>
                                 <a
                                     href="<?=PROOT . 'admin' . US . 'allusers' . US . 'get_allUsers'?>">All
-                                    users</a>
+                                    Users</a>
                             </li>
                             <li>
                                 <a
@@ -79,11 +80,16 @@
                     <li class="sidebar-item">
                         <a href="#productsManagement" data-bs-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle collapsed">
-                            <i class="fab fa-product-hunt fa-lg"></i>
+                            <i class="fas fa-barcode-alt fa-lg"></i>
                             <span>Products Management</span>
                         </a>
                         <ul class="sidebar-second-level collapse list-unstyled" id="productsManagement"
                             data-parent="#left-sidebar">
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allproducts'?>">All
+                                    Products</a>
+                            </li>
                             <li>
                                 <a
                                     href="<?=PROOT . 'admin' . US . 'allcategories'?>">All
@@ -94,21 +100,57 @@
                                     href="<?=PROOT . 'admin' . US . 'allunits'?>">All
                                     Units</a>
                             </li>
+
                             <li>
                                 <a
-                                    href="<?=PROOT . 'admin' . US . 'allproducts'?>">All
-                                    Products</a>
-                            </li>
-                            <li>
-                                <a
-                                    href="<?=PROOT . 'admin' . US . 'product_details'?>">Product
+                                    href="<?=PROOT . 'admin' . US . 'product_details'?>">
                                     Details</a>
                             </li>
                             <li>
                                 <a
                                     href="<?=PROOT . 'admin' . US . 'new_product'?>">Add
-                                    New Product</a>
+                                    New </a>
                             </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#organization" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fal fa-warehouse fa-lg"></i>
+                            <span>Company Management</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="organization"
+                            data-parent="#left-sidebar">
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allcompanies'?>">All
+                                    companies</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allbrands'?>">All
+                                    Brands</a>
+                            </li>
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allwarehouses'?>">All
+                                    Warehouses</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#orders" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <i class="fad fa-shopping-cart fa-lg"></i>
+                            <span>Orders Management</span>
+                        </a>
+                        <ul class="sidebar-second-level collapse list-unstyled" id="orders" data-parent="#left-sidebar">
+                            <li>
+                                <a
+                                    href="<?=PROOT . 'admin' . US . 'allcompanies'?>">All
+                                    Orders</a>
+                            </li>
+
                         </ul>
                     </li>
                     <li class="sidebar-item">

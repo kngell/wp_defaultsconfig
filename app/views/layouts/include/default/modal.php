@@ -2,13 +2,13 @@
     <div class="log">
         <!--Login form-->
         <div class="modal fade" id="login-box" tabindex="-1" aria-labelledby="login-boxLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
                         <button type="button" class="close float-end" data-bs-dismiss="modal"
                             aria-label="Close"><span>&times;</span></button>
                         <div class="form-wrapper rounded bg-light" id="" autocomplete="off">
-                            <form action="" method="post" role="form" class="p-2" id="login-frm" autocomplete="off">
+                            <form action="" role="form" class="p-2" id="login-frm" autocomplete="off">
                                 <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'login-frm', $_SESSION[TOKEN_NAME]));?>
                                 <div class="text-danger" id="loginAlert"></div>
                                 <p class="hint-text">Connectez-vous avec votre compte social média</p>
@@ -67,7 +67,7 @@
         </div>
         <!--Register form-->
         <div class="modal fade-scale in" id="register-box">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
                         <button type="button" class="close float-end" data-bs-dismiss="modal">
@@ -82,11 +82,11 @@
                                     <img src="<?=IMG?>users/avatar.png"
                                         class="img rounded-circle" alt="profile" />
                                     <small class="form-text">Profile</small>
-                                    <input type="file" form="register-frm" class="form-control form-file"
+                                    <input type="file" form="register-frm" class="form-control upload-profile"
                                         name="profileUpload" id="upload-profile">
                                 </div>
                             </div>
-                            <hr class="my-0">
+                            <hr class="mb-3">
                             <form action="" method="post" role="form" class="needs-validation" novalidate
                                 id="register-frm" autocomplete="off">
                                 <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'register-frm', $_SESSION[TOKEN_NAME]));?>
@@ -142,7 +142,7 @@
                                     <input type="submit" name="register" class="btn btn-primary btn-block"
                                         id="register-btn" value="Enregistrer" autocomplete="false">
                                 </div>
-                                <div class="input-group form-footer d-flex justify-content-center mb-3">
+                                <div class="form-footer d-flex justify-content-center mb-3">
                                     <p class="text-center"><span class="d-inline-block pt-2">Vous avez déjà un compte?
                                             <a href="#" id="login-btn" class="close mt-1" data-bs-dismiss="modal"
                                                 data-bs-toggle="modal"
@@ -158,7 +158,7 @@
 
         <!--Forgot password-->
         <div class="modal fade show" id="forgot-box">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
                         <button type="button" class="close float-end" data-bs-dismiss="modal">

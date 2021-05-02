@@ -141,7 +141,7 @@
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="product-price">Regular Price</label>
-                                                    <input class="form-control" type="text" name="p_regular_price"
+                                                    <input class="form-control" type="number" name="p_regular_price"
                                                         id="p_regular_price">
                                                 </div>
                                             </div>
@@ -149,7 +149,7 @@
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="product-compare-price">Compare at price</label>
-                                                    <input class="form-control" type="text" name="p_compare_price"
+                                                    <input class="form-control" type="number" name="p_compare_price"
                                                         id="p_compare_price">
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="product-cost-per-item">Cost per item</label>
-                                                    <input class="form-control" type="text" name="p_cost_per_item"
+                                                    <input class="form-control" type="number" name="p_cost_per_item"
                                                         id="p_cost_per_item">
                                                     <span class="help-block">
                                                         <small>Customers won’t see this</small>
@@ -190,7 +190,7 @@
                                             <div class="col-lg-6">
                                                 <div class=" mb-3">
                                                     <label for="product-sku">SKU (Stock Keeping Unit)</label>
-                                                    <input class="form-control" type="text" name="p_sku" id="p_sku">
+                                                    <input class="form-control" type="number" name="p_sku" id="p_sku">
                                                 </div>
                                             </div>
                                             <!-- end col -->
@@ -299,10 +299,9 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group mb-3">
-                                                    <label for="product-shipping-class">Shipping Class</label>
-                                                    <select class="form-select select2-shipping" name="p_shipping_class"
+                                                    <label for="p_shipping_class">Shipping Class</label>
+                                                    <select class="form-select p_shipping_class" name="p_shipping_class"
                                                         id="p_shipping_class">
-                                                        <option selected>No shipping class</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -351,8 +350,11 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group mb-3">
-                                                    <label for="product-type">Product type</label>
-                                                    <input class="form-control" type="text" id="product-type">
+                                                    <label for="company">Company</label>
+                                                    <select class="form-select p_company select"
+                                                        aria-label=".form-select Default" name="p_company"
+                                                        id="p_company">
+                                                    </select>
                                                 </div>
                                             </div>
                                             <!-- end col -->
@@ -361,8 +363,11 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group mb-3">
-                                                    <label for="product-vendor">Vendor</label>
-                                                    <input class="form-control" type="text" id="product-vendor">
+                                                    <label for="warehouse">Warehouse</label>
+                                                    <select class="form-select p_warehouse"
+                                                        aria-label=".form-select Default" name="p_warehouse"
+                                                        id="p_warehouse">
+                                                    </select>
                                                 </div>
                                             </div>
                                             <!-- end col -->

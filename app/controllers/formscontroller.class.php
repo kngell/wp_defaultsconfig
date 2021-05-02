@@ -73,7 +73,7 @@ class FormsController extends Controller
                     $this->model_instance[$table] = $file['msg'];
                     if ($LastID = $this->model_instance[$table]->save($data)) {
                         H_upload::manage_uploadImage($LastID, $table, $data);
-                        (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID : '';
+                        (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID->get_lastID() : '';
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
                         $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $table . ' has been added');
                         ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
@@ -138,14 +138,29 @@ class FormsController extends Controller
             $table = $this->request->getAll('table');
             $t_options = $this->request->getAll('tbl_options');
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            !empty($t_options) ? $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $t_options))) . 'Manager', $t_options) : '';
+            $this->get_options_model($t_options);
             if ($item = $this->model_instance[$table]->getDetails((int)$this->request->getAll('id'))) {
-                $options = $t_options ? $this->model_instance[$t_options]->get_Options($item->get_selectedOptions()) : '';
-                $this->jsonResponse(['result' => 'success', 'msg' => ['items' => $item, 'selectedOptions' => $options]]);
+                $this->jsonResponse(['result' => 'success', 'msg' => ['items' => $item, 'selectedOptions' => $this->get_options($t_options, $item)]]);
             } else {
                 $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
             }
         }
+    }
+
+    // Manage Edit get selected options
+    private function get_options($t_options = '', $item = null)
+    {
+        $options = [];
+        if (!empty($t_options)) {
+            if (is_array($t_options)) {
+                foreach ($t_options as $tab) {
+                    $options[$item->get_fieldName($tab)] = $tab ? $this->model_instance[$tab]->get_Options($item->get_selectedOptions($tab), $this->model_instance[$tab]) : false;
+                }
+            } else {
+                $options[$item->get_fieldName($t_options)] = $t_options ? $this->model_instance[$t_options]->get_Options($item->get_selectedOptions(), $this->model_instance[$t_options]) : false;
+            }
+        }
+        return $options;
     }
 
     //=======================================================================
@@ -166,12 +181,12 @@ class FormsController extends Controller
             AuthManager::check_UserSession();
             $this->model_instance[$table]->assign($data);
             $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
-            method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, $action ? Form_rules::$action() : Form_rules::$table()) : '';
+            $this->model_instance[$table]->id = $data[$colID];
+            method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
             if ($this->model_instance[$table]->validationPasses()) {
                 $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
                 if ($file['success']) {
                     $this->model_instance[$table] = $file['msg'];
-                    $this->model_instance[$table]->id = $data[$colID];
                     if ($this->model_instance[$table]->save($data)) {
                         H_upload::manage_uploadImage($this->model_instance[$table]->$colID, $table, $data);
                         (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
@@ -180,6 +195,8 @@ class FormsController extends Controller
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
                     }
+                } else {
+                    $this->jsonResponse(['result' => 'error-file', 'msg' => $file['msg']]);
                 }
             } else {
                 $this->jsonResponse(['result' => 'error-field', 'msg' => $this->model_instance[$table]->getErrorMessages()]);

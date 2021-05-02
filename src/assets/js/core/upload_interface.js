@@ -92,6 +92,9 @@ export default class Upload {
     img_item.append(img);
     return gallery_item.append(img_item, img_remove);
   };
+  //=======================================================================
+  //Create Extradiv for name and size
+  //=======================================================================
   _createExtraDiv = (file, gallery_item) => {
     gallery_item.append(
       $("<div></div>")
@@ -145,7 +148,21 @@ export default class Upload {
       plugin.files = plugin.files.filter((file) => {
         return file.name != file_name && file.size != file_size;
       });
-      console.log(plugin.files);
+    });
+  };
+  _manageErrors = (err_msg = "") => {
+    let plugin = this;
+    var error_div = $("<div></div>", { class: "error_message" });
+    if (err_msg != "") {
+      error_div.html(err_msg);
+      plugin.element.append(error_div);
+    }
+  };
+  _removeErrMsg = () => {
+    let plugin = this;
+    plugin.element.find(".error_message").on("click", function (e) {
+      e.stopPropagation();
+      $(this).remove();
     });
   };
 }

@@ -102,8 +102,8 @@ class FH
 
     public static function showMessage($type, $message)
     {
-        return '<div class="align-self-center alert alert-' . $type . ' alert-dismissible">
-                    <button type="button" class="close" data-bs-dismiss="alert"><span class="float-end">&times;</span></button>
+        return '<div class="align-self-center text-center alert alert-' . $type . ' alert-dismissible">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"><span class="float-end"></span></button>
                     <strong class="text-center">' . $message . '</strong>
               </div>';
     }
@@ -136,11 +136,10 @@ class FH
         //     $source[$colTitle] = $obj->$colTitle;
         // }
         foreach ($items as $item => $rules) {
-            $item = Input::sanitize($item);
             $display = $rules['display'];
             if (isset($source[$item])) {
                 foreach ($rules as $rule => $rule_value) {
-                    $value = Input::sanitize(trim($source[$item]));
+                    $value = $source[$item];
                     if ($rule === 'required' && empty($value)) {
                         $requireMsg = ($item == 'terms') ? 'Please accept terms & conditions' : "{$display} is require";
                         property_exists($obj, $item) ? $obj->runValidation(new Requirevalidator($obj, ['field' => $item, 'msg' => $requireMsg])) : '';
@@ -153,7 +152,7 @@ class FH
                             $obj->runValidation(new Maxvalidator($obj, ['field' => $item, 'rule' => $rule_value, 'msg' => "{$display} must be a maximum of {$rule_value} caracters"]));
                             break;
                         case 'valid_email':
-                            $obj->runValidation(new ValidEmailvalidator($obj, ['field' => $item, 'rule' => $rule_value, 'msg' => "{$display} must be a valid email address"]));
+                            $obj->runValidation(new ValidEmailvalidator($obj, ['field' => $item, 'rule' => $rule_value, 'msg' => "{$display} is not valid"]));
                             break;
                         case 'is_numeric':
                             $obj->runValidation(new Numericvalidator($obj, ['field' => $item, 'rule' => $rule_value, 'msg' => "{$display} has to be a number. Please use a numeric value"]));
@@ -189,7 +188,7 @@ class FH
                     case $params['data_type'] == 'template':
                         return $model->getHtmlData($params);
                     break;
-                    case $params['data_type'] == 'select2': // Get select2 Data
+                    case isset($params['data_type']) && $params['data_type'] == 'select2': // Get select2 Data
                         return $model->getSelect2Data($params);
                     break;
                 }

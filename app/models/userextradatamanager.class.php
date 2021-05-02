@@ -1,5 +1,5 @@
 <?php
-class UserextradataManager extends Model
+class UserExtraDataManager extends Model
 {
     protected $_colID = 'usdID';
     protected $_table = 'user_extra_data';
@@ -13,7 +13,6 @@ class UserextradataManager extends Model
     public $u_total_spend;
     public $date_enreg;
     public $updateAt;
-    public $deleted;
 
     //=======================================================================
     //construct

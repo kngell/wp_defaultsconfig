@@ -48,8 +48,8 @@ class TH_Admin
     public static function categoriesTable($data)
     {
         $output = '';
-        $output .= '<table class="table table-bordered border-primary text-center">
-                    <thead class="table-dark">
+        $output .= '<table class="table table-bordered text-center table-hover table-striped">
+                    <thead class="mt-2">
                         <tr>
                             <th scope="col" style="width:2%" class="text-center">#</th>
                             <th scope="col" style="width:20%">Categorie</th>
@@ -71,9 +71,9 @@ class TH_Admin
                             <td>' . $cat->photo . '</td>
                             <td>' . $catgorie . '</td>
                             <td>
-                            <a href="#" id="' . $cat->catID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fas fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
-                            <a href="#" id="' . $cat->catID . '"  title="Edit Category" class="text-primary editBtn mx-2" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
-                            <a href="#" id="' . $cat->catID . '" title="Delete Caegory" class="text-danger deleteBtn"><i class="fas fa-trash-alt fa-lg"></i></a>
+                            <a href="#" id="' . $cat->catID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fal fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
+                            <a href="#" id="' . $cat->catID . '"  title="Edit Category" class="text-primary editBtn mx-3" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fal fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="#" id="' . $cat->catID . '" title="Delete Caegory" class="text-danger deleteBtn"><i class="fal fa-trash-alt fa-lg"></i></a>
                             </td>   
                         </tr>';
         }
@@ -83,7 +83,7 @@ class TH_Admin
     }
 
     //=======================================================================
-    //Categories table
+    //Unit table
     //=======================================================================
 
     public static function unitsTable($data)
@@ -107,9 +107,9 @@ class TH_Admin
                             <td>' . $item->unit . '</td>
                             <td>' . $item->descr . '</td>
                             <td>
-                            <a href="#" id="' . $item->unID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fas fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
-                            <a href="#" id="' . $item->unID . '"  title="Edit Unit" class="text-primary editBtn mx-2" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;
-                            <a href="#" id="' . $item->unID . '" title="Delete Unit" class="text-danger deleteBtn"><i class="fas fa-trash-alt fa-lg"></i></a>
+                            <a href="#" id="' . $item->unID . '" title="' . $txtactive . '" class="text-danger activateBtn"> <i class="fal fa-power-off fa-lg" ' . $active . '></i></a>&nbsp;
+                            <a href="#" id="' . $item->unID . '"  title="Edit Unit" class="text-primary editBtn mx-2" data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fal fa-edit fa-lg"></i></a>&nbsp;
+                            <a href="#" id="' . $item->unID . '" title="Delete Unit" class="text-danger deleteBtn"><i class="fal fa-trash-alt fa-lg"></i></a>
                             </td>   
                         </tr>';
         }
@@ -119,9 +119,8 @@ class TH_Admin
     }
 
     //=======================================================================
-    //Categories table
+    //Products table
     //=======================================================================
-
     public static function productsTable($data)
     {
         $output = '';
@@ -147,7 +146,7 @@ class TH_Admin
                 $status_class = 'bg-success';
                 $status_text = 'active';
             } else {
-                $status_class = 'bg-secondary';
+                $status_class = 'bg-danger';
                 $status_text = 'inactive';
             }
             $media = !empty($item->p_media) ? ImageManager::asset_img(unserialize($item->p_media)[0]) : ImageManager::asset_img('products' . US . 'product-80x80.jpg');
@@ -188,6 +187,60 @@ class TH_Admin
             </tr>';
         }
         $output .= '</tbody></table>';
+        return $output;
+    }
+
+    //=======================================================================
+    //Company table
+    //=======================================================================
+    public static function companyTable($data)
+    {
+        $output = ' <table class="table table-striped table-bordered table-hover">
+    <thead class="thead-inverse text-muted">
+        <tr>
+            <th>Sigle</th>
+            <th>Dénomination</th>
+            <th>Couriel</th>
+            <th>Tél. Fix</th>
+            <th>Tél. Portable</th>
+            <th style="width:5%" class="text-center">contacts</th>
+            <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>';
+        foreach ($data as $item) {
+            $output .= '<tr>
+            <td>
+                <a href="' . PROOT . 'forms/details/' . $item->compID . '">' . htmlspecialchars_decode($item->sigle, ENT_NOQUOTES) . '</a>
+            </td>
+            <td>' . htmlspecialchars_decode($item->denomination, ENT_NOQUOTES) . '
+            </td>
+            <td>' . $item->couriel . '
+            </td>
+            <td>' . $item->phone . '
+            </td>
+            <td>
+                ' . $item->mobile . '
+            </td>
+            <td class="text-center">
+                <a href="#" title="contacts utiles"
+                    class="text-success text-center"><i class="fas fa-address-book fa-lg"></i></a>&nbsp;
+            </td>
+            <td class="text-center clearfix">
+                <a href="' . PROOT . 'admin/company_details/' . $item->compID . '" title="view details" class="text-info"><i
+                        class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;
+                <a href="#" id="' . $item->compID . '" title="Edit Company" class="text-primary editBtn mx-2"
+                    data-bs-toggle="modal" data-bs-target="#modal-box"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;
+
+                <a href="#" id="' . $item->compID . '" title="Delete Company" class="text-danger deleteBtn"><i
+                        class="fas fa-trash-alt fa-lg"></i></a>
+
+            </td>
+
+        </tr>';
+        }
+        $output .= '</tbody>
+        </table>';
         return $output;
     }
 
@@ -343,60 +396,6 @@ class TH_Admin
                 <a href="#" id="' . $adherent->adhID . '" title="Delete contact" class="text-danger deleteBtn"><i
                         class="fas fa-trash-alt fa-lg"></i></a>
             </td>
-        </tr>';
-        }
-        $output .= '</tbody>
-        </table>';
-        return $output;
-    }
-
-    //=======================================================================
-    //Association table
-    //=======================================================================
-    public static function assocTable($data)
-    {
-        $output = ' <table class="table table-striped table-bordered table-hover">
-    <thead class="thead-inverse text-muted">
-        <tr>
-            <th>Sigle</th>
-            <th>Dénomination</th>
-            <th>Couriel</th>
-            <th>Tél. Fix</th>
-            <th>Tél. Portable</th>
-            <th style="width:5%" class="text-center">cts</th>
-            <th class="text-center">Actions</th>
-        </tr>
-    </thead>
-    <tbody>';
-        foreach ($data as $assoc) {
-            $output .= '<tr>
-            <td>
-                <a href="' . PROOT . 'forms/details/' . $assoc->assID . '">' . $assoc->sigle . '</a>
-            </td>
-            <td>' . $assoc->denomination . '
-            </td>
-            <td>' . $assoc->couriel . '
-            </td>
-            <td>' . $assoc->phone_fixe . '
-            </td>
-            <td>
-                ' . $assoc->phone_portable . '
-            </td>
-            <td class="text-center">
-                <a href="' . PROOT . 'members/adherents/' . $assoc->assID . '" title="contacts utiles"
-                    class="text-success text-center"><i class="fas fa-address-book fa-lg"></i></a>&nbsp;
-            </td>
-            <td class="text-center clearfix">
-                <a href="' . PROOT . 'members/assocdetails/' . $assoc->assID . '" title="view details" class="text-info"><i
-                        class="fas fa-info-circle fa-lg"></i></a>&nbsp;&nbsp;
-                <a href="#" id="' . $assoc->assID . '" title="Edit Association" class="text-primary editBtn"
-                    data-toggle="modal" data-target="#assocModal"><i class="fas fa-edit fa-lg"></i></a>&nbsp;&nbsp;
-
-                <a href="#" id="' . $assoc->assID . '" title="Delete association" class="text-danger deleteBtn"><i
-                        class="fas fa-trash-alt fa-lg"></i></a>
-
-            </td>
-
         </tr>';
         }
         $output .= '</tbody>

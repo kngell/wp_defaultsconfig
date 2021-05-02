@@ -73,5 +73,10 @@ module.exports = {
       import: ["js/custom/admin/users/permissions"],
       dependOn: "js/librairies/adminlib",
     },
+    //Company
+    "js/custom/admin/company/allcompanies": {
+      import: ["js/custom/admin/company/allcompanies"],
+      dependOn: "js/librairies/adminlib",
+    },
   },
 };

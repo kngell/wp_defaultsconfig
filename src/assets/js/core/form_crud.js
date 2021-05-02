@@ -1,4 +1,4 @@
-import { BASE_URL } from "./config";
+import { BASE_URL, isIE } from "./config";
 
 //display all details
 export function displayAllDetails(data, gestion) {
@@ -69,11 +69,17 @@ export function Add(data, gestion) {
     formData.append("imageUrlsAry", data.imageUrlsAry);
   if (data.hasOwnProperty("select2")) formData.append("select2", data.select2);
   if (data.hasOwnProperty("categorie"))
-    formData.append("categorie", data.categorie);
+    formData.append("custom_categorie", data.categorie);
   if (data.hasOwnProperty("files")) {
     for (let i = 0; i < data.files.length; i++) {
       formData.append(data.files[i].name, data.files[i]);
     }
+  }
+  if (data.hasOwnProperty("select2")) {
+    $(data.select2).each(function (key, val) {
+      console.log(this);
+      formData.append(key, val);
+    });
   }
   $.ajax({
     url: BASE_URL + data.url,
@@ -91,6 +97,7 @@ export function Add(data, gestion) {
 export function Call_controller(data, gestion) {
   var formData = new FormData(data.frm[0]);
   formData.append("frm_name", data.frm_name);
+  formData.append("isIE", isIE());
   if (data.table) formData.append("table", data.table);
   if (data.notification) formData.append("notification", data.notification);
   if (data.url_data) formData.append("url_data", data.url_data);
@@ -102,9 +109,13 @@ export function Call_controller(data, gestion) {
   if (data.id) formData.append("id", data.id);
   if (data.user_id) formData.append("id", data.user_id);
   if (data.method) formData.append("method", data.method);
-  if (data.select2) formData.append("select2", data.select2);
+  if (data.hasOwnProperty("select2")) {
+    for (const [key, value] of Object.entries(data.select2)) {
+      formData.append(key, JSON.stringify(value));
+    }
+  }
   if (data.hasOwnProperty("categorie"))
-    formData.append("categorie", data.categorie);
+    formData.append("custom_categorie", data.categorie);
   if (data.hasOwnProperty("tbl_options"))
     formData.append("tbl_options", data.tbl_options);
   if (data.hasOwnProperty("files")) {
@@ -114,9 +125,10 @@ export function Call_controller(data, gestion) {
   }
   $.ajax({
     url: BASE_URL + data.url,
-    method: "post",
+    method: "POST",
     processData: false,
     contentType: false,
+    dataType: "json",
     data: formData,
     success: function (response) {
       gestion(response, data.params ? data.params : "");
@@ -237,6 +249,7 @@ export function select2AjaxParams(data) {
         searchTerm: params.term, // search term
         table: data.table != "" ? data.table : "",
         data_type: data.data_type != "" ? data.data_type : "",
+        parentID: data.parentID != "" ? data.parentID : "",
       };
     },
     processResults: function (response) {

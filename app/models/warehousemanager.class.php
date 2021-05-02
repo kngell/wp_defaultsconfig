@@ -1,18 +1,18 @@
 <?php
 
-class ProductManager extends Model
+class WarehouseManager extends Model
 {
-    protected $_colID = 'item_id';
-    protected $_table = 'product';
-    protected $_colIndex = '';
-    protected $_colContent = '';
+    protected $_colID = 'whID';
+    protected $_table = 'warehouse';
+    protected $_colIndex = 'company';
+    protected $_colTitle = 'wh_name';
     protected $_modelName;
-    public $item_id;
-    public $item_brand;
-    public $item_name;
-    public $item_price;
-    public $item_image;
-    public $item_register;
+    public $whID;
+    public $wh_name;
+    public $wh_descr;
+    public $created_at;
+    public $updated_at;
+    public $deleted;
 
     //=======================================================================
     //construct
@@ -25,5 +25,9 @@ class ProductManager extends Model
 
     //=======================================================================
     //Getters & setters
+    //=======================================================================
+
+    //=======================================================================
+    //Operations
     //=======================================================================
 }

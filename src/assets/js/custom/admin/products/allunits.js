@@ -1,4 +1,5 @@
 import Cruds from "corejs/crud_interface";
+import select2 from "corejs/select2_manager";
 class AllUnits {
   constructor(element) {
     this.element = element;
@@ -14,7 +15,9 @@ class AllUnits {
   };
   _setupEvents = () => {
     var phpPlugin = this;
-    //inti crud
+    //=======================================================================
+    //Init Crud operations
+    //=======================================================================
     let cruds = new Cruds({
       table: "units",
       wrapper: phpPlugin.wrapper,
@@ -22,13 +25,19 @@ class AllUnits {
       modal: phpPlugin.modalbox,
       select_tag: ".select_unit",
     });
-    //display All items
+    //=======================================================================
+    //Display all items & init select tag
+    //=======================================================================
     cruds._displayAll({ datatable: true });
     //Select2 ajax
-    let select = cruds._select2({
+    let select = new select2()._init({
+      element: phpPlugin.modalform.find(".unit"),
       tbl_options: "units",
       placeholder: "Please select a unit",
     });
+    //=======================================================================
+    //Add or update Edit
+    //=======================================================================
     //set create/add function
     cruds._set_addBtn();
     //Add or update

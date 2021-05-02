@@ -92,12 +92,12 @@ class AuthController extends Controller
             $this->model_instance['users']->cpassword = $this->request->getAll('cpassword');
             $this->model_instance['users']->terms = !isset($_POST['terms']) ? '' : $this->request->getAll('terms');
             $this->model_instance['users']->validator($this->request->getAll(), Form_rules::users());
-            $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance['users']);
+            $file = H_upload::upload_files($_FILES, $this->model_instance['users']);
             if ($file['success']) {
                 if ($this->model_instance['users']->validationPasses()) {
                     if ($lastID = $this->model_instance['users']->register()) {
-                        $msgsuccess = FH::showMessage('success text-center', 'You successfully registered!<br> Please check your email to confirm your account');
-                        $this->VerifyEmail($this->model_instance['users'], $lastID, $msgsuccess);
+                        $msgsuccess = FH::showMessage('success text-center', ' <p>Welcome!</p> <p>Please check your email to confirm your account</p>');
+                        $this->VerifyEmail($this->model_instance['users'], $lastID->get_lastID(), $msgsuccess);
                     } else {
                         $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning', 'erreur server!contacter l\'admin')]);
                     }

@@ -1,5 +1,6 @@
 import Cruds from "corejs/crud_interface";
 import { readurl } from "corejs/profile_img";
+import select2 from "corejs/select2_manager";
 class AllUsers {
   constructor(element) {
     this.element = element;
@@ -25,10 +26,11 @@ class AllUsers {
       wrapper: phpPlugin.wrapper,
       form: phpPlugin.modalform,
       modal: phpPlugin.modalbox,
-      select_tag: ".select_user_role",
+      select_tag: ".group",
     });
     //Select2 ajax
-    cruds._select2({
+    new select2()._init({
+      element: phpPlugin.modalform.find(".group"),
       tbl_options: "groups",
       placeholder: "Please select a user",
     });
@@ -40,11 +42,12 @@ class AllUsers {
       datatable: false,
       modal: phpPlugin.modalbox,
       swal: true,
+      select: ["group"],
     });
     //edit
     cruds._edit({
       frm_name: "add-user-frm",
-      tbl_option: "groups",
+      tbl_options: "groups",
       std_fields: [
         "userID",
         "date_enreg",

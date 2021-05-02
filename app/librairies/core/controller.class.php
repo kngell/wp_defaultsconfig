@@ -34,11 +34,16 @@ abstract class Controller extends Application
         if ($files) {
             return !isset($this->view_instance) ? new View($viewName, $data) : $this->view_instance;
         }
-        return isset($this->view_instance) ? isset($this->view_instance) : null;
+        // if (in_array($this->_controller, ['AdminController', 'HomeController'])) {
+        //     $this->_controller = 'RestrictedController';
+        //     $this->_method = 'index';
+        //     return new View('restricted' . DS . 'index', $data);
+        // }
+        return isset($this->view_instance) ? $this->view_instance : null;
     }
 
     //Load model
-    public function get_model($modelName, $model = '')
+    public function get_model($modelName, $model = false)
     {
         if (!empty($modelName) && class_exists($modelName)) {
             if (file_exists($modelName == 'AuthManager' ? MODEL . 'auth' . DS : MODEL . strtolower($modelName) . '.class.php')) {
@@ -48,15 +53,23 @@ abstract class Controller extends Application
                 } elseif (!isset($this->model_instance)) {
                     $this->model_instance = new $modelName();
                 } else {
-                    if ($this->model_instance->_model_Name == $modelName) {
-                        $this->model_instance = $this->model_instance;
+                    if (!is_array($this->model_instance)) {
+                        if ($this->model_instance->get_modeName() == $modelName) {
+                            return $this->model_instance;
+                        } else {
+                            $this->model_instance = new $modelName();
+                        }
                     } else {
-                        $this->model_instance = new $modelName();
+                        if (!empty($model)) {
+                            if ($this->model_instance[$model]->get_modeName() == $modelName) {
+                                return $this->model_instance[$model];
+                            } else {
+                                $this->model_instance[$model] = new $modelName();
+                            }
+                        } else {
+                            return new $modelName();
+                        }
                     }
-
-                    // if (!isset($this->model_instance[strtolower(rtrim($modelName, 'Manager'))])) {
-                    //     $this->model_instance[strtolower(rtrim($modelName, 'Manager'))] = new $modelName();
-                    // }
                 }
                 return $this->model_instance;
             } else {
@@ -66,6 +79,18 @@ abstract class Controller extends Application
             echo 'The model is not define!';
         }
         return null;
+    }
+
+    // Get options model
+    public function get_options_model($t_options = '')
+    {
+        if (isset($t_options) && is_array($t_options)) {
+            foreach ($t_options as $tab) {
+                !empty($tab) ? $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $tab))) . 'Manager', $tab) : '';
+            }
+        } else {
+            !empty($t_options) ? $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $t_options))) . 'Manager', $t_options) : '';
+        }
     }
 
     //=======================================================================

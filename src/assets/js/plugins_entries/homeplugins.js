@@ -1,6 +1,6 @@
 import { get_visitors_data, send_visitors_data } from "corejs/visitors";
 import log_reg from "corejs/logregloader";
-
+// import { isIE } from "corejs/config";
 document.addEventListener("DOMContentLoaded", function () {
   function PhpPlugin(element) {
     this.element = element;
@@ -20,16 +20,26 @@ document.addEventListener("DOMContentLoaded", function () {
     //=======================================================================
     //Import login system
     //=======================================================================
+
     phpPlugin.header.on(
       "click show.bs.dropdown",
       ".connect .connexion",
-      function () {
+      function (e) {
+        // e.preventDefault();
         var loader = new log_reg();
         if (!loader.check()) {
-          loader.load();
+          loader
+            .load()
+            .then((mod) => {
+              console.log(mod);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
       }
     );
+
     //=======================================================================
     //Get visitors IP Adresss
     //=======================================================================

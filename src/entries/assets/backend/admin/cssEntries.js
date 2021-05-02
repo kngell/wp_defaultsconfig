@@ -21,7 +21,7 @@ module.exports = {
     },
     //Admin caegories Management
     "css/custom/admin/products/categories": {
-      import: ["css/custom/admin/products/categories.scss"],
+      import: ["css/custom/admin/products/categories.sass"],
       dependOn: "css/librairies/adminlib",
     },
     //Admin caegories Management
@@ -57,6 +57,11 @@ module.exports = {
     //Admin users permissions
     "css/custom/admin/users/permissions": {
       import: ["css/custom/admin/users/permissions.sass"],
+      dependOn: "css/librairies/adminlib",
+    },
+    //Company
+    "css/custom/admin/company/allcompanies": {
+      import: ["css/custom/admin/company/allcompanies.sass"],
       dependOn: "css/librairies/adminlib",
     },
   },

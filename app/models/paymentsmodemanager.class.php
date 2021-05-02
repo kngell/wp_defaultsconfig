@@ -38,6 +38,6 @@ class PaymentsModeManager extends Model
     public function getHtmlData($item = [])
     {
         $template = file_get_contents(FILES . 'template' . DS . 'e_commerce' . DS . 'account' . DS . 'paiementsTemplate.php');
-        return $template;
+        return [$template];
     }
 }

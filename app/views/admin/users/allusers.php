@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer">
+                <div class="card-footer d-flex flex-row justify-content-end">
                     <?php if ($total_item > $item_per_page):?>
                     <nav aria-label="Contacts Page Navigation">
                         <ul class="pagination justify-content-center m-0">
@@ -137,8 +137,7 @@
                         <input type="text" name="phone" id="phone" class="form-control " placeholder="Téléphone">
                         <div class="invalid-feedback"></div>
                     </div>
-                    <select class="form-select select_user_role" multiple aria-label="multiple" name="group[]"
-                        id="group">
+                    <select class="form-select group" multiple aria-label="multiple" name="group[]" id="group">
 
                     </select>
                     <div class="mb-3 text-center">

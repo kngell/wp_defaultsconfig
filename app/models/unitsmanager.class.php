@@ -33,4 +33,10 @@ class UnitsManager extends Model
             return 'L\'unité de mesure a été mise à jour';
         }
     }
+
+    //Get Select2 fields Names
+    public function get_fieldName($table = '')
+    {
+        return 'unit';
+    }
 }

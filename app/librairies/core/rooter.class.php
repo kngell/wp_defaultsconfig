@@ -16,7 +16,7 @@ class Rooter
     {
         $this->parseURL();
 
-        if (file_exists($this->_controller_Name == 'AuthController' ? CONTROLLER . 'auth' . DS : CONTROLLER . strtolower($this->_controller_Name) . '.class.php')) {
+        if (file_exists($this->_controller_Name == 'AuthController' ? CONTROLLER . 'auth' . DS . strtolower($this->_controller_Name) . '.class.php' : CONTROLLER . strtolower($this->_controller_Name) . '.class.php')) {
             $this->controller = $this->_controller_Name;
         } else {
             $this->_controller_Name = $this->controller;

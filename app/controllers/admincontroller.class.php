@@ -15,6 +15,13 @@ class AdminController extends Controller
         $this->view_instance->render('admin' . DS . 'index');
     }
 
+    //not found page
+    public function not_found_page()
+    {
+        $this->view_instance->set_pageTitle('Not Found Page');
+        $this->view_instance->render('error' . DS . 'not_found_page');
+    }
+
     //page index
     public function analytics($data = [])
     {
@@ -43,12 +50,12 @@ class AdminController extends Controller
         $this->view_instance->render('admin' . DS . 'products' . DS . 'allunits');
     }
 
-    public function login()
-    {
-        $this->view_instance->set_Layout('adminlogin');
-        $this->view_instance->set_pageTitle('Login');
-        $this->view_instance->render('admin' . DS . 'login');
-    }
+    // public function login()
+    // {
+    //     $this->view_instance->set_Layout('adminlogin');
+    //     $this->view_instance->set_pageTitle('Login');
+    //     $this->view_instance->render('admin' . DS . 'login');
+    // }
 
     public function allusers($method)
     {
@@ -100,5 +107,21 @@ class AdminController extends Controller
         // dd(($this->get_model('UsersManager'))->get_Tables_Column('products'));
         $this->view_instance->set_pageTitle('New Product');
         $this->view_instance->render('admin' . DS . 'products' . DS . 'new_product');
+    }
+
+    //Manage Companies
+    public function allcompanies()
+    {
+        // dd(($this->get_model('UsersManager'))->get_Tables_Columns('address_book'));
+        $this->view_instance->set_pageTitle('All Companies');
+        $this->view_instance->render('admin' . DS . 'company' . DS . 'allcompanies');
+    }
+
+    //Companny details
+    public function company_details($data)
+    {
+        $this->view_instance->company = ($this->get_model('CompanyManager'))->getDetails(array_pop($data));
+        $this->view_instance->set_pageTitle('Company Details');
+        $this->view_instance->render('admin' . DS . 'company' . DS . 'company_details');
     }
 }

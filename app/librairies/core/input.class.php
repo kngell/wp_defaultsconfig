@@ -14,7 +14,7 @@ class Input
                 return filter_var($textValue, FILTER_VALIDATE_BOOLEAN);
                 break;
             case is_numeric($textValue):
-                   return filter_var($textValue, FILTER_SANITIZE_NUMBER_INT);
+                   return filter_var($textValue, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
                 break;
             case is_string($textValue):
                     return filter_var($textValue, FILTER_SANITIZE_STRING);
@@ -77,7 +77,13 @@ class Input
 
     public function getAll($input = false)
     {
-        //dd($_POST);
+        if (isset($_REQUEST[$input]) && is_array($_REQUEST[$input])) {
+            $r = [];
+            foreach ($_REQUEST[$input] as $val) {
+                $r[] = self::sanitize($val);
+            }
+            return $r;
+        }
         if (!$input) {
             $data = [];
             foreach ($_REQUEST as $field => $value) {

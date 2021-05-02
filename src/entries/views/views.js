@@ -1,4 +1,8 @@
 //=======================================================================
+//Restricted
+//=======================================================================
+import "views/restricted/index.php";
+//=======================================================================
 //Admin Pages and Layouts
 //=======================================================================
 
@@ -33,6 +37,10 @@ import "views/admin/home/contact-us.php";
 import "views/admin/users/allusers.php";
 import "views/admin/users/profile.php";
 import "views/admin/users/permissions.php";
+// Company
+import "views/admin/company/allcompanies.php";
+import "views/admin/company/company_details.php";
+import "views/admin/company/partials/form.php";
 //=======================================================================
 //Home Ecommerce Pages and Layouts
 //=======================================================================

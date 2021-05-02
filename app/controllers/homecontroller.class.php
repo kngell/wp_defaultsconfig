@@ -43,6 +43,7 @@ class HomeController extends Controller
     {
         // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
         $this->view_instance->set_pageTitle('Account');
+        $this->view_instance->set_viewData($this->get_model('UsersManager'));
         $this->view_instance->render('home' . DS . 'account' . DS . 'account');
     }
 

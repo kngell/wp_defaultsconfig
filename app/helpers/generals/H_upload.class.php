@@ -49,17 +49,21 @@ class H_upload
         if ($files) {
             foreach ($files as $file) {
                 $result = self::validate_and_upload_file($file, $model);
-                if ($result['url'] != '') {
+                if ($result['status'] == true) {
                     $paths[] = $result['url'];
                     $result['url'] = ImageManager::asset_img($result['url']);
+                } else {
+                    return ['success' => false, 'msg' => FH::showMessage('danger', $result['msg']), 'upload_result' => $result];
                 }
                 $status[] = $result;
             }
             if ($paths) {
-                $real_paths = self::cleanFiles($paths, $model);
+                self::cleanFiles($paths, $model);
                 return ['success' => true, 'msg' => self::updateModel(serialize($paths), $model), 'upload_result' => $status];
             }
-            return ['success' => false, 'msg' => FH::showMessage('danger', 'No files'), 'upload_result' => $status];
+            return ['success' => false, 'msg' => self::updateModel('', $model), 'upload_result' => $status];
+        } else {
+            self::cleanFiles([], $model);
         }
         return ['success' => true, 'msg' => self::updateModel('', $model), 'upload_result' => $status];
     }
@@ -68,12 +72,13 @@ class H_upload
     public static function cleanFiles($paths, $m)
     {
         $actual_files = self::modelImageField($m);
-        if (isset($actual_files)) {
+        if ($actual_files) {
             $real_paths = array_filter($actual_files, function ($path) use ($paths, $m) {
                 $u = explode(DS, $path);
                 $file = array_pop($u);
-                if (!in_array(array_pop($u) . DS . $file, $paths)) {
-                    $del = self::deleteImage(array_pop($u) . DS . $file, $m);
+                $targetpth = array_pop($u) . DS . $file;
+                if (!in_array($targetpth, $paths)) {
+                    $del = self::deleteImage($targetpth, $m);
                 } else {
                     return $path;
                 }
@@ -86,12 +91,15 @@ class H_upload
     //Validate file
     public static function validate_and_upload_file($file, $model)
     {
-        $allowType = ['JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX'];
-        $status = [];
-        $filename = basename($file['name']);
-        $targetDir = self::get_path($model)[1];
-        $targetFilePath = $targetDir . DS . $filename;
-        $fileType = strtoupper(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+        $path_dir = self::get_path($model)[1];
+        $arr_file = [
+            'allowType' => ['JPG', 'PNG', 'JPEG', 'GIF', 'PDF', 'DOC', 'DOCX'],
+            'filename' => basename($file['name']),
+            'targetDir' => $path_dir,
+            'targetFilePath' => $path_dir . DS . basename($file['name']),
+            'fileType' => strtoupper(pathinfo($path_dir . DS . basename($file['name']), PATHINFO_EXTENSION)),
+            'size' => 10 * 1024 * 1024
+        ];
         $status = [
             'name' => $file['name'],
             'type' => $file['type'],
@@ -99,40 +107,56 @@ class H_upload
             'msg' => 'Invalid Type',
             'status' => false
         ];
-        //Validate type
-        if (!in_array($fileType, $allowType)) {
+        // Validate file Name
+        if (empty($arr_file['filename'])) {
+            $status['status'] = true;
+            $media = self::get_mediaKey($model) ;
+            $status['url'] = $model->$media != '' ? $model->$media : '';
+            $arr_file = [];
+            $path_dir = '';
             return $status;
         }
-        // Validate Size
+        //Validate type
+        if (!in_array($arr_file['fileType'], $arr_file['allowType'])) {
+            $arr_file = [];
+            $path_dir = '';
+            return $status;
+        }
+        // Validate length width
         $img_infos = (new ImageManager())->get_imagesInfos($file['tmp_name']);
         if ($img_infos[0] > '1840' && $img_infos[1] > '860') {
-            $sttus['msg'] = 'Invalid Size';
+            $status['msg'] = 'Invalid file size! Please change your file.';
+            $arr_file = [];
+            $path_dir = '';
             return $status;
         }
-        //Validate empty size
+        //Validate size
         if ($file['size'] == 0) {
             $mediaKey = self::get_mediaKey($model);
             if ($mediaKey == 'profileImage' && $model->$mediaKey == '') {
                 $status['url'] = ImageManager::asset_img('users' . US . 'avatar.png');
+                $arr_file = [];
+                $path_dir = '';
                 return $status;
             }
         }
+        if ($file['size'] > $arr_file['size']) {
+            $status['msg'] = 'Invalid file size! Please change your file.';
+            $arr_file = [];
+            $path_dir = '';
+            return $status;
+        }
         //Validate existing file
         $actual_Path = self::modelImageField($model);
-        // if (is_array($actual_Path)) {
-        //     foreach ($actual_Path as $url) {
-        //         $u = explode(DS, $url);
-        //         $file = array_pop($u);
-        //         if ($url != null && basename($url) != 'avatar.pnp') {
-        //             $del = file_exists(rtrim(ROOT, PROOT) . $url) ? self::deleteImage(array_pop($u) . DS . $file, $model) : '';
-        //         }
-        //     }
-        // }
+        $actual_Path = isset($actual_Path) && is_array($actual_Path) ? $actual_Path : [$actual_Path];
 
-        if (isset($actual_Path) && file_exists(IMAGE_ROOT . $targetFilePath) && in_array(IMG . $targetFilePath, $actual_Path)) {
-            $status['msg'] = 'Succes';
-            $status['url'] = $targetFilePath;
+        if (isset($actual_Path) && file_exists(IMAGE_ROOT . $arr_file['targetFilePath']) && in_array(IMG . $arr_file['targetFilePath'], $actual_Path)) {
+            $status['msg'] = 'Success';
+            $status['url'] = $arr_file['targetFilePath'];
             $status['status'] = true;
+            $arr_file = [];
+            $path_dir = '';
+            $actual_Path = '';
             return $status;
             // self::deleteImage($targetFilePath, $model);
         }
@@ -144,6 +168,10 @@ class H_upload
             $status['url'] = $path;
             $status['status'] = true;
         }
+        $arr_file = [];
+        $path_dir = '';
+        $actual_Path = '';
+        $path = '';
         return $status;
     }
 
@@ -277,22 +305,22 @@ class H_upload
     {
         switch ($model->get_tableName()) {
             case 'realisations':
-                return $model->brand;
+                return !empty($model->brand) ? $model->brand : false;
                 break;
             case 'users':
-                return $model->profileImage;
+                return !empty($model->profileImage) ? [$model->profileImage] : false;
                 break;
             case 'candidatures':
-                return $model->cv;
+                return !empty($model->cv) ? $model->cv : false;
                 break;
             case 'posts':
-                return $model->postImg;
+                return !empty($model->postImg) ? $model->postImg : false;
                 break;
             case 'post_file_url':
-                return $model->fileUrl;
+                return !empty($model->fileUrl) ? $model->fileUrl : $model->fileUrl;
                 break;
             case 'products':
-                return $model->p_media;
+                return !empty($model->p_media) ? $model->p_media : false;
                 break;
 
             default:

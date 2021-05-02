@@ -1,11 +1,11 @@
 import "plugins/flexadmin/js/ecommerce";
 import Cruds from "corejs/crud_interface";
 import media from "corejs/upload_interface";
-import Categories from "corejs/categories_manager";
-// const { addStatusToPromise } = require("status-for-promise");
+import select2 from "corejs/select2_manager";
 class AllProducts {
   constructor(element) {
     this.element = element;
+    this.selectTag = ["p_company", "p_warehouse", "p_shipping_class"];
   }
   _init = () => {
     this._setupVariables();
@@ -26,7 +26,6 @@ class AllProducts {
       wrapper: phpPlugin.wrapper,
       form: phpPlugin.modalform,
       modal: phpPlugin.modalbox,
-      select_tag: ".select2-shipping",
     });
 
     //=======================================================================
@@ -36,9 +35,33 @@ class AllProducts {
     //=======================================================================
     //Ajax Select2
     //=======================================================================
-    cruds._select2({
-      tbl_options: "products",
+    new select2()._init({
+      element: phpPlugin.modalform.find(".p_shipping_class"),
+      tbl_options: "shipping_class",
       placeholder: "Please select a shipping class",
+    });
+    let company = new select2()._init({
+      element: phpPlugin.modalform.find(".p_company"),
+      tbl_options: "company",
+      placeholder: "Please select a Company",
+    });
+    let warehouse = new select2()._init({
+      element: phpPlugin.modalform.find(".p_warehouse"),
+      placeholder: "Please select a wareHouse",
+    });
+    company.select.on("change", function (e) {
+      warehouse._destroy();
+      // warehouse.select.val(null).trigger("change");
+      if ($(this).select2("data") != 0) {
+        warehouse.params.parentID = Object.values(
+          $(this).select2("data")
+        )[0].id;
+      }
+      warehouse._init({
+        element: warehouse.select,
+        tbl_options: "warehouse",
+        placeholder: "Please select a wareHouse",
+      });
     });
     //=======================================================================
     //Set / Create Add Btn
@@ -67,7 +90,8 @@ class AllProducts {
       modal: true,
       categorie: phpPlugin.modalbox.find(".categorie"),
       media: phpPlugin.modalbox.find("#p_media"),
-      dropzone: dropzone, //myDropzone,
+      dropzone: dropzone,
+      select: phpPlugin.selectTag,
     });
 
     //=======================================================================
@@ -97,6 +121,8 @@ class AllProducts {
         "p_width",
         "p_height",
         "p_shipping_class",
+        "p_warehouse",
+        "p_company",
         "created_at",
         "updated_at",
         "deleted",
@@ -104,13 +130,14 @@ class AllProducts {
       inputElement: phpPlugin.modalbox.find("#myfile"),
       dropzone: dropzone, //myDropzone,
       categorieElement: phpPlugin.modalform.find("#check-box-wrapper"),
-      tbl_options: "categories",
+      tbl_options: ["categories", "company", "warehouse", "shipping_class"],
     });
     //=======================================================================
     //Clean Forms
     //=======================================================================
     cruds._clean_form({
       dropzone: dropzone, //myDropzone,
+      select: phpPlugin.selectTag,
     });
     //=======================================================================
     //Delete data

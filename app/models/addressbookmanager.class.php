@@ -4,10 +4,20 @@ class AddressBookManager extends Model
 {
     protected $_colID = 'abID';
     protected $_table = 'address_book';
-    protected $_colIndex = 'userID';
+    protected $_colIndex = 'table';
     protected $_colContent = '';
     protected $_modelName;
-    public $cmdID;
+    public $abID;
+    public $tbl;
+    public $relID;
+    public $address;
+    public $zip_code;
+    public $ville;
+    public $region;
+    public $pays;
+    public $principale;
+    public $created_at;
+    public $updated_at;
 
     //=======================================================================
     //construct
@@ -28,6 +38,6 @@ class AddressBookManager extends Model
     public function getHtmlData($item = [])
     {
         $template = file_get_contents(FILES . 'template' . DS . 'e_commerce' . DS . 'account' . DS . 'addessTemplate.php');
-        return $template;
+        return [$template];
     }
 }

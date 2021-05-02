@@ -1,4 +1,8 @@
-import { displayAllDetails, select2AjaxParams } from "corejs/form_crud";
+import {
+  displayAllDetails,
+  select2AjaxParams,
+  Call_controller,
+} from "corejs/form_crud";
 import { readurl } from "corejs/profile_img";
 class Account {
   constructor(element) {
@@ -12,6 +16,7 @@ class Account {
 
   setupVariables = () => {
     this.wrapper = this.element.find(".row.transaction-menu");
+    this.profile = this.element.find("#mini-profile");
   };
 
   setupEvents = () => {
@@ -35,10 +40,20 @@ class Account {
       displayAllDetails(data, manageR);
       function manageR(response, table) {
         if (response.result == "success") {
-          phpPlugin.wrapper.html(response.msg);
+          phpPlugin.wrapper.html(response.msg[0]);
+          var newOption = new Option(
+            Object.values(response.msg[1])[0],
+            Object.keys(response.msg[1])[0],
+            false,
+            false
+          );
+          phpPlugin.wrapper
+            .find(".select_country")
+            .append(newOption)
+            .trigger("change");
           switch (table) {
             case "users":
-              manageUsers();
+              manageUsers(table);
               break;
             default:
               break;
@@ -60,16 +75,34 @@ class Account {
             phpPlugin.wrapper.find(".upload-box .camera-icon")
           );
         });
+      //Update user infos
+      phpPlugin.wrapper.on("submit", "#user-profile-frm", function (e) {
+        e.preventDefault();
+        console.log($(this));
+        let data = {
+          url: "forms/update",
+          table: table,
+          params: $(this).find("#alertErr"),
+          frm_name: "user-profile-frm",
+          frm: $(this),
+          action: "custom_message",
+        };
+        Call_controller(data, manageR);
+        function manageR(response, alert) {
+          if (response.result == "success") {
+            console.log(location.href);
+            $("#mini-profile")
+              .load(location.href + " #mini-profile")
+              .fadeIn("slow");
+            alert.html(response.msg);
+          }
+        }
+      });
 
-      let data = {
-        url: "forms/showDetails",
-        data_type: "json",
-        table: table,
-      };
       //Activate select2 box for contries
       phpPlugin.wrapper.find(".select_country").select2({
         placeholder: "Please select a country",
-        minimumInputLength: 1,
+        // minimumInputLength: 1,
         allowClear: true,
         width: "100%",
         ajax: select2AjaxParams({

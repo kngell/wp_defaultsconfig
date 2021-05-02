@@ -21,7 +21,7 @@
             <?php array_map(function ($product) { ?>
             <div
                 class="grid-item border <?= $product->categorie ?? 'Brand' ?>">
-                <div class="item py-2" style="width:200px">
+                <div class="item py-0" style="width:200px">
                     <div class="product font-rale ">
                         <a
                             href="<?= PROOT ?>home/product/<?= $product->pdtID ?>"><img
@@ -39,7 +39,7 @@
                                 <span><i class="far fa-star"></i></span>
                             </div>
                             <div class="price py-2">
-                                <span>EUR<?= $product->p_regular_price ?? 0 ?></span>
+                                <span><?= $product->get_currency($product->p_regular_price) ?? 0 ?></span>
                             </div>
                             <form class="add_to_cart_frm">
                                 <input type="hidden" name="item_id"

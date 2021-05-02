@@ -16,7 +16,7 @@ class View
     //=======================================================================
     //Constructor & Destructor
     //=======================================================================
-    public function __construct($view_file, $view_data = [])
+    public function __construct($view_file = '', $view_data = [])
     {
         $this->view_file = $view_file;
         $this->view_data = $view_data;

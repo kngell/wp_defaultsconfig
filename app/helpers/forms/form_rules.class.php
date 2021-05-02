@@ -172,8 +172,8 @@ class Form_rules
             'categorie' => [
                 'display' => 'Categorie',
                 'required' => true,
-                'unique' => 'categorie',
-                'max' => 155
+                'unique' => 'categories',
+                'max' => 45
             ],
         ];
     }
@@ -192,6 +192,33 @@ class Form_rules
                 'required' => true,
                 'min' => 2,
                 'max' => 255
+            ],
+            'p_regular_price' => [
+                'display' => 'Price',
+                'is_numeric' => true
+            ]
+        ];
+    }
+
+    // =======================================================================
+    // Companies
+    // =======================================================================
+    public static function company()
+    {
+        return [
+            'denomination' => [
+                'display' => 'Company Name',
+                'required' => true,
+                'min' => 2,
+                'max' => 150
+            ],
+            'couriel' => [
+                'display' => 'E-Mail',
+                'required' => true,
+                'min' => 2,
+                'max' => 155,
+                'valid_email' => true,
+                'unique' => 'company',
             ],
         ];
     }

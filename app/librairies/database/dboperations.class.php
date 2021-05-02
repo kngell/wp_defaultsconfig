@@ -5,7 +5,6 @@ class DBOperations extends Database
     private $_count = 0;
     private $_results = null;
     private $_lastinsertID = null;
-    private $_lastID = null;
     private $_error = false;
     private $_exec_data;
     private static $_instance = null;
@@ -115,7 +114,7 @@ class DBOperations extends Database
                     }
                     switch (true) {
                         case is_array($data['rel'][$index - 1]):
-                            $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['rel'][$index - 1][count($all_tables)-count($data['rel'])] . ' = ' . $all_tables[$index - 1] . '.' . $data['rel'][$index - 1][count($all_tables)-count($data['rel']) - 1] . ' ';
+                            $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['rel'][$index - 1][count($all_tables) - count($data['rel'])] . ' = ' . $all_tables[$index - 1] . '.' . $data['rel'][$index - 1][count($all_tables) - count($data['rel']) - 1] . ' ';
                             break;
 
                         default:
@@ -459,6 +458,7 @@ class DBOperations extends Database
         //execQuery
         if ($q = $this->execQuery($sql, $data, $cond)) {
             $this->_count = $q->rowCount();
+            $this->_lastinsertID = null;
         } else {
             $this->_error = true;
         }
@@ -490,6 +490,7 @@ class DBOperations extends Database
 
         if ($q = $this->execQuery($sql, $data['where'])) {
             $this->_count = $q->rowCount();
+            $this->_lastinsertID = null;
         } else {
             $this->_error = true;
         }

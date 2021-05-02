@@ -288,7 +288,6 @@ class AuthManager extends Model
         if ($this->isNew() == true) {
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
             $this->salt = hash_hmac('sha256', $this->email, $_SESSION[TOKEN_NAME]);
-            $this->groupe = 1;
         }
         //Unset Auth providers ???
         unset($this->oauth_provider, $this->oauth_uid,$this->link);

@@ -26,7 +26,7 @@
                             <span><i class="far fa-star"></i></span>
                         </div>
                         <div class="price py-2">
-                            <span>EUR<?=$product->p_regular_price ?? 0?></span>
+                            <span><?=$product->get_currency($product->p_regular_price) ?? 0?></span>
                         </div>
                         <form class="add_to_cart_frm">
                             <input type="hidden" name="item_id"
