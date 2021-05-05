@@ -5,9 +5,10 @@
         </div>
         <hr class="divider mx-auto mt-0">
         <!-- Owl carousel -->
-        <?php shuffle($this->products)?>
+        <?php isset($this->products) && $this->products ? shuffle($this->products) : ''?>
         <div class="owl-carousel owl-theme">
-            <?php foreach ($this->products as $product) :?>
+            <?php if (isset($this->products)) {
+    foreach ($this->products as $product) :?>
             <div class="item py-2 bg-light">
                 <div class="product font-rale ">
                     <a
@@ -32,20 +33,20 @@
                             <input type="hidden" name="item_id"
                                 value="<?=$product->pdtID ?? 1 ?>">
                             <input type="hidden" name="user_id" value="1">
-                            <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $product->pdtID ?? 1, $_SESSION[TOKEN_NAME]));?>
+                            <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $product->pdtID ?? 1, $_SESSION[TOKEN_NAME])); ?>
                             <?php
                             if (in_array($product->pdtID, $this->user_cart)) {
                                 echo ' <button type="submit" class="btn btn-success font-size-12">In the cart</button>';
                             } else {
                                 echo '<button type="submit" class="btn btn-warning font-size-12">Add to
                                 Cart</button>';
-                            }
-                            ?>
+                            } ?>
                         </form>
                     </div>
                 </div>
             </div>
-            <?php endforeach;?>
+            <?php endforeach;
+}?>
         </div>
         <!-- End Owl Carousel -->
     </div>

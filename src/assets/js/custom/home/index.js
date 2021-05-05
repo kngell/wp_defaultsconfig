@@ -13,23 +13,22 @@ const responsive = {
 import imageLoaded from "corejs/waitfor";
 import "img/banner1-cr-500x150.jpg";
 import "img/banner2-cr-500x150.jpg";
-document.addEventListener("DOMContentLoaded", function () {
-  function PhpPlugin(element) {
+class Home {
+  constructor(element) {
     this.element = element;
-    this.init();
   }
-  PhpPlugin.prototype.init = function () {
-    this.setupVariables();
-    this.setupEvents();
+  _init = () => {
+    this._setupVariables();
+    this._setupEvents();
   };
-  PhpPlugin.prototype.setupVariables = function () {
+  _setupVariables = () => {
     this.banner = this.element.find("#banner-area");
     this.topSale = this.element.find("#top-sale");
     this.specialPrice = this.element.find("#special-price");
     this.newPhone = this.element.find("#new-phones");
     this.blog = this.element.find("#blog");
   };
-  PhpPlugin.prototype.setupEvents = function () {
+  _setupEvents = () => {
     var phpPlugin = this;
     //=======================================================================
     //Owl carousel
@@ -106,10 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((e) => console.log(e));
   };
-
-  $.fn.phpPlugin = function (options) {
-    new PhpPlugin(this);
-    return this;
-  };
-  $("#main-site").phpPlugin();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  new Home($("#main-site"))._init();
 });

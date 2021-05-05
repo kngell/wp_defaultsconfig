@@ -38,5 +38,10 @@ module.exports = {
       import: ["css/custom/home/account/profile.scss"],
       dependOn: "css/librairies/frontlib",
     },
+    //Ecommerce - Promotions Page
+    "css/custom/home/promotions/promotions": {
+      import: ["css/custom/home/promotions/promotions.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
   },
 };

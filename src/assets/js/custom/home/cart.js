@@ -10,19 +10,17 @@ const responsive = {
   },
 };
 import { displayAllDetails, Call_controller } from "corejs/form_crud";
-import { get_visitors_data, send_visitors_data } from "corejs/visitors";
-document.addEventListener("DOMContentLoaded", function () {
-  function PhpPlugin(element) {
+class Cart {
+  constructor(element) {
     this.element = element;
-    this.init();
   }
-  PhpPlugin.prototype.init = function () {
-    this.setupVariables();
-    this.setupEvents();
+  _init = () => {
+    this._setupVariables();
+    this._setupEvents();
   };
-  PhpPlugin.prototype.setupVariables = function () {
+  _setupVariables = () => {
     this.wrapper = this.element.find("#main-site");
-    this.count_items = this.element.find(".cart_nb_elt");
+    this.header = this.element.find("#header");
     this.cart = this.element.find("#cart");
     this.banner = this.element.find("#banner-area");
     this.newPhone = this.element.find("#new-phones");
@@ -31,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
     this.wishlist_items = this.element.find("#wishlist-items");
     this.subTotal = this.element.find("#sub_total");
   };
-  PhpPlugin.prototype.setupEvents = function () {
+  _setupEvents = () => {
     var phpPlugin = this;
 
     //=======================================================================
@@ -41,6 +39,63 @@ document.addEventListener("DOMContentLoaded", function () {
       style: "currency",
       currency: "EUR",
     });
+    //=======================================================================
+    //Display user cart items
+    //=======================================================================
+    display__user_cart();
+    function display__user_cart() {
+      var data = {
+        table: "cart",
+        user: "guest",
+        url: "forms/showDetails",
+        data_type: "template",
+      };
+      displayAllDetails(data, display_cart);
+      function display_cart(response) {
+        console.log(response);
+        if (response.result == "success") {
+          phpPlugin.header.find(".cart_nb_elt").html(function () {
+            return response.msg[0];
+          });
+          if (phpPlugin.cart_items.length) {
+            phpPlugin.header.find(".cart_nb_elt").html(function () {
+              return response.msg[0];
+            });
+            phpPlugin.cart_items.fadeOut(100, function () {
+              console.log(response.msg[1]);
+              return phpPlugin.cart_items
+                .html(response.msg[1])
+                .fadeIn()
+                .delay(500);
+            });
+            phpPlugin.subTotal.fadeOut(100, function () {
+              return phpPlugin.subTotal
+                .html(response.msg[2])
+                .fadeIn()
+                .delay(500); // display Cart items
+            });
+            if (response.msg[3]) {
+              phpPlugin.wishlist_items.html(function () {
+                return response.msg[3]; // display wishlist
+              });
+              phpPlugin.wishlist.show().fadeIn().delay(500);
+            }
+            setTimeout(function () {
+              phpPlugin.subTotal
+                .find("#deal-price")
+                .html(function (i, d_price) {
+                  return currency.format(parseFloat(d_price));
+                });
+              phpPlugin.wrapper
+                .find(".product_price")
+                .html(function (i, p_price) {
+                  return currency.format(parseFloat(p_price));
+                });
+            }, 200);
+          }
+        }
+      }
+    }
 
     //=======================================================================
     //Owl carousel
@@ -407,10 +462,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     );
   };
-
-  $.fn.phpPlugin = function (options) {
-    new PhpPlugin(this);
-    return this;
-  };
-  $("#body").phpPlugin();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  new Cart($("#body"))._init();
 });

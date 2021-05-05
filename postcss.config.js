@@ -5,11 +5,12 @@ const ckeditorConfig = styles.getPostCssConfig({
     themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
   },
 });
-
 const normalConfig = {
   parser: "postcss-scss",
   plugins: [
+    "postcss-custom-properties",
     "postcss-flexbugs-fixes",
+    "postcss-focus-within",
     [
       "postcss-grid-kiss",
       "postcss-preset-env",
@@ -19,7 +20,7 @@ const normalConfig = {
         },
         stage: 3,
         features: {
-          "custom-properties": false,
+          "custom-properties": true,
         },
       },
     ],

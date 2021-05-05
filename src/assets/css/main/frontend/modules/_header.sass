@@ -1,0 +1,28 @@
+@use "corecss/variables" as *
+@use "corecss/mixins" as *
+@include fontface("roboto", "fonts/Roboto/Roboto-Regular", 100, normal, "ttf")
+#header 
+  .strip
+    .left-side
+      +dflex()
+      +search-bar(1.75rem,$blue-standard,.9rem)
+  .navbar 
+    padding: 0 1rem
+    background: $color-second
+    .navbar-brand
+      font-size: 2rem
+      color: $white-green
+      margin-left: 2rem
+      transition: all .2s ease-in-out
+      &:hover
+        filter: brightness(125%)
+        transform: scale(1.1)
+    #navbarNav
+      .navbar-nav
+        .nav-item
+          .nav-link
+            color: $white-green
+            &:hover
+              filter: brightness(125%)
+  
+

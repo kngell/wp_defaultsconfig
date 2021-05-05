@@ -33,16 +33,13 @@ class CartManager extends Model
     //Getters & setters
     //=======================================================================
 
-    //get products
-    public function get_product($id)
+    public function getUserItem($table, $cookie = '')
     {
-        $this->_table = 'product';
-        $this->_colID = 'item_id';
-        $product = $this->getDetails($id);
-        $this->_table = 'cart';
-        $this->_colID = 'cart_id';
-
-        return $product;
+        $model = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager';
+        $tables = [$table => ['user_id', 'item_id'], 'products' => ['*'], 'product_categorie' => ['*'], 'categories' => ['categorie']];
+        $data = ['join' => 'INNER JOIN', 'rel' => [['item_id', 'pdtID'], ['pdtID', 'pdtID'], ['catID', 'catID']], 'where' => ['user_id' => ['value' => $cookie, 'tbl' => $table]]];
+        $uc = (new $model())->getAllItem($data, $tables);
+        return $uc->count() > 0 ? $uc->get_results() : [];
     }
 
     //get html data
@@ -50,14 +47,14 @@ class CartManager extends Model
     {
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
             $u_cookie = Cookies::get(VISITOR_COOKIE_NAME);
-            $user_cart = $this->getAllbyIndex($u_cookie)->get_results();
+            $user_cart = $this->getUserItem('cart', $u_cookie);
             $cart_html = '';
             $sub_total = '';
             $wl_html = '';
             $price = 0;
-            if ($user_cart) {
+            if (count($user_cart) > 0) {
                 foreach ($user_cart as $product) {
-                    $item_html = $this->output_shopping_template($product->item_id);
+                    $item_html = $this->output_shopping_template($product);
                     $cart_html .= $item_html[0];
                     $price += $item_html[1];
                 }
@@ -65,10 +62,10 @@ class CartManager extends Model
             $sub_total = self::$sub_total_template;
             $sub_total = str_replace('{{nb_items}}', count($user_cart), $sub_total);
             $sub_total = str_replace('{{total_price}}', $price, $sub_total);
-            $wishlist = (new WishlistManager())->getAllbyIndex($u_cookie)->get_results();
+            $wishlist = $this->getUserItem('wishlist', $u_cookie);
             if ($wishlist) {
                 foreach ($wishlist as $wish) {
-                    $wl_html .= $this->output_shopping_template($wish->item_id, self::$wishlist_template)[0];
+                    $wl_html .= $this->output_shopping_template($wish, self::$wishlist_template)[0];
                 }
             }
             if ($cart_html == '') {
@@ -80,19 +77,18 @@ class CartManager extends Model
     }
 
     //output template with
-    public function output_shopping_template($id, $template = '')
+    public function output_shopping_template($product, $template = '')
     {
         $temp = $template != '' ? $template : self::$cart_template;
-        $product = $this->get_product($id);
         if ($product) {
-            $temp = str_replace('{{title}}', $product->item_name, $temp);
-            $temp = str_replace('{{brand}}', $product->item_brand, $temp);
-            $temp = str_replace('{{image}}', IMG . $product->item_image, $temp);
-            $temp = str_replace('{{price}}', $product->item_price . PHP_EOL, $temp);
-            $temp = str_replace('{{product_id}}', $product->item_id, $temp);
-            $temp = str_replace('{{token}}', hash_hmac('sha256', 'delete-cart-item-frm' . $product->item_id, $_SESSION[TOKEN_NAME]), $temp);
+            $temp = str_replace('{{title}}', $this->htmlDecode($product->p_title), $temp);
+            $temp = str_replace('{{brand}}', $product->categorie, $temp);
+            $temp = str_replace('{{image}}', IMG . unserialize($product->p_media)[0], $temp);
+            $temp = str_replace('{{price}}', $product->p_regular_price . PHP_EOL, $temp);
+            $temp = str_replace('{{product_id}}', $product->pdtID, $temp);
+            $temp = str_replace('{{token}}', hash_hmac('sha256', 'delete-cart-item-frm' . $product->pdtID, $_SESSION[TOKEN_NAME]), $temp);
 
-            return [$temp, $product->item_price];
+            return [$temp, $product->p_regular_price];
         }
 
         return ['', 0];

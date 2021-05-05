@@ -1,23 +1,17 @@
 {
   "plugins": [
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "absoluteRuntime": false,
-        "corejs": 3,
-        "helpers": true,
-        "regenerator": true,
-        "useESModules": false,
-        "version": "7.14.0"
-      }
-    ],
-    ["@babel/plugin-transform-regenerator"]
+    ["polyfill-corejs3", { "method": "usage-global" }],
+    ["polyfill-regenerator", { "method": "usage-global" }],
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-syntax-dynamic-import"
   ],
   "presets": [
     [
       "@babel/preset-env",
       {
-        "debug": true
+        "useBuiltIns":"usage",
+        "debug": true,
+        "corejs":3
       }
     ]
   ]

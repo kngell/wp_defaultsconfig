@@ -4,30 +4,38 @@
             <h4 class="font-rubik font-size-20">Special Price</h4>
             <div id="filters" class="button-group ms-auto float-end">
                 <?php
-            $brands = array_unique(array_map(function ($prod) {
-                return $prod->categorie;
-            }, $this->products));
-            sort($brands);
+                if ($this->products) {
+                    $brands = array_unique(array_map(function ($prod) {
+                        return $prod->categorie;
+                    }, $this->products));
+                    sort($brands);
+                }
             ?>
                 <button class="btn is-checked" data-filter="*">All Brands</button>
-                <?php array_map(function ($brand) {
-                printf('<button class="btn" data-filter=".%s">%s</button>', $brand, $brand);
-            }, $brands); ?>
+                <?php if (isset($brands)) {
+                array_map(function ($brand) {
+                    printf('<button class="btn" data-filter=".%s">%s</button>', $brand, $brand);
+                }, $brands);
+            } ?>
             </div>
         </div>
         <hr class="divider mx-auto mt-0">
         <div class="grid">
-            <?php shuffle($this->products) ?>
-            <?php array_map(function ($product) { ?>
+            <?php $this->products ? shuffle($this->products) : ''?>
+            <?php if ($this->products) {
+                array_map(function ($product) { ?>
             <div
                 class="grid-item border <?= $product->categorie ?? 'Brand' ?>">
                 <div class="item py-0" style="width:200px">
                     <div class="product font-rale ">
                         <a
-                            href="<?= PROOT ?>home/product/<?= $product->pdtID ?>"><img
-                                src="<?= IMG . unserialize($product->p_media)[0] ?? '../../../assets/img/products/1.png' ?>"
-                                alt="<?= $product->p_title ?? 'Unknown' ?>"
-                                class="img-fluid"></a>
+                            href="<?= PROOT ?>home/product/<?= $product->pdtID ?>">
+                            <div style="overflow:hidden;"><img
+                                    src="<?= IMG . unserialize($product->p_media)[0] ?? '../../../assets/img/products/1.png' ?>"
+                                    alt="<?= $product->p_title ?? 'Unknown' ?>"
+                                    class="img-fluid">
+                            </div>
+                        </a>
                         <div class="text-center">
                             <h6><?= $product->p_title ?? 'Unknown' ?>
                             </h6>
@@ -59,7 +67,8 @@
                     </div>
                 </div>
             </div>
-            <?php }, $this->products); ?>
+            <?php }, $this->products);
+            }?>
         </div>
 
     </div>

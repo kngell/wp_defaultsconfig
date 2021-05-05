@@ -2,7 +2,7 @@
     <div class="container w-75">
         <div class="row r_button">
             <div class="col-sm-6 h-100">
-                <img src="<?= isset($this->p_details->p_media) ? IMG . unserialize($this->p_details->p_media) : ImageManager::asset_img('products/1.png') ?>"
+                <img src="<?= isset($this->p_details->p_media) ? $this->p_details->p_media[0] : ImageManager::asset_img('products/1.png') ?>"
                     alt="Product" class="img-fluid">
                 <div class="row pt-4 font-size-16 font-baloo mb-3">
                     <div class="col">
@@ -50,19 +50,21 @@
                 <table class="my-3">
                     <tr class="font-rale font-size-14">
                         <td>M.R.P : </td>
-                        <td><strike>$162.00</strike></td>
+                        <td><strike><?=$this->p_details->get_currency($this->p_details->p_compare_price)?>
+                            </strike></td>
                     </tr>
                     <tr class="font-rale font-size-14">
                         <td>Deal Price :</td>
-                        <td class="font-size-20 text-danger">$<span><?= $this->p_details->item_price ?? 0 ?></span><small
+                        <td class="font-size-20 text-danger">$<span><?= $this->p_details->get_currency($this->p_details->p_regular_price) ?? 0 ?></span><small
                                 class="text-dark font-size-12">&nbsp;&nbsp;inclusive of
                                 all
                                 taxes</small>
                         </td>
                     </tr>
+                    <?php $save = $this->p_details->p_compare_price - $this->p_details->p_regular_price?>
                     <tr class="font-rale font-size-14">
                         <td>You Save : </td>
-                        <td><span class="font-size-16 text-danger">$10.00</span>
+                        <td><span class="font-size-16 text-danger"><?=$this->p_details->get_currency($save)?></span>
                         </td>
                     </tr>
                 </table>

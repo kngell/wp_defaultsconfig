@@ -1,6 +1,8 @@
+@use "corecss/variables" as *;
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Thambi+2&family=Raleway&family=Rubik&display=swap");
-@import "corecss/variables";
+@import "modules/_header.sass";
 @import "corecss/_globals.scss";
 @import "corecss/_tipography.scss";
 @import "corecss/_color.scss";
-@import "css/custom/home/partials/_header.scss";
+@import "modules/_nav.sass";
+@import "modules/_footer.sass";

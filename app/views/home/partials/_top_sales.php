@@ -3,16 +3,20 @@
         <h4 class="font-rubik font-size-20">Top Sale</h4>
         <hr class="divider mx-auto mt-0">
         <!-- Owl carousel -->
-        <?php shuffle($this->products) ?>
+        <?php isset($this->products) && $this->products ? shuffle($this->products) : ''?>
         <div class="owl-carousel owl-theme">
-            <?php foreach ($this->products as $product) : ?>
+            <?php if (isset($this->products)) {
+    foreach ($this->products as $product) : ?>
             <div class="item py-2">
                 <div class="product font-rale ">
                     <a
-                        href="<?= PROOT ?>home/product/<?= $product->pdtID ?>"><img
-                            src="<?= IMG . unserialize($product->p_media)[0] ?? '../../../assets/img/products/1.png' ?>"
-                            alt="<?= $product->p_title ?? 'Unknown' ?>"
-                            class="img-fluid"></a>
+                        href="<?= PROOT ?>home/product/<?= $product->pdtID ?>">
+                        <div style="overflow:hidden;"><img
+                                src="<?= IMG . unserialize($product->p_media)[0] ?? '../../../assets/img/products/1.png' ?>"
+                                alt="<?= $product->p_title ?? 'Unknown' ?>"
+                                class="img-fluid">
+                        </div>
+                    </a>
                     <div class="text-center">
                         <h6><?= $product->p_title ?? 'Unknown' ?>
                         </h6>
@@ -37,13 +41,13 @@
                                 } else {
                                     echo '<button type="submit" class="btn btn-warning font-size-12">Add to
                                 Cart</button>';
-                                }
-                                ?>
+                                } ?>
                         </form>
                     </div>
                 </div>
             </div>
-            <?php endforeach; ?>
+            <?php endforeach;
+}?>
             <!-- End Owl Carousel -->
         </div>
 </section>

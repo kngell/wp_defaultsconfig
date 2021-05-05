@@ -9,23 +9,21 @@ const responsive = {
     items: 5,
   },
 };
-import { get_visitors_data, send_visitors_data } from "corejs/visitors";
-document.addEventListener("DOMContentLoaded", function () {
-  function PhpPlugin(element) {
+class Product {
+  constructor(element) {
     this.element = element;
-    this.init();
   }
-  PhpPlugin.prototype.init = function () {
-    this.setupVariables();
-    this.setupEvents();
+  _init = () => {
+    this._setupVariables();
+    this._setupEvents();
   };
-  PhpPlugin.prototype.setupVariables = function () {
+  _setupVariables = () => {
     this.banner = this.element.find("#banner-area");
     this.product = this.element.find("#product");
     this.topSale = this.element.find("#top-sale");
     this.qty = this.element.find("#qty");
   };
-  PhpPlugin.prototype.setupEvents = function () {
+  _setupEvents = () => {
     var phpPlugin = this;
 
     //=======================================================================
@@ -62,10 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   };
-
-  $.fn.phpPlugin = function (options) {
-    new PhpPlugin(this);
-    return this;
-  };
-  $("#main-site").phpPlugin();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  new Product($("#main-site"))._init();
 });

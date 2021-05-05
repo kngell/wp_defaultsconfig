@@ -69,3 +69,5 @@ import "views/home/cart.php";
 
 // home pages ecommerce account
 import "views/home/account/account.php";
+// home pages ecommerce promotions
+import "views/home/promotions/promotions.php";

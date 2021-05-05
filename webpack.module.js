@@ -1,19 +1,16 @@
 const path = require("path");
 const devMode = process.env.NODE_ENV !== "production";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
+//=======================================================================
+//Rules
+//=======================================================================
 module.exports = {
   rules: [
     {
       test: /\.js$/,
       exclude: [/node_modules/, path.resolve(__dirname, "plugins", "modules")],
       loader: "babel-loader",
-      options: {
-        plugins: [
-          "@babel/plugin-syntax-dynamic-import",
-          "@babel/plugin-proposal-class-properties",
-        ],
-      },
+      options: {},
     },
     {
       test: /\.(php)$/,

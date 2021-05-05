@@ -26,6 +26,8 @@
         href="<?= $this->asset('css/main/frontend/main', 'css') ?? '' ?>"
         rel="stylesheet" type="text/css">
 
+    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default,Array.prototype.includes,Array.prototype.find,Number.parseFloat%2CNumber.parseInt"></script>
+
     <?= $this->content('head'); ?>
 </head>
 

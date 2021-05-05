@@ -40,6 +40,21 @@ const commonConfig = merge(common_plugins, {
   // plugins: [common_plugins],
 });
 //=======================================================================
+//Server
+//=======================================================================
+let server = {
+  devServer: {
+    hot: true, // this enables hot reload
+    inline: true, // use inline method for hmr
+    host: "localhost",
+    port: 8080,
+    contentBase: path.join(__dirname, "public"), // should point to the laravel public folder
+    watchOptions: {
+      poll: false, // needed for homestead/vagrant setup
+    },
+  },
+};
+//=======================================================================
 //Views config
 //=======================================================================
 var viewsConfig = Object.assign({}, commonConfig, {
@@ -54,7 +69,7 @@ var viewsConfig = Object.assign({}, commonConfig, {
 //=======================================================================
 
 //frontend
-const fontendAssetsConfig = merge(frontendEntries, commonConfig, {
+const fontendAssetsConfig = merge(frontendEntries, commonConfig, server, {
   entry: {
     "css/librairies/frontlib": "./src/assets/css/lib/frontlib.scss",
     "js/librairies/frontlib": "./src/assets/js/lib/frontlib",

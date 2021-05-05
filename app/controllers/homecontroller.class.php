@@ -11,6 +11,7 @@ class HomeController extends Controller
             //Ecommerce products
             $this->view_instance->products = ($this->get_model('ProductsManager', 'products')['products'])->get_Products();
             $this->view_instance->user_cart = ($this->get_model('CartManager', 'cart')['cart'])->CheckDuplicateTems() ?? [];
+            $this->view_instance->search_box = file_get_contents(FILES . 'template' . DS . 'base' . DS . 'search_box.php');
         }
     }
 
@@ -25,10 +26,12 @@ class HomeController extends Controller
     //page product
     public function product($data = [])
     {
-        $id = array_pop($data) ?? 1;
-        $this->view_instance->p_details = $this->model_instance['products']->getDetails($id);
-        $this->view_instance->set_pageTitle('Product');
-        $this->view_instance->render('home' . DS . 'product');
+        $id = array_pop($data);
+        if ($id) {
+            $this->view_instance->p_details = $this->model_instance['products']->getDetails($id);
+            $this->view_instance->set_pageTitle('Product');
+            $this->view_instance->render('home' . DS . 'product');
+        }
     }
 
     //page cart
@@ -53,5 +56,12 @@ class HomeController extends Controller
         // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
         $this->view_instance->set_pageTitle('Profile');
         $this->view_instance->render('home' . DS . 'account' . DS . 'profile');
+    }
+
+    // Promotions page
+    public function promotions()
+    {
+        $this->view_instance->set_pageTitle('Promotions');
+        $this->view_instance->render('home' . DS . 'promotions' . DS . 'promotions');
     }
 }

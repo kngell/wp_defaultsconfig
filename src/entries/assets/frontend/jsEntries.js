@@ -38,5 +38,10 @@ module.exports = {
       import: ["js/custom/home/account/profile"],
       dependOn: "js/librairies/frontlib",
     },
+    //Ecommerce - Promotions page js
+    "js/custom/home/promotions/promotions": {
+      import: ["js/custom/home/promotions/promotions"],
+      dependOn: "js/librairies/frontlib",
+    },
   },
 };

@@ -1,5 +1,6 @@
 import { get_visitors_data, send_visitors_data } from "corejs/visitors";
 import log_reg from "corejs/logregloader";
+import "focus-within-polyfill";
 // import { isIE } from "corejs/config";
 document.addEventListener("DOMContentLoaded", function () {
   function PhpPlugin(element) {
@@ -25,17 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "click show.bs.dropdown",
       ".connect .connexion",
       function (e) {
-        // e.preventDefault();
-        var loader = new log_reg();
-        if (!loader.check()) {
-          loader
-            .load()
-            .then((mod) => {
-              console.log(mod);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+        var loader = new log_reg().check();
+        if (!loader.isLoad) {
+          loader.login();
+          console.log("click");
         }
       }
     );

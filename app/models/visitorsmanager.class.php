@@ -100,7 +100,7 @@ class VisitorsManager extends Model
     {
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
             $v_data = $this->getDetails(Cookies::get(VISITOR_COOKIE_NAME), $this->_colIndex);
-            if ($v_data->count() == 1) {
+            if ($v_data != null && $v_data->count() == 1) {
                 $v_data->ipAddress = $v_data->ipAddress != $params['ip'] ? $params['ip'] : $v_data->ipAddress;
                 $v_data->hits = $v_data->hits + 1;
                 $v_data->useragent = $v_data->useragent != Session::uagent_no_version() ? Session::uagent_no_version() : $v_data->useragent;

@@ -1,16 +1,17 @@
-import { Add, displayAllDetails, Call_controller } from "corejs/form_crud";
+import { Add, displayAllDetails } from "corejs/form_crud";
 import owlCarousel from "owl.carousel";
 import "select2";
-document.addEventListener("DOMContentLoaded", function () {
-  function PhpPlugin(element) {
+
+class Main {
+  constructor(element) {
     this.element = element;
-    this.init();
   }
-  PhpPlugin.prototype.init = function () {
-    this.setupVariables();
-    this.setupEvents();
+  _init = () => {
+    this._setupVariables();
+    this._setupEvents();
   };
-  PhpPlugin.prototype.setupVariables = function () {
+  _setupVariables = () => {
+    this.header = this.element.find("#header");
     this.wrapper = this.element.find("#main-site");
     this.count_items = this.element.find(".cart_nb_elt");
     this.cart_items = this.element.find("#cart_items");
@@ -19,65 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     this.newPhone = this.element.find("#new-phones");
     this.sub_total = this.element.find("#sub_total");
   };
-  PhpPlugin.prototype.setupEvents = function () {
+  _setupEvents = () => {
     var phpPlugin = this;
 
-    //=======================================================================
-    //Display user cart items
-    //=======================================================================
-    display__user_cart();
-    function display__user_cart() {
-      var data = {
-        table: "cart",
-        user: "guest",
-        url: "forms/showDetails",
-        data_type: "template",
-      };
-      displayAllDetails(data, display_cart);
-      function display_cart(response) {
-        if (response.result == "success") {
-          phpPlugin.count_items.html(function () {
-            return response.msg[0];
-          });
-          if (phpPlugin.cart_items.length) {
-            phpPlugin.wrapper.find(".cart_nb_elt").html(function () {
-              return response.msg[0];
-            });
-            phpPlugin.cart_items.fadeOut(100, function () {
-              return phpPlugin.cart_items
-                .html(response.msg[1])
-                .fadeIn()
-                .delay(500);
-            });
-
-            phpPlugin.sub_total.fadeOut(100, function () {
-              return phpPlugin.sub_total
-                .html(response.msg[2])
-                .fadeIn()
-                .delay(500); // display Cart items
-            });
-            if (response.msg[3]) {
-              phpPlugin.wishlist_items.html(function () {
-                return response.msg[3]; // display wishlist
-              });
-              phpPlugin.wishlist.show().fadeIn().delay(500);
-            }
-            setTimeout(function () {
-              phpPlugin.sub_total
-                .find("#deal-price")
-                .html(function (i, d_price) {
-                  return currency.format(parseFloat(d_price));
-                });
-              phpPlugin.wrapper
-                .find(".product_price")
-                .html(function (i, p_price) {
-                  return currency.format(parseFloat(p_price));
-                });
-            }, 200);
-          }
-        }
-      }
-    }
     // Currency
     let currency = new Intl.NumberFormat("de-FR", {
       style: "currency",
@@ -143,10 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   };
-
-  $.fn.phpPlugin = function (options) {
-    new PhpPlugin(this);
-    return this;
-  };
-  $("#body").phpPlugin();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  new Main($("#body"))._init();
 });

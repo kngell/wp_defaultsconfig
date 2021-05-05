@@ -4,18 +4,19 @@ export default class Logreg {
     this.editors = editors;
   }
   check() {
-    return this.isLoad == true;
+    return this;
   }
-
-  async load() {
+  login = async () => {
     const login = await import(
       /* webpackMode: "lazy" */
       /* webpackChunkName: "logAndReg" */
       "./login_register.class"
     );
-    // $.each(this.editors, async (i, ed) => {
-    //   this.editor[ed] = await createEditor(ed);
-    // });
     this.isLoad = true;
-  }
+  };
+  // async load() {
+  // $.each(this.editors, async (i, ed) => {
+  //   this.editor[ed] = await createEditor(ed);
+  // });
+  // }
 }

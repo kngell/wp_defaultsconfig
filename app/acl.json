@@ -3,7 +3,7 @@
     "denied": {
       "AdminController": ["*"]
     },
-    "HomeController": ["index", "product", "cart"],
+    "HomeController": ["index", "product", "cart", "promotions"],
     "AdminController": ["login"],
     "AuthController": ["*"],
     "NewsController": ["index", "show", "categorie", "unsuscribe"],

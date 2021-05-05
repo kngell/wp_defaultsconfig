@@ -162,6 +162,9 @@ class H_upload
         }
         $path = self::upload_img(self::get_path($model), $file);
         if ($path == 'error') {
+            $arr_file = [];
+            $path_dir = '';
+            $actual_Path = '';
             $status['msg'] = 'Error moving file to Server';
         } else {
             $status['msg'] = 'Success';

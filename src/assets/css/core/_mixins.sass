@@ -1,3 +1,24 @@
+@use "./function" as *
+// =============================================================================
+//Font Face
+// =============================================================================
+  
+=fontface($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg)
+  $src: null
+  $extmods: (eot: "?",svg: "#" +str-replace($name, " ", "_"))
+  $formats: (otf: "opentype",ttf: "truetype")
+  @each $ext in $exts 
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext)
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext)
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma)
+  @font-face 
+    font-family: quote($name)
+    font-style: $style
+    font-weight: $weight
+    font-display: swap
+    src: $src
+	
+
 // =============================================================================
 // Background image
 // =============================================================================
@@ -86,8 +107,64 @@
         filter: invert(30%) !important
     // .form-text
     //   font-size: 50%
-
-
+// =============================================================================
+//Display flex
+// =============================================================================
+=dflex()
+  display: flex
+  justify-content: center
+  align-items: center
+// =============================================================================
+//Search bar
+// =============================================================================
+=search-bar($size:'',$input-color:'',$font-size:'')
+  .search-bar
+    border: 2px solid $input-color
+    display: flex
+    border-radius: 50px
+    height: $size
+    width: $size
+    padding: 3px
+    position: relative
+    transition: width 1000ms cubic-bezier(.18,.89,.32,1.15)
+    overflow: hidden
+    &__input
+      flex-grow: 1
+      font-size: $font-size
+      padding: 0 .5em
+      border: 0
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      line-height: calc(#{$size} - 3px)
+      opacity: 0
+      cursor: pointer
+      &:focus
+        outline: 0
+    &__submit
+      width: 100%
+      font-size: ($size * 1.5) / 3.75
+      text-align: center
+      border: 0
+      background: transparent
+      border-radius: 50%
+      width: calc(#{$size} - 10px)
+      height: calc(#{$size} - 10px)
+      margin-left: auto
+      transition: background 150ms ease-in-out
+    &:focus-within
+      width: 360px
+      .search-bar__submit
+        background: $input-color
+        color: white
+        &:focus,&:hover
+          outline: 0
+          box-shadow: 0 0 10px rgba(0,0,0,.35)
+      .search-bar__input
+        opacity: 1
+        cursor: initial
+        width: calc(100% - #{$size})
 	
 
 
