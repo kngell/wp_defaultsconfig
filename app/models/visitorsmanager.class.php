@@ -119,14 +119,14 @@ class VisitorsManager extends Model
     {
         $cookies = $this->get_unique('cookies');
         Cookies::set(VISITOR_COOKIE_NAME, $cookies, COOKIE_EXPIRY);
-        if ($data && $this->clean_visitor_data('ip', $this->assign(H::Object_Keys_format($data, H_visitors::new_IpAPI_keys())))) {
-            $this->cookies = $cookies;
-            $this->useragent = Session::uagent_no_version();
-            $this->hits++;
-            if ($save = $this->save()) {
-                return $save;
-            }
+        $this->clean_visitor_data('ip', $this->assign(H::Object_Keys_format($data, H_visitors::new_IpAPI_keys())));
+        $this->cookies = $cookies;
+        $this->useragent = Session::uagent_no_version();
+        $this->hits++;
+        if ($save = $this->save()) {
+            return $save;
         }
+
         return false;
     }
 

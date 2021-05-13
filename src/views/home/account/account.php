@@ -91,7 +91,7 @@
             <!-- /.col -->
             <div class="col-md-9 transaction-wrapper" id="transaction">
                 <div class="card transaction">
-                    <div class="card-header transaction-header">
+                    <div class="card-header transaction-header w-100">
                         <div class="transaction-cover-photo"></div>
                         <div class="text-center transaction-photo">
                             <div class="profile-card-info">

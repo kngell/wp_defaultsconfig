@@ -110,4 +110,9 @@ class Input
             return [(int)$this->getAll('start'), (int) $this->getAll('max'), (int)$this->getAll('id')];
         }
     }
+
+    public function add_slashes($data)
+    {
+        return addslashes($data);
+    }
 }

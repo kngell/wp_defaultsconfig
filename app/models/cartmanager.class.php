@@ -15,6 +15,8 @@ class CartManager extends Model
     public $cart_id;
     public $user_id;
     public $item_id;
+    public $item_qty;
+    public $c_content;
 
     //=======================================================================
     //construct
@@ -33,13 +35,27 @@ class CartManager extends Model
     //Getters & setters
     //=======================================================================
 
-    public function getUserItem($table, $cookie = '')
+    public function getUserItem($cookie = '', $tbl = '', )
     {
+        $table = $tbl != '' ? $tbl : $this->_table;
         $model = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager';
-        $tables = [$table => ['user_id', 'item_id'], 'products' => ['*'], 'product_categorie' => ['*'], 'categories' => ['categorie']];
+        $tables = [$table => ['*'], 'products' => ['*'], 'product_categorie' => ['*'], 'categories' => ['categorie']];
         $data = ['join' => 'INNER JOIN', 'rel' => [['item_id', 'pdtID'], ['pdtID', 'pdtID'], ['catID', 'catID']], 'where' => ['user_id' => ['value' => $cookie, 'tbl' => $table]]];
         $uc = (new $model())->getAllItem($data, $tables);
         return $uc->count() > 0 ? $uc->get_results() : [];
+    }
+
+    //=======================================================================
+    //Update cart qty
+    //=======================================================================
+    public function update_cart($params)
+    {
+        if (Cookies::exists(VISITOR_COOKIE_NAME)) {
+            $this->item_id = $params['item_id'];
+            $this->user_id = Cookies::get(VISITOR_COOKIE_NAME);
+            $query_params = ['item_id' => $params['item_id'], 'user_id' => Cookies::get(VISITOR_COOKIE_NAME)];
+            return $this->update($query_params, ['item_qty' => $params['qty']]);
+        }
     }
 
     //get html data
@@ -47,31 +63,31 @@ class CartManager extends Model
     {
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
             $u_cookie = Cookies::get(VISITOR_COOKIE_NAME);
-            $user_cart = $this->getUserItem('cart', $u_cookie);
+            $user_cart = $this->getUserItem($u_cookie);
             $cart_html = '';
-            $sub_total = '';
             $wl_html = '';
-            $price = 0;
+            $price = $this->get_currency(0);
+            $nb_item = 0;
             if (count($user_cart) > 0) {
                 foreach ($user_cart as $product) {
-                    $item_html = $this->output_shopping_template($product);
-                    $cart_html .= $item_html[0];
-                    $price += $item_html[1];
+                    if ($product->c_content == 'cart') {
+                        $item_html = $this->output_shopping_template($product);
+                        $cart_html .= $item_html[0];
+                        $price = $price->plus($item_html[1]);
+                        $nb_item++;
+                    } elseif ($product->c_content == 'wishlist') {
+                        $wl_html .= $this->output_shopping_template($product, self::$wishlist_template)[0];
+                    }
                 }
             }
             $sub_total = self::$sub_total_template;
-            $sub_total = str_replace('{{nb_items}}', count($user_cart), $sub_total);
+            $sub_total = str_replace('{{nb_items}}', $nb_item, $sub_total);
             $sub_total = str_replace('{{total_price}}', $price, $sub_total);
-            $wishlist = $this->getUserItem('wishlist', $u_cookie);
-            if ($wishlist) {
-                foreach ($wishlist as $wish) {
-                    $wl_html .= $this->output_shopping_template($wish, self::$wishlist_template)[0];
-                }
-            }
             if ($cart_html == '') {
                 $cart_html = self::$empty_cart_template;
             }
-            return [count($user_cart), $cart_html, $sub_total, $wl_html];
+            $user_cart = null;
+            return [$nb_item, $cart_html, $sub_total, $wl_html];
         }
         return false;
     }
@@ -83,49 +99,42 @@ class CartManager extends Model
         if ($product) {
             $temp = str_replace('{{title}}', $this->htmlDecode($product->p_title), $temp);
             $temp = str_replace('{{brand}}', $product->categorie, $temp);
-            $temp = str_replace('{{image}}', IMG . unserialize($product->p_media)[0], $temp);
-            $temp = str_replace('{{price}}', $product->p_regular_price . PHP_EOL, $temp);
+            $temp = str_replace('{{image}}', str_starts_with($product->p_media[0], IMG) ? unserialize($product->p_media) : IMG . unserialize($product->p_media)[0], $temp);
+            $temp = str_replace('{{price}}', $this->get_currency($product->p_regular_price * $product->item_qty), $temp);
             $temp = str_replace('{{product_id}}', $product->pdtID, $temp);
+            $temp = str_replace('{{qty}}', $product->item_qty, $temp);
             $temp = str_replace('{{token}}', hash_hmac('sha256', 'delete-cart-item-frm' . $product->pdtID, $_SESSION[TOKEN_NAME]), $temp);
 
-            return [$temp, $product->p_regular_price];
+            return [$temp, $product->p_regular_price * $product->item_qty];
         }
 
-        return ['', 0];
+        return [false, 0];
     }
 
     //Add to cart
-    public function add_To_Cart()
+    public function manage_user_cart($content = '')
     {
+        $itemHtml = [];
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
             $this->user_id = Cookies::get(VISITOR_COOKIE_NAME);
-            $cart_item = current(array_filter((new WishlistManager())->getAllbyIndex($this->user_id)->get_results(), function ($cart) {
+            $cart_item = current(array_filter($this->getUserItem($this->user_id), function ($cart) {
                 return $cart->item_id == $this->item_id;
             }));
-            $itemHtml = [];
-            if ($this->save()) {
-                $itemHtml = $this->output_shopping_template($this->item_id);
-                $cart_item->delete();
-            }
-        }
-        return $itemHtml ? $itemHtml : false;
-    }
-
-    //get cart_items
-    public function get_cartItems($u_id, $product_instance)
-    {
-        $user_items = $this->getAllbyIndex($u_id)->get_results();
-        $products = $product_instance->get_results();
-        $user_products = [];
-        foreach ($products as $product) {
-            foreach ($user_items as $item) {
-                if ($product->item_id == $item->item_id) {
-                    $user_products[] = $product;
+            if ($cart_item) {
+                $colID = $cart_item->get_colID();
+                if ($content == 'save_For_Later') {
+                    $cart_item->c_content = 'wishlist';
+                } elseif ($content == 'add_To_Cart') {
+                    $cart_item->c_content = 'cart';
                 }
             }
+            $this->assign($cart_item);
+            $this->id = $cart_item->$colID;
+            if ($this->save()) {
+                $itemHtml = $this->output_shopping_template($cart_item);
+            }
         }
-
-        return $user_products;
+        return $itemHtml;
     }
 
     //=======================================================================
@@ -136,38 +145,44 @@ class CartManager extends Model
         if (Cookies::exists(VISITOR_COOKIE_NAME)) {
             $user_cart = $this->getAllbyIndex(Cookies::get(VISITOR_COOKIE_NAME))->get_results();
             if ($user_cart != null) {
-                $cart_id = array_map(function ($item) {
-                    return $item->item_id;
-                }, $user_cart);
-
-                return $cart_id;
+                return $user_cart;
             }
         }
-
         return [];
     }
 
-    public function beforeSave()
+    public function beforeSave($params = [])
     {
         parent::beforeSave();
-        if (Cookies::exists(VISITOR_COOKIE_NAME)) {
-            $user_data = AuthManager::$currentLoggedInUser ? AuthManager::$currentLoggedInUser : $this->getDetails(Cookies::get(VISITOR_COOKIE_NAME, (new VisitorsManager())->get_colIndex()));
-            $this->user_id = $user_data ? $user_data->visitor_cookie : Cookies::get(VISITOR_COOKIE_NAME);
-            $user_cart = $this->getAllbyIndex($this->user_id)->get_results();
-            $cart = array_filter($user_cart, function ($item) {
-                return $item->item_id == $this->item_id;
-            });
-            if ($cart != null) {
-                return false;
+        if ($params) {
+            if (Cookies::exists(VISITOR_COOKIE_NAME)) {
+                $user_data = AuthManager::$currentLoggedInUser; //? AuthManager::$currentLoggedInUser : $this->getDetails(Cookies::get(VISITOR_COOKIE_NAME), $this->get_colIndex());
+                $this->user_id = $user_data ? $user_data->visitor_cookie : Cookies::get(VISITOR_COOKIE_NAME);
+                $user_cart = $this->user_id ? $this->getAllbyIndex($this->user_id)->get_results() : false;
+                if ($user_cart && count($user_cart) > 0) {
+                    $cart = array_filter($user_cart, function ($item) {
+                        return $item->item_id == $this->item_id;
+                    });
+                    if ($cart && count($cart) >= 1) {
+                        return false;
+                    }
+                    return true;
+                }
+                return true;
             }
-
-            return true;
+            $cookies = (new Token())->user_identifiant(36);
+            $this->user_id = $cookies;
+            Cookies::set(VISITOR_COOKIE_NAME, $cookies, COOKIE_EXPIRY);
         }
-        $cookies = (new Token())->user_identifiant(36);
-        $this->user_id = $cookies;
-        Cookies::set(VISITOR_COOKIE_NAME, $cookies, COOKIE_EXPIRY);
-
         return true;
+    }
+
+    public function get_successMsg($response = null, $action = '', $method = '')
+    {
+        if ($response['saveID']->get_lastID() != null) {
+            return [1];
+        }
+        return [0];
     }
 
     public function afterDelete($params = [])

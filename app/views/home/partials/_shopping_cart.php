@@ -4,9 +4,11 @@
         <!-- Shopping cart items -->
         <div class="row">
             <div class="col-sm-9" id="cart_items">
+                <?=$this->cart[1] ?? ''?>
             </div>
             <!-- Sub-Total section -->
             <div class="col-sm-3" id="sub_total">
+                <?=$this->cart[2] ?? ''?>
             </div>
             <!-- !Sub-Total section -->
         </div>

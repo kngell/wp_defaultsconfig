@@ -43,5 +43,20 @@ module.exports = {
       import: ["js/custom/home/promotions/promotions"],
       dependOn: "js/librairies/frontlib",
     },
+    //Ecommerce - Payment page js
+    "js/custom/home/account/payment": {
+      import: ["js/custom/home/account/payment"],
+      dependOn: "js/librairies/frontlib",
+    },
+    //Ecommerce - Boutique page js
+    "js/custom/home/boutique/boutique": {
+      import: ["js/custom/home/boutique/boutique"],
+      dependOn: "js/librairies/frontlib",
+    },
+    //Ecommerce - Checkout page js
+    "js/custom/home/account/checkout": {
+      import: ["js/custom/home/account/checkout"],
+      dependOn: "js/librairies/frontlib",
+    },
   },
 };

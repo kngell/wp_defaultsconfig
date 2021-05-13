@@ -56,8 +56,10 @@ class ImageManager
     //=======================================================================
     //Image Save
     //=======================================================================
-    public function saveImage($img_infos = [], $newImg = false, $img = false)
+    public function saveImage($img_infos = [], $newImg = null, $img = false)
     {
+        $black = imagecolorallocate($newImg, 0, 0, 0);
+        imagecolortransparent($newImg, $black);
         if (isset($img_infos) && isset($img)) {
             switch ($img_infos['mime']) {
                 case 'image/png':
@@ -81,7 +83,7 @@ class ImageManager
     //=======================================================================
     //Image Destroy
     //=======================================================================
-    public function destroyImage($img = '')
+    public function destroyImage($img = null)
     {
         if (isset($img)) {
             imagedestroy($img);

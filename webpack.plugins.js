@@ -66,6 +66,46 @@ module.exports = {
                 destination: "./public/assets/img/",
               },
               {
+                source: path.join(__dirname, "src", "assets", "img", "clothes"),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(__dirname, "src", "assets", "img", "shop"),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(__dirname, "src", "assets", "img", "watches"),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(__dirname, "src", "assets", "img", "insta"),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(__dirname, "src", "assets", "img", "brand"),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(
+                  __dirname,
+                  "src",
+                  "assets",
+                  "img",
+                  "arrivals"
+                ),
+                destination: "./public/assets/img/",
+              },
+              {
+                source: path.join(
+                  __dirname,
+                  "src",
+                  "assets",
+                  "img",
+                  "featured"
+                ),
+                destination: "./public/assets/img/",
+              },
+              {
                 source: path.join(__dirname, "src", "assets", "img", "camera"),
                 destination: "./public/assets/img/",
               },

@@ -23,7 +23,8 @@
         <div class="qty d-flex pt-2">
             <div class="d-flex font-rale w-25">
                 <button class="qty-up border bg-light"><i class="fas fa-angle-up"></i></button>
-                <input type="text" class="qty_input border px-2 w-100 bg-light" desabled value="1" placeholder="1">
+                <input type="text" class="qty_input border px-2 w-100 bg-light" desabled value="{{qty}}"
+                    placeholder="1">
                 <button class="qty-down border bg-light"><i class="fas fa-angle-down"></i></button>
             </div>
             <form action="#" class="delete-cart-item-frm{{product_id}}">

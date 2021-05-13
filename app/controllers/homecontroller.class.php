@@ -19,35 +19,53 @@ class HomeController extends Controller
 
     public function index($data = [])
     {
-        $this->view_instance->set_pageTitle('Boutique');
+        $this->view_instance->set_pageTitle('Home');
+        $this->view_instance->set_siteTitle('Home');
         $this->view_instance->render('home' . DS . 'index');
     }
 
     //page product
     public function product($data = [])
     {
-        $id = array_pop($data);
+        $id = $this->request->add_slashes(array_pop($data));
         if ($id) {
-            $this->view_instance->p_details = $this->model_instance['products']->getDetails($id);
             $this->view_instance->set_pageTitle('Product');
-            $this->view_instance->render('home' . DS . 'product');
+            $this->view_instance->set_siteTitle('Product');
+            $this->view_instance->p_details = $this->model_instance['products']->getDetails($id, 'p_slug');
         }
+        $this->view_instance->render('home' . DS . 'product' . DS . 'product');
     }
 
     //page cart
     public function cart($data = [])
     {
+        // $cart = (new CartManager())->getHtmlData();
+        // if (!$cart[3]) {
+        //     $this->view_instance->display = 'display: none;';
+        // } else {
+        //     $this->view_instance->display = 'display: bloc;';
+        // }
+        // $this->view_instance->cart = $cart;
         $this->view_instance->set_pageTitle('Cart');
+        $this->view_instance->set_siteTitle('Cart');
         $this->view_instance->render('home' . DS . 'cart');
     }
 
     //page account
     public function account()
     {
-        // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
         $this->view_instance->set_pageTitle('Account');
+        $this->view_instance->set_siteTitle('Account');
         $this->view_instance->set_viewData($this->get_model('UsersManager'));
         $this->view_instance->render('home' . DS . 'account' . DS . 'account');
+    }
+
+    //page account
+    public function checkout()
+    {
+        $this->view_instance->set_pageTitle('Checkout');
+        $this->view_instance->set_siteTitle('Checkout');
+        $this->view_instance->render('home' . DS . 'account' . DS . 'checkout');
     }
 
     //page profile
@@ -55,6 +73,7 @@ class HomeController extends Controller
     {
         // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
         $this->view_instance->set_pageTitle('Profile');
+        $this->view_instance->set_siteTitle('Profile');
         $this->view_instance->render('home' . DS . 'account' . DS . 'profile');
     }
 
@@ -62,6 +81,29 @@ class HomeController extends Controller
     public function promotions()
     {
         $this->view_instance->set_pageTitle('Promotions');
+        $this->view_instance->set_siteTitle('Promotions');
         $this->view_instance->render('home' . DS . 'promotions' . DS . 'promotions');
+    }
+
+    // Boutique page
+    public function boutique()
+    {
+        $this->view_instance->set_pageTitle('Boutique');
+        $this->view_instance->set_siteTitle('Boutique');
+        $this->view_instance->render('home' . DS . 'boutique' . DS . 'boutique');
+    }
+
+    //sitemap
+    public function sitemap()
+    {
+        $this->view_instance->set_pageTitle('Sitemap');
+        $this->view_instance->render('home' . DS . 'sitemap' . DS . 'sitemap');
+    }
+
+    //Payment
+    public function payment()
+    {
+        $this->view_instance->set_pageTitle('Payment Paypal');
+        $this->view_instance->render('home' . DS . 'account' . DS . 'payment');
     }
 }

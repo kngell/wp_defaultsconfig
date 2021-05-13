@@ -36,6 +36,40 @@ class Product {
       dots: false,
       responsive: responsive,
     });
+
+    //Top sales
+    phpPlugin.product.find(".owl-carousel").owlCarousel({
+      autoWidth: true,
+      margin: 5,
+      loop: true,
+      lazyLoad: true,
+      responsive: {
+        0: {
+          items: 1,
+          nav: true,
+        },
+        600: {
+          items: 3,
+          nav: false,
+        },
+        1000: {
+          items: 5,
+          nav: true,
+          loop: false,
+        },
+      },
+    });
+    //=======================================================================
+    //Resize image
+    //=======================================================================
+    (() => {
+      if (!phpPlugin.product.find(".product-gallery").length) {
+        phpPlugin.product.find(".product-image-box img").css("width", 522);
+      } else {
+        phpPlugin.product.find(".product-image-box img").css("width", 438);
+      }
+    })();
+
     //=======================================================================
     //Qty section
     //=======================================================================

@@ -1,5 +1,7 @@
 <?php
 use Brick\Money\Money;
+use Brick\Money\Context\CustomContext;
+use Brick\Math\RoundingMode;
 
 abstract class Model
 {
@@ -168,7 +170,7 @@ abstract class Model
     //get currency
     public function get_currency($p)
     {
-        return Money::of($p, 'EUR');
+        return  Money::of($p, 'EUR', new CustomContext(2));
     }
 
     //get date time format
@@ -531,8 +533,7 @@ abstract class Model
             }
             if ($save->count() > 0) {
                 $params['saveID'] = $save ?? '';
-                $this->afterSave($params);
-                return $save;
+                return $this->afterSave($params);
             }
         }
         return $data;
@@ -617,8 +618,9 @@ abstract class Model
     }
 
     //After save
-    public function afterSave()
+    public function afterSave($params = [])
     {
+        return $params;
     }
 
     //Before delete

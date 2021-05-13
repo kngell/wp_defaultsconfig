@@ -67,15 +67,6 @@ class AuthManager extends Model
         return $this->_isLoggedIn;
     }
 
-    //Find by email
-    public function findByEmail($email)
-    {
-        $data = [
-            'where' => ['email' => $email, 'deleted' => !1], 'return_mode' => 'class', 'class' => 'AuthManager'
-        ];
-        return $this->findFirst($data);
-    }
-
     //find Password
     public function findPassword()
     {
@@ -186,7 +177,7 @@ class AuthManager extends Model
     public static function loginFromFacebook($userData)
     {
         $user = new self($userData['email']);
-        if (!$user->findByEmail($userData['email'])) {
+        if (!$user->getDetails($userData['email'], 'email')) {
             $user->firstName = $userData['first_name'];
             $user->lastName = $userData['last_name'];
             $user->email = $userData['email'];
@@ -295,7 +286,7 @@ class AuthManager extends Model
     }
 
     //After save
-    public function afterSave()
+    public function afterSave($params = [])
     {
     }
 

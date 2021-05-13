@@ -25,7 +25,7 @@ class H_upload
             $imgModel = new ImageManager($path[0], IMAGE_ROOT_SRC);
             $img_infos = $imgModel->get_imagesInfos($img);
             $new_img = $imgModel->resizeImage($img_infos, $img);
-            $img_save = $imgModel->saveImage($img_infos, $new_img, $img);
+            $imgModel->saveImage($img_infos, $new_img, $img);
             $imgModel->destroyImage($new_img);
             $imgModel = null;
             return true;
@@ -46,25 +46,30 @@ class H_upload
     {
         $paths = [];
         $status = [];
+        $imageManager = new ImageManager();
         if ($files) {
             foreach ($files as $file) {
-                $result = self::validate_and_upload_file($file, $model);
+                $result = self::validate_and_upload_file($file, $model, $imageManager);
                 if ($result['status'] == true) {
                     $paths[] = $result['url'];
                     $result['url'] = ImageManager::asset_img($result['url']);
                 } else {
+                    $imageManager = null;
                     return ['success' => false, 'msg' => FH::showMessage('danger', $result['msg']), 'upload_result' => $result];
                 }
                 $status[] = $result;
             }
             if ($paths) {
                 self::cleanFiles($paths, $model);
+                $imageManager = null;
                 return ['success' => true, 'msg' => self::updateModel(serialize($paths), $model), 'upload_result' => $status];
             }
+            $imageManager = null;
             return ['success' => false, 'msg' => self::updateModel('', $model), 'upload_result' => $status];
         } else {
             self::cleanFiles([], $model);
         }
+        $imageManager = null;
         return ['success' => true, 'msg' => self::updateModel('', $model), 'upload_result' => $status];
     }
 
@@ -89,7 +94,7 @@ class H_upload
     }
 
     //Validate file
-    public static function validate_and_upload_file($file, $model)
+    public static function validate_and_upload_file($file, $model, $imgMgr)
     {
         $path_dir = self::get_path($model)[1];
         $arr_file = [
@@ -123,7 +128,7 @@ class H_upload
             return $status;
         }
         // Validate length width
-        $img_infos = (new ImageManager())->get_imagesInfos($file['tmp_name']);
+        $img_infos = $imgMgr->get_imagesInfos($file['tmp_name']);
         if ($img_infos[0] > '1840' && $img_infos[1] > '860') {
             $status['msg'] = 'Invalid file size! Please change your file.';
             $arr_file = [];

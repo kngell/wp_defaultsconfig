@@ -111,7 +111,7 @@ class FormsController extends Controller
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
             $data = $this->request->getAll();
             $this->model_instance[$table]->assign($data);
-            $file = H_upload::validate_and_upload_file($_FILES, $this->model_instance[$table]);
+            $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
             if ($file['success']) {
                 $this->model_instance[$table]->save();
                 $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->fileUrl]);

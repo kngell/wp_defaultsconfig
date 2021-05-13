@@ -17,6 +17,7 @@ define('CORE', ROOT . 'app' . DS . 'core' . DS);
 define('MODEL', ROOT . 'app' . DS . 'models' . DS);
 define('VIEW', ROOT . 'app' . DS . 'views' . DS);
 define('DATA', ROOT . 'app' . DS . 'data' . DS);
+define('SITEMAP', ROOT . DS . 'sitemap' . DS);
 define('CONTROLLER', ROOT . 'app' . DS . 'controllers' . DS);
 define('IMAGE_ROOT', dirname(__DIR__) . DS . 'public' . DS . 'assets' . DS . 'img' . DS);
 define('IMAGE_ROOT_SRC', dirname(__DIR__) . DS . 'src' . DS . 'assets' . DS . 'img' . DS);
@@ -27,8 +28,8 @@ define('CUSTOM_VALIDATOR', ROOT . DS . 'app' . DS . 'custom_validator' . DS);
 // -----------------------------------------------------------------------
 // URL ROOT
 // -----------------------------------------------------------------------
-define('URLROOT', 'http://localhost' . US . 'kngell_ecommerce' . US);
-define('ASSET_SERVICE_PROVIDER', 'http://localhost');
+define('URLROOT', 'https://localhost' . US . 'kngell_ecommerce' . US);
+define('ASSET_SERVICE_PROVIDER', 'https://localhost');
 // -----------------------------------------------------------------------
 // SITE NAME
 // -----------------------------------------------------------------------
@@ -92,7 +93,7 @@ define('ACCESS_RESTRICTED', 'Restricted'); //Controller name for the restricted 
 // -----------------------------------------------------------------------
 define('FB_APP_ID', '297739978156061');
 define('FB_APP_SECRET', 'a4ff4070fc4261a36d9ff551ec7cd07f');
-define('FB_LOGIN_URL', 'http://localhost/kngell/guests/fblogin');
+define('FB_LOGIN_URL', 'https://localhost/kngell/guests/fblogin');
 define('FB_GRAPH_VERSION', 'v6.0');
 define('FB_GRAPH_DOMAIN', 'https://graph.facebook.com/');
 define('FB_GRAPH_STATE', 'eciphp');

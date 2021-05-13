@@ -10,7 +10,7 @@
             <div class="item py-2">
                 <div class="product font-rale ">
                     <a
-                        href="<?= PROOT ?>home/product/<?= $product->pdtID ?>">
+                        href="<?= PROOT ?>home/product/<?= $product->p_slug ?>">
                         <div style="overflow:hidden;"><img
                                 src="<?= IMG . unserialize($product->p_media)[0] ?? '../../../assets/img/products/1.png' ?>"
                                 alt="<?= $product->p_title ?? 'Unknown' ?>"
@@ -36,8 +36,10 @@
                             <input type="hidden" name="user_id" value="1">
                             <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add_to_cart_frm' . $product->pdtID ?? 1, $_SESSION[TOKEN_NAME])); ?>
                             <?php
-                                if (in_array($product->pdtID, $this->user_cart)) {
+                                if (in_array($product->pdtID, array_map(function ($item) { if ($item->c_content == 'cart') {return $item->item_id;}}, $this->user_cart))) {
                                     echo ' <button type="submit" class="btn btn-success font-size-12">In the cart</button>';
+                                } elseif (in_array($product->pdtID, array_map(function ($item) { if ($item->c_content == 'wishlist') {return $item->item_id;}}, $this->user_cart))) {
+                                    echo ' <button type="submit" class="btn btn-info font-size-12">In wishlist</button>';
                                 } else {
                                     echo '<button type="submit" class="btn btn-warning font-size-12">Add to
                                 Cart</button>';

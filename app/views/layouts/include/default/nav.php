@@ -1,5 +1,5 @@
 <!-- Start Header -->
-<header id="header">
+<header id="header" class="fixed-top">
   <div class="strip d-flex justify-content-between px-4 py-1 bg-light">
     <p class="font-rale font-size-12 text-black-50 m-0">
       Kngell, La Turbine. 32 boulevard du port. CS 20001. 95015 Cergy-Pontoise cedex.
@@ -37,49 +37,53 @@
         <?php endif; ?>
         <a href="#" class="px-3 border-right text-dark text-decoration-none">Whishlist(0)</a>
       </div>
-    </div>
-  </div>
-  <!-- Primary navigation -->
-  <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="<?= PROOT ?>home/index">Mobile
-      Shopee</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav m-auto font-rubik">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">On Sale</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Category</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-            href="<?=PROOT . 'home' . DS . 'promotions'?>">Promotions
-            <i class="fas fa-chevron-down"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Category<i class="fas fa-chevron-down"></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Comming Soon</a>
-        </li>
-      </ul>
       <form action="#" class="font-size-14 font-rale">
         <a href="<?= PROOT ?>home/cart"
           class="py-2 rounded-pill color-primary-bg">
           <span class="font-size-16 px-2 text-white"><i class="fas fas fa-shopping-cart"></i></span>
-          <span class="px-3 py-2 rounded-pill text-dark bg-light cart_nb_elt">0</span>
+          <span class="px-3 py-2 rounded-pill text-dark bg-light cart_nb_elt"><?=is_array($this->user_cart) ? count(array_filter($this->user_cart, function ($item) {return $item->c_content == 'cart';})) : 0?></span>
         </a>
         <a href="#"></a>
       </form>
     </div>
+  </div>
+  <!-- Primary navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="<?= PROOT ?>home/index"><img
+          src="/kngell_ecommerce/public/assets/img/logo1.png" alt="Logo"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="bar"><i class="far fa-bars"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="main-menu">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page"
+              href="<?=PROOT . 'home'?>">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+              href="<?=PROOT . 'home' . US . 'promotions'?>">Promo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+              href="<?=PROOT . 'home' . US . 'boutique'?>">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact Us</a>
+          </li>
 
+        </ul>
+
+      </div>
+    </div>
   </nav>
   <!-- End Primary navigation -->
 </header>

@@ -62,7 +62,20 @@
   &:hover
     background-color: lighten($hover-color, 20%)!important
  
-
+=button($bg:'',$bg-hover)
+  font-size: .8rem
+  font-weight: 700
+  outline: none 
+  box-shadow: none 
+  border: none
+  background-color: $bg
+  color: aliceblue
+  padding: 13px 30px
+  cursor: pointer
+  text-transform: uppercase
+  transition: .3s ease
+  &:hover
+    background-color: $bg-hover
 // =============================================================================
 // Upload image profile
 // =============================================================================
@@ -153,6 +166,7 @@
       height: calc(#{$size} - 10px)
       margin-left: auto
       transition: background 150ms ease-in-out
+      padding: 0
     &:focus-within
       width: 360px
       .search-bar__submit
@@ -165,6 +179,19 @@
         opacity: 1
         cursor: initial
         width: calc(100% - #{$size})
+    @media only screen and (max-width: 360px)
+      display: none
+
+// =============================================================================
+//Lines
+// =============================================================================
+=horizontal-line($color:'')
+  width: 30px
+  height: 2px!important
+  background-color: $color
+
+
+  
 	
 
 

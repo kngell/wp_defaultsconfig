@@ -9,7 +9,8 @@ const responsive = {
     items: 5,
   },
 };
-import { displayAllDetails, Call_controller } from "corejs/form_crud";
+import { Call_controller, displayAllDetails, Call } from "corejs/form_crud";
+import user_cart from "corejs/user_cart";
 class Cart {
   constructor(element) {
     this.element = element;
@@ -21,106 +22,63 @@ class Cart {
   _setupVariables = () => {
     this.wrapper = this.element.find("#main-site");
     this.header = this.element.find("#header");
-    this.cart = this.element.find("#cart");
-    this.banner = this.element.find("#banner-area");
-    this.newPhone = this.element.find("#new-phones");
-    this.cart_items = this.element.find("#cart_items");
-    this.wishlist = this.element.find("#wishlist");
-    this.wishlist_items = this.element.find("#wishlist-items");
-    this.subTotal = this.element.find("#sub_total");
   };
   _setupEvents = () => {
     var phpPlugin = this;
 
     //=======================================================================
-    //Currency format
-    //=======================================================================
-    let currency = new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "EUR",
-    });
-    //=======================================================================
     //Display user cart items
     //=======================================================================
-    display__user_cart();
-    function display__user_cart() {
-      var data = {
-        table: "cart",
-        user: "guest",
-        url: "forms/showDetails",
-        data_type: "template",
-      };
-      displayAllDetails(data, display_cart);
-      function display_cart(response) {
-        console.log(response);
-        if (response.result == "success") {
-          phpPlugin.header.find(".cart_nb_elt").html(function () {
-            return response.msg[0];
-          });
-          if (phpPlugin.cart_items.length) {
-            phpPlugin.header.find(".cart_nb_elt").html(function () {
-              return response.msg[0];
-            });
-            phpPlugin.cart_items.fadeOut(100, function () {
-              console.log(response.msg[1]);
-              return phpPlugin.cart_items
-                .html(response.msg[1])
-                .fadeIn()
-                .delay(500);
-            });
-            phpPlugin.subTotal.fadeOut(100, function () {
-              return phpPlugin.subTotal
-                .html(response.msg[2])
-                .fadeIn()
-                .delay(500); // display Cart items
-            });
-            if (response.msg[3]) {
-              phpPlugin.wishlist_items.html(function () {
-                return response.msg[3]; // display wishlist
-              });
-              phpPlugin.wishlist.show().fadeIn().delay(500);
-            }
-            setTimeout(function () {
-              phpPlugin.subTotal
-                .find("#deal-price")
-                .html(function (i, d_price) {
-                  return currency.format(parseFloat(d_price));
-                });
-              phpPlugin.wrapper
-                .find(".product_price")
-                .html(function (i, p_price) {
-                  return currency.format(parseFloat(p_price));
-                });
-            }, 200);
-          }
-        }
-      }
-    }
-
+    let display = new user_cart(phpPlugin.wrapper, phpPlugin.header);
+    display._display_cart();
     //=======================================================================
     //Owl carousel
     //=======================================================================
     //new phones
-    phpPlugin.newPhone.find(".owl-carousel").owlCarousel({
+    phpPlugin.wrapper.find("#new-phones").find(".owl-carousel").owlCarousel({
       loop: true,
       nav: false,
       dots: true,
       responsive: responsive,
     });
-
+    //=======================================================================
+    //Refresh deal price
+    //=======================================================================
+    function refresh_deal_price(elt) {
+      elt
+        .parents("#cart_items")
+        .next()
+        .find("#deal-price")
+        .html(function (i, d_price) {
+          let p_price = parseFloat(
+            display._parseLocaleNumber(
+              elt.parents(".row").first().last().find(".product_price").html(),
+              "de"
+            )
+          );
+          if (d_price.startsWith("EUR")) {
+            d_price = parseFloat(d_price.match(/[0-9]+/g)[0]);
+          } else {
+            d_price = parseFloat(display._parseLocaleNumber(d_price, "de"));
+          }
+          console.log(d_price, " ", p_price);
+          return display._currency().format(d_price - p_price);
+        });
+    }
     //=======================================================================
     //Qty section
     //=======================================================================
-    phpPlugin.cart_items.on("click", ".qty-up", function (e) {
+    phpPlugin.wrapper.find("#cart_items").on("click", ".qty-up", function (e) {
       let input = $(this).next();
+      let item_id = $(this)
+        .parents(".qty")
+        .find("form")
+        .find("input[name=item_id]")
+        .val();
       //change price using ajax
       var data = {
-        table: "product",
-        id: $(this)
-          .parents(".qty")
-          .find("form")
-          .find("input[name=item_id]")
-          .val(),
+        table: "products",
+        id: item_id,
         user: "guest",
         url: "forms/showDetails",
         data_type: "values",
@@ -131,6 +89,16 @@ class Cart {
       function display_product(response, elt) {
         if (input.val() >= 1 && input.val() <= 9) {
           input.val(function (i, oldval) {
+            Call({
+              url: "guests/call",
+              params: {
+                qty_up: "ok",
+                item_id: item_id,
+                qty: parseInt(oldval) + 1,
+                method: "update_cart",
+                table: "cart",
+              },
+            });
             return ++oldval;
           });
           if (response.result == "success") {
@@ -142,259 +110,180 @@ class Cart {
               .next()
               .find(".product_price")
               .html(function () {
-                return currency.format(
-                  parseFloat(response.msg.item_price * qty)
-                );
+                return display
+                  ._currency()
+                  .format(parseFloat(response.msg.p_regular_price * qty));
               });
             // 2- Set subtotal price
-            phpPlugin.subTotal
+            phpPlugin.wrapper
               .find("#deal-price")
               .html(function (i, deal_price) {
-                let reg = /\s/g; // /[^\d]+/g;
-                return currency.format(
-                  parseFloat(response.msg.item_price) +
-                    parseFloat(
-                      deal_price
-                        .replace(reg, function () {
-                          return "";
-                        })
-                        .replace("&nbsp;€", "")
-                    )
-                );
+                return display
+                  ._currency()
+                  .format(
+                    parseFloat(response.msg.p_regular_price) +
+                      display._parseLocaleNumber(deal_price, "de")
+                  );
               });
           }
         }
       } //closing Ajax call
     });
-
-    phpPlugin.cart_items.on("click", ".qty-down", function (e) {
-      e.preventDefault();
-      let input = $(this).prev();
-      //change price using ajax
-      var data = {
-        table: "product",
-        id: $(this)
+    // Qty down
+    phpPlugin.wrapper
+      .find("#cart_items")
+      .on("click", ".qty-down", function (e) {
+        e.preventDefault();
+        let input = $(this).prev();
+        let item_id = $(this)
           .parents(".qty")
           .find("form")
           .find("input[name=item_id]")
-          .val(),
-        user: "guest",
-        url: "forms/showDetails",
-        data_type: "values",
-        return_mode: "details",
-        params: $(this),
-      };
-      displayAllDetails(data, display_product);
-      function display_product(response, elt) {
-        if (input.val() > 1 && input.val() <= 10) {
-          input.val(function (i, oldval) {
-            return --oldval;
-          });
-          if (response.result == "success") {
-            // 1- Increase price of the product
-            let qty = parseInt(elt.prev().val());
-            elt
-              .parents(".qty")
-              .parent()
-              .next()
-              .find(".product_price")
-              .html(function () {
-                return currency.format(
-                  parseFloat(response.msg.item_price * qty)
-                );
+          .val();
+        //change price using ajax
+        var data = {
+          table: "products",
+          id: item_id,
+          user: "guest",
+          url: "forms/showDetails",
+          data_type: "values",
+          return_mode: "details",
+          params: $(this),
+        };
+        displayAllDetails(data, display_product);
+        function display_product(response, elt) {
+          if (input.val() > 1 && input.val() <= 10) {
+            input.val(function (i, oldval) {
+              Call({
+                url: "guests/call",
+                params: {
+                  qty_up: "ok",
+                  item_id: item_id,
+                  qty: parseInt(oldval) - 1,
+                  method: "update_cart",
+                  table: "cart",
+                },
               });
-            // 2- Set subtotal price
-            phpPlugin.subTotal
-              .find("#deal-price")
-              .html(function (i, deal_price) {
-                let reg = /\s/g; // /[^\d]+/g;
-                return currency.format(
-                  parseFloat(
-                    deal_price
-                      .replace(reg, function () {
-                        return "";
-                      })
-                      .replace("&nbsp;€", "")
-                  ) - parseFloat(response.msg.item_price)
-                );
-              });
+              return --oldval;
+            });
+            if (response.result == "success") {
+              // 1- Increase price of the product
+              let qty = parseInt(elt.prev().val());
+              elt
+                .parents(".qty")
+                .parent()
+                .next()
+                .find(".product_price")
+                .html(function () {
+                  return display
+                    ._currency()
+                    .format(parseFloat(response.msg.p_regular_price * qty));
+                });
+              // 2- Set subtotal price
+              phpPlugin.wrapper
+                .find("#deal-price")
+                .html(function (i, deal_price) {
+                  return display
+                    ._currency()
+                    .format(
+                      display._parseLocaleNumber(deal_price, "de") -
+                        parseFloat(response.msg.p_regular_price)
+                    );
+                });
+            }
           }
-        }
-      } //closing
-    });
+        } //closing
+      });
     //=======================================================================
-    //Delete cart
-    //=======================================================================
-    phpPlugin.wrapper.on("click", "#cart_items .deleteBtn", function (e) {
-      e.preventDefault();
-      $(this).html("Please wait...");
-      var data = {
-        url: "guests/delete",
-        id: $(this).attr("id"),
-        table: "cart",
-        method: "delete_cart",
-        frm: $(this).parent(),
-        params: $(this),
-      };
-      Call_controller(data, manageResponse);
-      function manageResponse(response, elt) {
-        if (response.result == "success") {
-          refresh_deal_price(elt);
-          elt.parents(".row").first().remove();
-          phpPlugin.count_items.html(function () {
-            return parseInt(phpPlugin.count_items.html()) - 1;
-          });
-          phpPlugin.cart.find(".cart_nb_elt").html(function (i, nb_items) {
-            return nb_items - 1;
-          });
-          phpPlugin.newPhone
-            .find(
-              ".add_to_cart_frm input[value='" +
-                elt.parent().children(":first").val() +
-                "']"
-            )
-            .parent()
-            .find("button[type=submit]")
-            .removeClass("btn-success")
-            .addClass("btn-warning")
-            .html("Add to Cart");
-          if (phpPlugin.cart_items.children().length == 0) {
-            phpPlugin.cart_items.html(response.msg != 1 ? response.msg : "");
-          }
-        }
-      }
-    });
-    //=======================================================================
-    //Save for later
+    //Delete cart or wisjlist
     //=======================================================================
     phpPlugin.wrapper.on(
       "click",
-      "#cart_items .qty button[type=button]",
+      "#cart_items .deleteBtn, #wishlist-items .deleteBtn",
       function (e) {
+        e.preventDefault();
+        $(this).html("Please wait...");
+        let wishlist = false;
+        let remove_btn = "btn-success";
+        if ($(this).parents("#wishlist").length != 0) {
+          wishlist = true;
+          remove_btn = "btn-info";
+        }
         var data = {
-          url: "guests/toggleWishlistAndcCart",
-          frm: $(this).prev(),
-          frm_name:
-            "delete-cart-item-frm" +
-            $(this).prev().find("input[type=hidden]").val(),
-          table: "wishlist",
+          url: "guests/delete",
+          id: $(this).attr("id"),
+          table: "cart",
+          method: "delete_cart",
+          frm: $(this).parent(),
           params: $(this),
-          method: "save_For_Later",
         };
         Call_controller(data, manageResponse);
         function manageResponse(response, elt) {
           if (response.result == "success") {
-            console.log(response);
-            phpPlugin.wishlist_items.append(function () {
-              return response.msg[0][0];
-            });
-            phpPlugin.cart.find(".product_price").html(function (i, p_price) {
-              return currency.format(parseFloat(p_price));
-            });
-            if (phpPlugin.wishlist.is(":hidden")) {
-              phpPlugin.wishlist.show().fadeIn().delay(500);
-            }
             refresh_deal_price(elt);
             elt.parents(".row").first().remove();
-            phpPlugin.count_items.html(function (i, nb_item) {
-              return parseInt(nb_item - 1);
-            });
-            phpPlugin.cart.find(".cart_nb_elt").html(function (i, nb_item) {
-              return parseInt(nb_item - 1);
-            });
-            phpPlugin.newPhone
+            if (
+              phpPlugin.wrapper.find("#wishlist-items").children().length == 0
+            ) {
+              phpPlugin.wrapper.find("#wishlist").hide();
+            }
+            if (!wishlist) {
+              phpPlugin.header.find(".cart_nb_elt").html(function () {
+                return (
+                  parseInt(phpPlugin.header.find(".cart_nb_elt").html()) - 1
+                );
+              });
+              phpPlugin.wrapper
+                .find(".cart_nb_elt")
+                .html(function (i, nb_items) {
+                  return nb_items - 1;
+                });
+            }
+            phpPlugin.wrapper
+              .find("#new-phones")
               .find(
                 ".add_to_cart_frm input[value='" +
-                  elt.prev().children(":first").val() +
+                  elt.parent().children(":first").val() +
                   "']"
               )
               .parent()
               .find("button[type=submit]")
-              .removeClass("btn-success")
+              .removeClass(remove_btn)
               .addClass("btn-warning")
               .html("Add to Cart");
-            if (phpPlugin.cart_items.children().length == 0) {
-              phpPlugin.cart_items.html(
-                response.msg[1] != 1 ? response.msg[1] : ""
-              );
+            if (phpPlugin.wrapper.find("#cart_items").children().length == 0) {
+              phpPlugin.wrapper
+                .find("#cart_items")
+                .html(response.msg != 1 ? response.msg : "");
             }
           }
         }
       }
     );
-    function refresh_deal_price(elt) {
-      elt
-        .parents("#cart_items")
-        .next()
-        .find("#deal-price")
-        .html(function (i, d_price) {
-          let reg = /\s/g;
-          let p_price = elt
-            .parents(".row")
-            .first()
-            .last()
-            .find(".product_price")
-            .html();
-          return currency.format(
-            parseFloat(
-              d_price
-                .replace(reg, function () {
-                  return "";
-                })
-                .replace("&nbsp;€", "")
-            ) -
-              parseFloat(
-                p_price
-                  .replace(reg, function () {
-                    return "";
-                  })
-                  .replace("&nbsp;€", "")
-              )
-          );
-        });
-    }
+
     //=======================================================================
-    //Delete whishlist items
-    //=======================================================================
-    phpPlugin.wrapper.on("click", "#wishlist-items .deleteBtn", function (e) {
-      e.preventDefault();
-      $(this).html("Please wait...");
-      var data = {
-        url: "guests/delete",
-        id: $(this).attr("id"),
-        table: "wishlist",
-        method: "delete_cart",
-        frm: $(this).parent(),
-        params: $(this),
-      };
-      Call_controller(data, manageResponse);
-      function manageResponse(response, elt) {
-        if (response.result == "success") {
-          elt.parents(".row").first().remove();
-          if (phpPlugin.wishlist_items.children().length == 0) {
-            phpPlugin.wishlist.hide();
-          }
-          phpPlugin.newPhone
-            .find(
-              ".add_to_cart_frm input[value='" +
-                elt.parent().children(":first").val() +
-                "']"
-            )
-            .parent()
-            .find("button[type=submit]")
-            .removeClass("btn-success")
-            .addClass("btn-warning")
-            .html("Add to Cart");
-        }
-      }
-    });
-    //=======================================================================
-    //Add to cart from whishlist
+    //Save for later / Or Add to cart from wishlist
     //=======================================================================
     phpPlugin.wrapper.on(
       "click",
-      "#wishlist-items .qty button[type=button]",
+      "#cart_items .qty button[type=button], #wishlist-items .qty button[type=button]",
       function (e) {
+        e.preventDefault();
+        let method = "";
+        let msg = "";
+        let btn_bg = "";
+        if ($(this).parents("#cart").length) {
+          method = "save_For_Later";
+          msg = "In whislist";
+          btn_bg = "btn-info";
+        } else {
+          if ($(this).parents("#wishlist").length) {
+            method = "add_To_Cart";
+            msg = "In the cart";
+            btn_bg = "btn-success";
+          }
+        }
+        $(this).html("Please wait....");
         var data = {
           url: "guests/toggleWishlistAndcCart",
           frm: $(this).prev(),
@@ -403,50 +292,23 @@ class Cart {
             $(this).prev().find("input[type=hidden]").val(),
           table: "cart",
           params: $(this),
-          method: "add_To_Cart",
+          method: method,
         };
         Call_controller(data, manageResponse);
         function manageResponse(response, elt) {
           if (response.result == "success") {
-            //check if cart is empty
-            if (phpPlugin.cart_items.find("#empty-cart").length != 0) {
-              phpPlugin.cart_items.find("#empty-cart").remove();
+            display._display_cart();
+            if (method == "add_To_Cart") {
+              elt.parents(".row").first().remove();
+              if (
+                phpPlugin.wrapper.find("#wishlist-items").children().length == 0
+              ) {
+                phpPlugin.wrapper.find("#wishlist").hide();
+              }
             }
-            //append cart
-            phpPlugin.cart_items.append(function () {
-              return response.msg[0];
-            });
-            // format product price
+            console.log(btn_bg);
             phpPlugin.wrapper
-              .find(".product_price")
-              .html(function (i, p_price) {
-                return currency.format(parseFloat(p_price));
-              });
-            //refresh deal price
-            phpPlugin.wrapper.find("#deal-price").html(function (i, d_price) {
-              let reg = /\s/g;
-              return currency.format(
-                parseFloat(
-                  d_price
-                    .replace(reg, function () {
-                      return "";
-                    })
-                    .replace("&nbsp;€", "")
-                ) + parseFloat(response.msg[1])
-              );
-            });
-            //refresh nb items in the cart
-            phpPlugin.count_items.html(function (i, nb_item) {
-              return parseInt(nb_item) + 1;
-            });
-            phpPlugin.wrapper.find(".cart_nb_elt").html(function (i, nb_item) {
-              return parseInt(nb_item) + 1;
-            });
-            elt.parents(".row").first().remove();
-            if (phpPlugin.wishlist_items.children().length == 0) {
-              phpPlugin.wishlist.hide();
-            }
-            phpPlugin.newPhone
+              .find("#new-phones")
               .find(
                 ".add_to_cart_frm input[value='" +
                   elt.prev().children(":first").val() +
@@ -454,9 +316,9 @@ class Cart {
               )
               .parent()
               .find("button[type=submit]")
-              .removeClass("btn-warning")
-              .addClass("btn-success")
-              .html("Add to Cart");
+              .removeClass("btn-info")
+              .addClass(btn_bg)
+              .html(msg);
           }
         }
       }

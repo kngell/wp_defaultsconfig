@@ -24,7 +24,9 @@ class H
         return self::$_mail_instance;
     }
 
-    //search for files
+    //=======================================================================
+    //Search Files
+    //=======================================================================
     public static function search_file($folder, $file_to_search = null, &$results = [])
     {
         $files = ($folder !== false and is_dir($folder)) ? scandir($folder) : false;
@@ -95,6 +97,9 @@ class H
         return $currentPage;
     }
 
+    //=======================================================================
+    //Get Object Properties
+    //=======================================================================
     public static function getObjectProperties($obj)
     {
         return get_object_vars($obj);

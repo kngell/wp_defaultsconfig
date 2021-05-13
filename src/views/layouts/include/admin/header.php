@@ -49,7 +49,6 @@ Website: https://teachprod.com
 
         gtag('config', 'UA-180917586-1');
     </script>
-    <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default,Array.prototype.includes,Array.prototype.find,Number.parseFloat%2CNumber.parseInt"></script>
 </head>
 <!-- Possible Body Attributes
     * data-theme-header-fixed = 'true'       - For fixed Header

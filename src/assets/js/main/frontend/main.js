@@ -1,7 +1,7 @@
-import { Add, displayAllDetails } from "corejs/form_crud";
+import { Add } from "corejs/form_crud";
 import owlCarousel from "owl.carousel";
 import "select2";
-
+import user_cart from "corejs/user_cart";
 class Main {
   constructor(element) {
     this.element = element;
@@ -13,12 +13,6 @@ class Main {
   _setupVariables = () => {
     this.header = this.element.find("#header");
     this.wrapper = this.element.find("#main-site");
-    this.count_items = this.element.find(".cart_nb_elt");
-    this.cart_items = this.element.find("#cart_items");
-    this.wishlist = this.element.find("#wishlist");
-    this.wishlist_items = this.element.find("#wishlist-items");
-    this.newPhone = this.element.find("#new-phones");
-    this.sub_total = this.element.find("#sub_total");
   };
   _setupEvents = () => {
     var phpPlugin = this;
@@ -28,6 +22,7 @@ class Main {
       style: "currency",
       currency: "EUR",
     });
+
     //=======================================================================
     //Add to cart
     //=======================================================================
@@ -43,47 +38,28 @@ class Main {
       Add(data, ManageR);
       function ManageR(response, button) {
         if (response.result == "success") {
-          if (phpPlugin.cart_items.find("#empty-cart").length != 0) {
-            phpPlugin.cart_items.find("#empty-cart").remove();
-          }
-          if (phpPlugin.cart_items.length) {
-            phpPlugin.cart_items.append(function () {
-              return response.msg[0];
-            });
-            let total_price = currency.format(
-              parseFloat(phpPlugin.wrapper.find("#deal-price").html()) +
-                parseFloat(response.msg[1])
-            );
-            phpPlugin.wrapper.find("#deal-price").html(function () {
-              return total_price;
-            });
-            let p_price = currency.format(
-              phpPlugin.cart_items.find(".product_price").last().html()
-            );
-            phpPlugin.cart_items
-              .find(".product_price")
-              .last()
-              .html(function () {
-                return p_price;
-              });
-            phpPlugin.wrapper.find(".cart_nb_elt").html(function () {
+          if (document.location.pathname != "/kngell_ecommerce/home/cart") {
+            phpPlugin.header.find(".cart_nb_elt").html(function () {
               return (
-                parseInt(phpPlugin.wrapper.find(".cart_nb_elt").html()) + 1
+                response.msg[0] +
+                parseInt(phpPlugin.header.find(".cart_nb_elt").html())
               );
             });
           }
-          phpPlugin.count_items.html(function () {
-            return parseInt(phpPlugin.count_items.html()) + 1;
-          });
-          button
-            .removeClass("btn-warning")
-            .addClass("btn-success")
-            .html("In the cart");
-        } else {
-          button
-            .removeClass("btn-warning")
-            .addClass("btn-success")
-            .html("In the cart");
+          if (response.msg[0] == 1) {
+            button
+              .removeClass("btn-warning")
+              .addClass("btn-success")
+              .html("In the cart");
+          } else {
+            button
+              .removeClass("btn-warning")
+              .addClass("btn-success")
+              .html("In the cart");
+          }
+          if (document.location.pathname == "/kngell_ecommerce/home/cart") {
+            new user_cart(phpPlugin.wrapper, phpPlugin.header)._display_cart();
+          }
         }
       }
     });

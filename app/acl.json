@@ -3,7 +3,14 @@
     "denied": {
       "AdminController": ["*"]
     },
-    "HomeController": ["index", "product", "cart", "promotions"],
+    "HomeController": [
+      "index",
+      "product",
+      "cart",
+      "promotions",
+      "sitemap",
+      "boutique"
+    ],
     "AdminController": ["login"],
     "AuthController": ["*"],
     "NewsController": ["index", "show", "categorie", "unsuscribe"],
@@ -29,7 +36,7 @@
     "AssocController": ["*"],
     "CommentsController": ["*"],
     "AssetsController": ["*"],
-    "HomeController": ["profile", "account"]
+    "HomeController": ["profile", "account", "payment", "checkout"]
   },
   "admin": {
     "denied": {},

@@ -43,10 +43,10 @@ class GuestsController extends Controller
                 $this->model_instance[$table]->assign($data);
                 method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
                 if ($this->model_instance[$table]->validationPasses()) {
-                    if ($this->model_instance[$table]->save()) {
+                    if ($resp = $this->model_instance[$table]->save($data)) {
                         !in_array($table, ['cart']) ? $this->sendMail($data) : '';
                         $action = ($table == 'utilisateur' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
-                        $success_msg = H::get_successMsg($this->model_instance[$table], $action, $this->_method);
+                        $success_msg = $this->model_instance[$table]->get_successMsg($resp, $action, $this->_method);
                         $output_msg = (isset($data['wrap_msg']) && $data['wrap_msg'] == true) ? FH::showMessage('success text-center p-3', $success_msg) : $success_msg;
                         $this->jsonResponse(['result' => 'success', 'msg' => $output_msg]);
                     } else {
@@ -72,7 +72,7 @@ class GuestsController extends Controller
         $data = $this->request->getAll();
         $this->model_instance[$table]->assign($data);
         $method = $this->request->getAll('method');
-        if ($output = $this->model_instance[$table]->$method()) {
+        if ($output = $this->model_instance[$table]->manage_user_cart($method)) {
             $this->jsonResponse(['result' => 'success', 'msg' => $output]);
         } else {
             $this->jsonResponse(['result' => 'error', 'msg' => '']);
@@ -135,6 +135,20 @@ class GuestsController extends Controller
             if ($output) {
                 $this->jsonResponse(['result' => 'success', 'msg' => $output]);
             }
+        }
+    }
+
+    //=======================================================================
+    //Simple ajax call
+    //=======================================================================
+    public function call()
+    {
+        $table = $this->request->getAll('table');
+        $data = $this->request->getAll();
+        $method = isset($data['method']) ? $data['method'] : '';
+        $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
+        if ($output = $this->model_instance[$table]->$method($data)) {
+            $this->jsonResponse(['result' => 'success', 'msg' => $output]);
         }
     }
 }

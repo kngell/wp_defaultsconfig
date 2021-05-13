@@ -1,3 +1,4 @@
+import { param } from "jquery";
 import { BASE_URL, isIE } from "./config";
 
 //display all details
@@ -267,4 +268,19 @@ export function select2AjaxParams(data) {
     },
     cache: true,
   };
+}
+export function Call(data) {
+  let dt = new FormData();
+  for (const [key, value] of Object.entries(data.params)) {
+    dt.append(key, value);
+  }
+  $.ajax({
+    url: BASE_URL + data.url,
+    method: "POST",
+    processData: false,
+    contentType: false,
+    dataType: "json",
+    data: dt,
+    success: function (response) {},
+  });
 }

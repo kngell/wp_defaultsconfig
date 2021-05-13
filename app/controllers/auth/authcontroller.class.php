@@ -25,7 +25,7 @@ class AuthController extends Controller
             $this->model_instance['users']->assign($this->request->getAll());
             $this->model_instance['users']->validator($this->request->getAll(), Form_rules::login());
             if ($this->model_instance['users']->validationPasses()) {
-                $user = $this->model_instance['users']->findByEmail($this->request->getAll('email'));
+                $user = $this->model_instance['users']->getDetails($this->request->getAll('email'), 'email');
                 if ($user && password_verify($this->request->getAll('password'), $user->password)) {
                     $remember = ((isset($this->request->getAll()['rem'])) && $this->request->getAll('rem') === 'on') ? true : false;
                     $user->login($remember);
@@ -65,7 +65,7 @@ class AuthController extends Controller
     //         $fb_data = json_decode($this->request->getAll()['freedata'], true, JSON_UNESCAPED_SLASHES);
     //         if ($fb_data['email']) {
     //             $this->model_instance['users']->assign($this->renameKeys($fb_data, ['last_name' => 'lastName', 'first_name' => 'firstName']));
-    //             if (!$this->model_instance['users']->findByEmail($fb_data['email'])) {
+    //             if (!$this->model_instance['users']->getDetails($fb_data['email'],'email)) {
     //                 $this->model_instance['users']->profileImage = $fb_data['picture']['data']['url'];
     //                 $this->model_instance['users']->oauth_provider = 'facebook';
     //                 $this->model_instance['users']->save();
@@ -120,7 +120,7 @@ class AuthController extends Controller
         $email = array_pop($userInfos);
         $salt = array_pop($userInfos);
         $this->view_instance->set_page_title('Email verification');
-        $user = $this->model_instance['users']->findByEmail($email);
+        $user = $this->model_instance['users']->getDetails($email, 'email');
         $msg = file_get_contents(FILES . 'template' . DS . 'home' . DS . 'LR' . DS . 'verification_result.php');
         if ($user && $user->salt === $salt) {
             $msg = str_replace('{{class}}', 'text-success', $msg);
@@ -204,7 +204,7 @@ class AuthController extends Controller
             $this->model_instance['users']->assign($this->request->getAll());
             $this->model_instance['users']->validator($this->request->getAll(), Form_rules::forgot());
             if ($this->model_instance['users']->validationPasses()) {
-                $user = $this->model_instance['users']->findByEmail($this->model_instance['users']->email);
+                $user = $this->model_instance['users']->getDetails($this->model_instance['users']->email, 'email');
                 if ($user) {
                     $user->token = (new Token())->user_identifiant(128);
                     $user->token_expire = ((new DateTime('now'))->add(new DateInterval('PT30M')))->format('Y-m-d H:i:s');
@@ -249,7 +249,7 @@ class AuthController extends Controller
                 $url = explode('/', $this->request->getAll('url_data'));
                 $token = array_pop($url);
                 $email = array_pop($url);
-                $user = $this->model_instance['users']->findByEmail($email);
+                $user = $this->model_instance['users']->getDetails($email, 'email');
                 if (!$user->count() > 0) {
                     $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning', 'Votre email n\'existe pas dans notre system!<br>Merci de vous enregistrer')]);
                 } elseif ($token == $user->token) {

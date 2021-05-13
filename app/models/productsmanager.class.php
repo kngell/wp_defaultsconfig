@@ -91,6 +91,15 @@ class ProductsManager extends Model
         $this->p_cost_per_item = (double)$this->p_cost_per_item;
         // User Salt
         $this->user_salt = AuthManager::$currentLoggedInUser->salt;
+        // product slag
+        $slug = $this->str_to_url($this->p_title);
+        if (!$this->p_slug || empty($this->p_lug) || !isset($this->p_slug) || $this->p_slug != $slug) {
+            while ($this->getDetails($slug, 'p_slug')) :
+                    $slug = $this->str_to_url($slug . '-' . rand(0, 99999));
+            endwhile;
+            $this->p_slug = $slug;
+        }
+        $slug = null;
         return true;
     }
 
@@ -236,5 +245,18 @@ class ProductsManager extends Model
                 default:
                 break;
             }
+    }
+
+    //=======================================================================
+    // str to url
+    //=======================================================================
+    public function str_to_url($url)
+    {
+        $url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
+        $url = trim($url, '-');
+        $url = iconv('utf-8', 'us-ascii//TRANSLIT', $url);
+        $url = strtolower($url);
+        $url = preg_replace('~[^-a-z0-9_]+~', '', $url);
+        return $url;
     }
 }
