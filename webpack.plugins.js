@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+// const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const DelWebpackPlugin = require("del-webpack-plugin");
 const AssetsPlugin = require("assets-webpack-plugin");
 const FileManagerPlugin = require("filemanager-plugin").WebpackFilemanager;
@@ -14,7 +15,7 @@ module.exports = {
       include: ["*.js", "*.css"], //"*.js",
       info: true,
       keepGeneratedAssets: true,
-      allowExternal: false,
+      allowExternal: true,
     }),
     new AssetsPlugin({
       filename: "assets.json",
@@ -121,6 +122,9 @@ module.exports = {
               },
             ],
           },
+          // del: {
+          //   items: ['./dist']
+          // }
         },
       },
     }),

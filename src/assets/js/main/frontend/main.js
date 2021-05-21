@@ -2,6 +2,7 @@ import { Add } from "corejs/form_crud";
 import owlCarousel from "owl.carousel";
 import "select2";
 import user_cart from "corejs/user_cart";
+import favicon from "img/favicon.ico";
 class Main {
   constructor(element) {
     this.element = element;
@@ -22,7 +23,7 @@ class Main {
       style: "currency",
       currency: "EUR",
     });
-
+    console.log(favicon);
     //=======================================================================
     //Add to cart
     //=======================================================================

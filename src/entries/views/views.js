@@ -57,16 +57,17 @@ import "views/home/partials/_banner_area.php";
 import "views/home/partials/_blog.php";
 import "views/home/partials/_empty_cart_template.php";
 import "views/home/partials/_new_products.php";
-import "views/home/partials/_shopping_cart.php";
 import "views/home/partials/_special_price.php";
 import "views/home/partials/_top_sales.php";
 import "views/home/partials/_wishlist.php";
 //home Pages ecommerce product
 import "views/home/product/product.php";
+import "views/home/product/details.php";
 import "views/home/product/partials/_product_details.php";
 import "views/home/product/partials/_not_found_product.php";
-//home Pages ecommerce product
-import "views/home/cart.php";
+//home Pages ecommerce Cart
+import "views/home/cart/cart.php";
+import "views/home/cart/partials/_shopping_cart.php";
 // home pages ecommerce account
 import "views/home/account/account.php";
 import "views/home/account/payment.php";

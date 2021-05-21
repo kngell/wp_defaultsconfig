@@ -19,13 +19,18 @@ module.exports = {
       dependOn: "js/librairies/frontlib",
     },
     //Ecommerce - Product page js
-    "js/custom/home/product": {
-      import: ["js/custom/home/product"],
+    "js/custom/home/product/product": {
+      import: ["js/custom/home/product/product"],
+      dependOn: "js/librairies/frontlib",
+    },
+    //Ecommerce - Details (custom) page js
+    "js/custom/home/product/details": {
+      import: ["js/custom/home/product/details"],
       dependOn: "js/librairies/frontlib",
     },
     //Ecommerce - Cart page js
-    "js/custom/home/cart": {
-      import: ["js/custom/home/cart"],
+    "js/custom/home/cart/cart": {
+      import: ["js/custom/home/cart/cart"],
       dependOn: "js/librairies/frontlib",
     },
     //Ecommerce - Profile page js

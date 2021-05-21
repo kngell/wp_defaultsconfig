@@ -40,11 +40,13 @@ class Form_rules
             ],
             'firstName' => [
                 'required' => true,
+                'min' => 2,
                 'max' => 64,
                 'display' => 'Firstname'
             ],
             'lastName' => [
                 'required' => true,
+                'min' => 2,
                 'max' => 64,
                 'display' => 'Lastname'
             ],
@@ -52,6 +54,7 @@ class Form_rules
                 'display' => 'Username',
                 'required' => true,
                 'unique' => 'users',
+                'min' => 2,
                 'max' => 20
             ],
             'email' => [

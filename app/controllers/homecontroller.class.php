@@ -36,6 +36,17 @@ class HomeController extends Controller
         $this->view_instance->render('home' . DS . 'product' . DS . 'product');
     }
 
+    // Product details custom
+    public function details($data = [])
+    {
+        // $id = $this->request->add_slashes(array_pop($data));
+
+        $this->view_instance->set_pageTitle('Details');
+        $this->view_instance->set_siteTitle('Details');
+        // $this->view_instance->p_details = $this->model_instance['products']->getDetails($id, 'p_slug');
+        $this->view_instance->render('home' . DS . 'product' . DS . 'details');
+    }
+
     //page cart
     public function cart($data = [])
     {
@@ -48,7 +59,7 @@ class HomeController extends Controller
         // $this->view_instance->cart = $cart;
         $this->view_instance->set_pageTitle('Cart');
         $this->view_instance->set_siteTitle('Cart');
-        $this->view_instance->render('home' . DS . 'cart');
+        $this->view_instance->render('home' . DS . 'cart' . DS . 'cart');
     }
 
     //page account

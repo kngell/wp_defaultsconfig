@@ -13,13 +13,12 @@
                   <li><span>Eco Tax:</span>&nbsp;<span>$85.96</span></li>
                   <li><span>Shipping cost</span>&nbsp;<span>$985.3</span></li>
                   <li class="font-baloo font-size-20"><span class="product_price_title">Deal Price:</span>&nbsp;<span
-                          class="text-danger" id="deal-price">{{total_price}}</span>
+                          class="text-black-50" id="deal-price">{{total_price}}</span>
                       </span>
                   </li>
               </ul>
           </div>
-          <div class="card-footer text-center"> <button class="btn btn-warning mt-3"
-                  onclick="location.href='checkout'">Proceed to
+          <div class="card-footer text-center"> <button class="btn mt-3" onclick="location.href='checkout'">Proceed to
                   buy</button>
           </div>
       </div>

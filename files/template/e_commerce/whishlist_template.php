@@ -26,10 +26,9 @@
                 <input type="hidden" name="user_id" value="1">
                 <input type="hidden" name="csrftoken" value="{{token}}">
 
-                <button type="submit"
-                    class="btn font-baloo text-danger pl-0 pr-3 border-right deleteBtn">Delete</button>
+                <button type="submit" class="btn font-baloo pl-0 pr-3 border-right deleteBtn">Delete</button>
             </form>
-            <button type="button" class="btn font-baloo text-danger">Add to cart</button>
+            <button type="button" class="btn font-baloo">Add to cart</button>
         </div>
         <!-- !Produt quantity -->
     </div>

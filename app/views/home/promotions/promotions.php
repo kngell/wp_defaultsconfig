@@ -5,7 +5,7 @@
     rel="stylesheet" type="text/css">
 <?php $this->end(); ?>
 <?php $this->start('body'); ?>
-<main id=main-site>
+<main id="main-site">
     <!-- Content -->
     <section class="head-promotions" id=head-promotions>
         <div class="container title">

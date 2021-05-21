@@ -40,7 +40,7 @@
       <form action="#" class="font-size-14 font-rale">
         <a href="<?= PROOT ?>home/cart"
           class="py-2 rounded-pill color-primary-bg">
-          <span class="font-size-16 px-2 text-white"><i class="fas fas fa-shopping-cart"></i></span>
+          <span class="font-size-16 px-2 text-white"><i class="fal fa-shopping-cart"></i></span>
           <span class="px-3 py-2 rounded-pill text-dark bg-light cart_nb_elt"><?=is_array($this->user_cart) ? count(array_filter($this->user_cart, function ($item) {return $item->c_content == 'cart';})) : 0?></span>
         </a>
         <a href="#"></a>

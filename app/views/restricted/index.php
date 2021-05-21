@@ -9,8 +9,7 @@
     <!-- Content -->
     <div class="container mt-4">
         <div class="logo-404">
-            <a href="index.html"><img src="/kngell_ecommerce/public/assets/img/logo.png" alt=""
-                    style="max-width:200px;" /></a>
+            <a href="index.html"><img src="/kngell_ecommerce/public/assets/img/logo.png" alt="" style="max-width:200px;" /></a>
         </div>
         <div class="content-404">
             <img src="/kngell_ecommerce/public/assets/img/404.png" class="img-responsive" alt="" />

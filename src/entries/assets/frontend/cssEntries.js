@@ -18,14 +18,19 @@ module.exports = {
       import: ["css/custom/home/index.sass"],
       dependOn: "css/librairies/frontlib",
     },
-    //Product page Ecommerce
-    "css/custom/home/product": {
-      import: ["css/custom/home/product.sass"],
+    //Product page prodict standard Ecommerce
+    "css/custom/home/product/product": {
+      import: ["css/custom/home/product/product.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //Product page Product Details custom Ecommerce
+    "css/custom/home/product/details": {
+      import: ["css/custom/home/product/details.sass"],
       dependOn: "css/librairies/frontlib",
     },
     //Ecommerce - Cart Page
-    "css/custom/home/cart": {
-      import: ["css/custom/home/cart.scss"],
+    "css/custom/home/cart/cart": {
+      import: ["css/custom/home/cart/cart.sass"],
       dependOn: "css/librairies/frontlib",
     },
     //Ecommerce - Account Page
@@ -54,7 +59,7 @@ module.exports = {
       dependOn: "css/librairies/frontlib",
     },
     //Ecommerce - Checkout Page
-    "css/custom/home/acount/checkout": {
+    "css/custom/home/account/checkout": {
       import: ["css/custom/home/account/checkout.sass"],
       dependOn: "css/librairies/frontlib",
     },

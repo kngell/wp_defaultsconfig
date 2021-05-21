@@ -9,7 +9,9 @@
       "cart",
       "promotions",
       "sitemap",
-      "boutique"
+      "boutique",
+      "details",
+      "checkout"
     ],
     "AdminController": ["login"],
     "AuthController": ["*"],
@@ -36,7 +38,7 @@
     "AssocController": ["*"],
     "CommentsController": ["*"],
     "AssetsController": ["*"],
-    "HomeController": ["profile", "account", "payment", "checkout"]
+    "HomeController": ["profile", "account", "payment"]
   },
   "admin": {
     "denied": {},

@@ -1,21 +1,27 @@
 import { get_visitors_data, send_visitors_data } from "corejs/visitors";
 import log_reg from "corejs/logregloader";
 import "focus-within-polyfill";
+import { select2AjaxParams } from "corejs/form_crud";
+// import "smartWizard";
 // import { isIE } from "corejs/config";
-document.addEventListener("DOMContentLoaded", function () {
-  function PhpPlugin(element) {
+
+class HomePlugin {
+  constructor(element) {
     this.element = element;
-    this.init();
   }
-  PhpPlugin.prototype.init = function () {
-    this.setupVariables();
-    this.setupEvents();
+
+  _init = () => {
+    this._setupVariables();
+    this._setupEvents();
   };
-  PhpPlugin.prototype.setupVariables = function () {
+
+  _setupVariables = () => {
     this.loginBtn = this.element.find("#login_btn");
     this.header = this.element.find("#header");
+    this.navigation = this.element.find(".navigation");
+    this.wrapper = this.element.find(".tab-content");
   };
-  PhpPlugin.prototype.setupEvents = function () {
+  _setupEvents = () => {
     var phpPlugin = this;
 
     //=======================================================================
@@ -46,11 +52,43 @@ document.addEventListener("DOMContentLoaded", function () {
       send_visitors_data(data, manageR);
       function manageR(response) {}
     });
+    //=======================================================================
+    //Ajax Select2
+    //=======================================================================
+    //Activate select2 box for contries
+    phpPlugin.wrapper.find(".select_country").select2({
+      placeholder: "",
+      // minimumInputLength: 1,
+      allowClear: true,
+      width: "100%",
+      ajax: select2AjaxParams({
+        url: "guests/get_countries",
+      }),
+    });
+    //=======================================================================
+    //Tootgle checkout step by step
+    //=======================================================================
+    // $(".page-content").smartWizard();
+    // phpPlugin.navigation.on("click", ".tab-control .next-btn", function (e) {
+    //   e.preventDefault();
+    //   phpPlugin.navigation
+    //     .find(".nav-pills > .active")
+    //     .next("li")
+    //     .find("a")
+    //     .trigger("click");
+    //   console.log(phpPlugin.navigation.find(".nav-pills > .active"));
+    // });
+    // phpPlugin.wrapper.on("click", ".tab-control .previous-btn", () => {
+    //   e.preventDefault();
+    //   phpPlugin.wrapper
+    //     .find(".nav-pills .active")
+    //     .prev("li")
+    //     .find("a")
+    //     .trigger("click");
+    //   console.log($(this));
+    // });
   };
-
-  $.fn.phpPlugin = function (options) {
-    new PhpPlugin(this);
-    return this;
-  };
-  $("#body").phpPlugin();
+}
+document.addEventListener("DOMContentLoaded", function () {
+  new HomePlugin($("#body"))._init();
 });

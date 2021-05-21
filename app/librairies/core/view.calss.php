@@ -48,7 +48,6 @@ class View
         }
         if (file_exists(VIEW . $this->view_file . '.php')) {
             include VIEW . $this->view_file . '.php';
-        // include VIEW . 'layouts' . DS . $this->_layout . '.php';
         } else {
             Rooter::redirect('restricted' . DS . 'index');
         }

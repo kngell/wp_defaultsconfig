@@ -1,4 +1,3 @@
-import { param } from "jquery";
 import { BASE_URL, isIE } from "./config";
 
 //display all details

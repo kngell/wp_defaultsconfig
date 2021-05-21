@@ -1,16 +1,15 @@
 // global classes ================
-@use "corecss/mixins" as *
 @use "corecss/variables" as *
-@include fontface("roboto", "fonts/Roboto/Roboto-Regular", 100, normal, "ttf")
-@include fontface("poppins", "fonts/Poppins/Poppins-Regular", 100, normal, "ttf")
+@use "corecss/font" as *
+
 *
+  font-family: $font-roboto,$font-poppins,$font-fira
   margin: 0
   padding: 0
   box-sizing: border-box
-
-body
-  font-family: 'Poppins'
-
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  
 h1
   font-size: 2.5rem
   font-weight: 700

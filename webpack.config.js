@@ -21,6 +21,8 @@ const FileManagerPlugin = require("filemanager-plugin").WebpackFilemanager;
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const PhpConfig = require("./php_config.js");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 //=======================================================================
 //Common config
@@ -32,6 +34,7 @@ const commonConfig = merge(common_plugins, {
   resolve: { alias: wp_alias },
   output: {
     filename: devMode ? "[name].js" : "[name]_[fullhash].js",
+    assetModuleFilename: devMode ? "[name][ext][query]" : "[hash][ext][query]",
     publicPath: ASSET_PATH,
     library: "kngell",
     libraryTarget: "umd",
@@ -58,7 +61,7 @@ let server = {
 //Views config
 //=======================================================================
 var viewsConfig = Object.assign({}, commonConfig, {
-  entry: "entries/views/views.js",
+  entry: "entries/views/views", //PhpConfig.entries, //"entries/views/views",
   output: {
     path: path.resolve(__dirname, "app", "views"),
     filename: "[name].js",
@@ -261,8 +264,6 @@ const productionConfig = {
     minimizer: [
       new CssMinimizerPlugin({
         parallel: true,
-        cache: true,
-        sourceMap: false,
         minimizerOptions: {
           preset: [
             "default",

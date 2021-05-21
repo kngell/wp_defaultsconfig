@@ -13,8 +13,12 @@ module.exports = {
       options: {},
     },
     {
-      test: /\.(php)$/,
+      test: /\.(php)$/i,
       include: [path.resolve(__dirname, "src", "views")],
+      // type: "asset/resource",
+      // generator: {
+      //   filename: "../../app/views/home/[name][ext][query]",
+      // },
       use: [
         {
           loader: "file-loader",
@@ -26,15 +30,14 @@ module.exports = {
         {
           loader: "extract-loader",
           options: {
-            attrs: ["img:src", "link:href", "style:url"],
+            publicPath: "../",
           },
         },
         {
           loader: "html-loader",
           options: {
-            attributes: true,
-            esModule: true,
-            minimize: false,
+            sources: true,
+            esModule: false,
           },
         },
       ],
@@ -82,6 +85,10 @@ module.exports = {
         /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
         /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
       ],
+      // type: "asset/resource",
+      // generator: {
+      //   filename: "../../public/assets/img/[name][ext][query]",
+      // },
       use: {
         loader: "file-loader",
         options: {
@@ -95,6 +102,10 @@ module.exports = {
     },
     {
       test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
+      // type: "asset/resource",
+      // generator: {
+      //   filename: "fonts/[name][ext][query]",
+      // },
       use: [
         {
           loader: "file-loader",
@@ -109,6 +120,10 @@ module.exports = {
 
     {
       test: /\.svg$/,
+      include: [
+        /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+        /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
+      ],
       use: [
         {
           loader: "raw-loader",

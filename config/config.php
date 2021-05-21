@@ -61,14 +61,13 @@ define('CKFINDER', SCRIPT . DS . 'ckfinder' . DS);
 define('UPLOAD', SCRIPT . DS . 'assets' . DS . 'img' . DS . 'upload' . DS);
 define('LAZYLOAD', SCRIPT . DS . 'assets' . DS . 'lazyload' . DS);
 
-//var_dump(FONT);
 // -----------------------------------------------------------------------
 // DATA BASE PARAMS
 // -----------------------------------------------------------------------
+define('DB_HOST', '127.0.0.1'); //host use IP adresse to avoid DNS lookup
 define('DB_NAME', 'Kngell_eshopping'); // database Name
 define('DB_USER', 'root'); //User
 define('DB_PWD', ''); //Passord
-define('DB_HOST', '127.0.0.1'); //host use IP adresse to avoid DNS lookup
 
 // -----------------------------------------------------------------------
 // VISITORS, LOGIN & REGISTRATION
@@ -79,9 +78,13 @@ define('VISITOR_COOKIE_NAME', 'gcx_kngell_eshop01'); // Cookies for visitors tra
 define('COOKIE_EXPIRY', 60 * 60 * 24 * 360); //time expiry remember me cookies expiry 2592000
 define('TOKEN_NAME', 'token');
 define('USERNAME', 'admin@kngell.com');
-define('NO_REPLY', 'no-reply@kngell.com');
 define('PASSWORD', 'Akonoakono169&169');
 define('REDIRECT', 'page_to_redirect');//Store current page to redirect on logout;
+// -----------------------------------------------------------------------
+// EMAILS
+// -----------------------------------------------------------------------
+define('EMAIL_FROM', 'no-reply@kngell.com');
+define('MAIL_ENABLED', true);
 
 // -----------------------------------------------------------------------
 // PERMISSIONS
@@ -103,6 +106,13 @@ define('FB_GRAPH_STATE', 'eciphp');
 define('IP_KEY', '4eb97a89cdfdaf7a911e1c0a9b01dc78b72f85d8fe297572e7fb549d9d3a0c33');
 define('EMAIL_KEY', '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');
 
-// ----------------------------------------------------------------------
-// SSL Letsencrypt
 // -----------------------------------------------------------------------
+// PAYPAL
+// -----------------------------------------------------------------------
+define('PAYPAL_CLIENT_ID', '');
+define('PAYPAL_SECRET_ID', '');
+define('PAYPAL_SANDBOX', true);
+// -----------------------------------------------------------------------
+// CHECKOUT
+// -----------------------------------------------------------------------
+define('ACCOUNT_REQUIRED', true);

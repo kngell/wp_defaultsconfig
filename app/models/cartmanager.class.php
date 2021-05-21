@@ -16,6 +16,7 @@ class CartManager extends Model
     public $user_id;
     public $item_id;
     public $item_qty;
+    public $totalAmount;
     public $c_content;
 
     //=======================================================================
