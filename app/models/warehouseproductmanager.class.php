@@ -9,6 +9,7 @@ class WarehouseProductManager extends Model
     public $whID;
     public $productID;
     public $created_at;
+    public $updated_at;
 
     //=======================================================================
     //construct

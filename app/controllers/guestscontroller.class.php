@@ -34,31 +34,32 @@ class GuestsController extends Controller
     public function Add()
     {
         if ($this->request->exists('post')) {
-            $table = $this->request->getAll('table');
-            $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
-            $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
             $data = $this->request->getAll();
-            if ($file['success']) {
-                $this->model_instance[$table]->assign($data);
-                method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
-                if ($this->model_instance[$table]->validationPasses()) {
-                    if ($resp = $this->model_instance[$table]->save($data)) {
-                        !in_array($table, ['cart']) ? $this->sendMail($data) : '';
-                        $action = ($table == 'utilisateur' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
-                        $success_msg = $this->model_instance[$table]->get_successMsg($resp, $action, $this->_method);
-                        $output_msg = (isset($data['wrap_msg']) && $data['wrap_msg'] == true) ? FH::showMessage('success text-center p-3', $success_msg) : $success_msg;
-                        $this->jsonResponse(['result' => 'success', 'msg' => $output_msg]);
+            if ((new Token())->validateToken($data['csrftoken'])) {
+                $table = $this->request->getAll('table');
+                $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
+                $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
+                if ($file['success']) {
+                    $this->model_instance[$table]->assign($data);
+                    method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
+                    if ($this->model_instance[$table]->validationPasses()) {
+                        if ($resp = $this->model_instance[$table]->save($data)) {
+                            !in_array($table, ['cart']) ? $this->sendMail($data) : '';
+                            $action = ($table == 'utilisateur' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
+                            $success_msg = $this->model_instance[$table]->get_successMsg($resp, $action, $this->_method);
+                            $output_msg = (isset($data['wrap_msg']) && $data['wrap_msg'] == true) ? FH::showMessage('success text-center p-3', $success_msg) : $success_msg;
+                            $this->jsonResponse(['result' => 'success', 'msg' => $output_msg]);
+                        } else {
+                            $err_msg = !in_array($table, ['cart']) ? FH::showMessage('danger', 'Server encountered errors!') : false;
+                            $this->jsonResponse(['result' => 'error', 'msg' => $err_msg]);
+                        }
                     } else {
-                        $err_msg = !in_array($table, ['cart']) ? FH::showMessage('danger', 'Server encountered errors!') : false;
-                        $this->jsonResponse(['result' => 'error', 'msg' => $err_msg]);
+                        $errors = H::Object_Keys_format($this->model_instance[$table]->getErrorMessages(), H::get_Newkeys($this->model_instance[$table], $this->request->getAll('frm_name')));
+                        $this->jsonResponse(['result' => 'error-field', 'msg' => $errors]);
                     }
                 } else {
-                    $errors = H::Object_Keys_format($this->model_instance[$table]->getErrorMessages(), H::get_Newkeys($this->model_instance[$table], $this->request->getAll('frm_name')));
-                    $this->jsonResponse(['result' => 'error-field', 'msg' => $errors]);
+                    $this->jsonResponse(['result' => 'error-field', 'msg' => $file['msg']]);
                 }
-            } else {
-                $this->jsonResponse(['result' => 'error-field', 'msg' => $file['msg']]);
             }
         }
     }
@@ -66,16 +67,17 @@ class GuestsController extends Controller
     //add to cart (ecommerce), from whishlist
     public function toggleWishlistAndcCart()
     {
-        $table = $this->request->getAll('table');
-        $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-        $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
         $data = $this->request->getAll();
-        $this->model_instance[$table]->assign($data);
-        $method = $this->request->getAll('method');
-        if ($output = $this->model_instance[$table]->manage_user_cart($method)) {
-            $this->jsonResponse(['result' => 'success', 'msg' => $output]);
-        } else {
-            $this->jsonResponse(['result' => 'error', 'msg' => '']);
+        if ((new Token())->validateToken($data['csrftoken'])) {
+            $table = $data['table'];
+            $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
+            $this->model_instance[$table]->assign($data);
+            $method = $this->request->getAll('method');
+            if ($output = $this->model_instance[$table]->manage_user_cart($method)) {
+                $this->jsonResponse(['result' => 'success', 'msg' => $output]);
+            } else {
+                $this->jsonResponse(['result' => 'error', 'msg' => '']);
+            }
         }
     }
 
@@ -85,7 +87,7 @@ class GuestsController extends Controller
         $body = '';
         $body .= 'You have a new message from ' . $data['email'] . ' into your ' . $data['table'] . ' table' . "\r\n";
         $subject = 'New candidate has sent a cv';
-        H::sendmailgrid($to, $subject, $body);
+        H_Email::sendmailgrid($to, $subject, $body);
         //mail($to, $subjet, $body);
     }
 
@@ -96,17 +98,18 @@ class GuestsController extends Controller
     public function search()
     {
         if ($this->request->exists('post')) {
-            $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
             $data = $this->request->getAll();
-            if (!empty($data['search'])) {
-                $tables = ($this->get_model('SearchManager'))->getAll_tables();
-                if ($output = TH::searchTable($tables, $this->model_instance, $data)) {
-                    $this->jsonResponse(['result' => 'success', 'msg' => $output]);
+            if ((new Token())->validateToken($data['csrftoken'])) {
+                if (!empty($data['search'])) {
+                    $tables = ($this->get_model('SearchManager'))->getAll_tables();
+                    if ($output = TH::searchTable($tables, $this->model_instance, $data)) {
+                        $this->jsonResponse(['result' => 'success', 'msg' => $output]);
+                    } else {
+                        $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('info text-center', '0 resultat(s)')]);
+                    }
                 } else {
-                    $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('info text-center', '0 resultat(s)')]);
+                    $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('info text-center', 'la barre de recherche est vide')]);
                 }
-            } else {
-                $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('info text-center', 'la barre de recherche est vide')]);
             }
         }
     }

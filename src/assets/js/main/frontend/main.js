@@ -1,8 +1,10 @@
 import { Add } from "corejs/form_crud";
 import owlCarousel from "owl.carousel";
 import "select2";
-import user_cart from "corejs/user_cart";
+// import user_cart from "corejs/user_cart";
+import OP from "corejs/operator";
 import favicon from "img/favicon.ico";
+import user_cart from "corejs/user_cart";
 class Main {
   constructor(element) {
     this.element = element;
@@ -18,12 +20,19 @@ class Main {
   _setupEvents = () => {
     var phpPlugin = this;
 
-    // Currency
-    let currency = new Intl.NumberFormat("de-FR", {
-      style: "currency",
-      currency: "EUR",
+    //=======================================================================
+    //Init operation
+    //=======================================================================
+    const operation = new OP();
+    // // Currency
+    // let currency = new Intl.NumberFormat("de-FR", {
+    //   style: "currency",
+    //   currency: "EUR",
+    // });
+    operation._format_money({
+      wrapper: phpPlugin.wrapper,
+      fields: [".price .product_price"],
     });
-    console.log(favicon);
     //=======================================================================
     //Add to cart
     //=======================================================================

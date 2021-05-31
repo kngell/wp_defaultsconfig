@@ -9,7 +9,7 @@
                             aria-label="Close"><span>&times;</span></button>
                         <div class="form-wrapper rounded bg-light" id="" autocomplete="off">
                             <form action="" role="form" class="p-2" id="login-frm" autocomplete="off">
-                                <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'login-frm', $_SESSION[TOKEN_NAME]));?>
+                                <?=FH::csrfInput('csrftoken', (new Token)->generate_token(8, 'login-frm'));?>
                                 <div class="text-danger" id="loginAlert"></div>
                                 <p class="hint-text">Connectez-vous avec votre compte social média</p>
                                 <div class="social-btn clearfix mb-3">
@@ -66,7 +66,8 @@
             </div>
         </div>
         <!--Register form-->
-        <div class="modal fade-scale in" id="register-box">
+        <div class="modal fade-scale in" id="register-box" tabindex="-1" aria-hidden="true"
+            aria-labelledby="regiter-boxLabel">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -89,7 +90,7 @@
                             <hr class="mb-3">
                             <form action="" method="post" role="form" class="needs-validation" novalidate
                                 id="register-frm" autocomplete="off">
-                                <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'register-frm', $_SESSION[TOKEN_NAME]));?>
+                                <?=FH::csrfInput('csrftoken', (new Token)->generate_token(8));?>
                                 <div class="pt-0 my-0" id="regAlert"></div>
                                 <div class="row g-3">
                                     <div class="col">
@@ -157,7 +158,7 @@
         </div>
 
         <!--Forgot password-->
-        <div class="modal fade show" id="forgot-box">
+        <div class="modal fade show" id="forgot-box" tabindex="-1" aria-labelledby="forgot-boxLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -165,7 +166,7 @@
                             <span>&times;</span></button>
                         <div class="form-wrapper rounded bg-light" id="">
                             <form action="" method="post" role="form" class="p-2" id="forgot-frm" autocomplete="off">
-                                <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'forgot-frm', $_SESSION[TOKEN_NAME]));?>
+                                <?=FH::csrfInput('csrftoken', (new Token)->generate_token(8, 'forgot-frm'));?>
                                 <div id="forgotAlert"></div>
                                 <div class="input-group mb-3"> <small class="text-muted text-center">To reset your
                                         password,

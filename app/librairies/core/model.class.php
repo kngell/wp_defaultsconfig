@@ -117,11 +117,11 @@ abstract class Model
     }
 
     // Check for unique identifiant
-    public function get_unique($id_name)
+    public function get_unique($colid_name)
     {
-        $output = (new Token())->user_identifiant(24);
-        while ($this->getDetails($output, $id_name)) :
-            $output = (new Token())->user_identifiant(24);
+        $output = (new Token())->generate(24);
+        while ($this->getDetails($output, $colid_name)) :
+            $output = (new Token())->generate(24);
         endwhile;
         return $output;
     }
@@ -345,9 +345,10 @@ abstract class Model
                 $params = array_merge($params, ['class' => get_class($this)]);
             }
         }
-        $this->_results = $this->_db->select($tables ? $tables : $this->_table, $params)->get_results();
-        $this->_count = $this->_db->count();
-
+        $results_obj = $this->_db->select($tables ? $tables : $this->_table, $params);
+        $this->_results = $results_obj->get_results();
+        $this->_count = $results_obj->count();
+        $results_obj = null;
         return $this;
     }
 
@@ -485,11 +486,11 @@ abstract class Model
     //Deleting Data
     //=======================================================================
     //Main delete
-    public function delete($id = null, $params = [])
+    public function delete($id = '', $params = [])
     {
         $colID = $this->get_colID();
         $id = ($id == '') ? $this->$colID : $id;
-        $params = !$id ? $params : array_merge($params, ['where' => [$this->get_colID() => $id]]);
+        $params = $params ? ['where' => $params] : ['where' => [$this->get_colID() => $id]];
         if ($params = $this->beforeDelete($params)) {
             if ($this->_softDelete) {
                 $delete = $this->_db->update($this->_table, isset($params['restore']) ? $params['restore'] : ['deleted' => 1], $params['where']);

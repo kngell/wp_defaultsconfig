@@ -17,7 +17,7 @@
         <div class="card-body login-card-body">
             <p class="login-box-msg">Sign in to start your session</p>
             <form action="" method="post" id="login-frm">
-                <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'login-frm', $_SESSION[TOKEN_NAME])); ?>
+                <?= FH::csrfInput('csrftoken', (new Token())->generate_token(8)); ?>
                 <div id="loginAlert"></div>
                 <div class="input-group mb-3">
                     <input type="email" name="email" id="email" class="form-control" placeholder="Email">

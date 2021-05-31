@@ -1,5 +1,5 @@
 <form action="" id="company-frm" class="needs-validation pb-4" novalidate method="post">
-    <?=FH::csrfInput('csrftoken', hash_hmac('sha256', 'company-frm', $_SESSION[TOKEN_NAME]));?>
+    <?=FH::csrfInput('csrftoken', (new Token())->generate_token(8));?>
     <input type="hidden" name="compID" id="compID">
     <input type="hidden" name="created_at" id="created_at">
     <input type="hidden" name="updated_at" id="updated_at">

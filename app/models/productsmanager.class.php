@@ -27,6 +27,8 @@ class ProductsManager extends Model
     public $p_lenght;
     public $p_width;
     public $p_height;
+    public $p_size;
+    public $p_color;
     public $p_shipping_class;
     public $p_warehouse;
     public $p_company;

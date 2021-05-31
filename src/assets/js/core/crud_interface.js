@@ -9,6 +9,7 @@ import {
 import { AVATAR, IMG } from "corejs/config";
 import input from "corejs/inputErrManager";
 import Swal from "sweetalert2";
+import { Modal } from "bootstrap";
 export default class Cruds {
   constructor(data) {
     this.table = data.table;
@@ -16,6 +17,10 @@ export default class Cruds {
     this.form = data.form;
     this.modal = data.modal;
     this.select = data.select_tag;
+    this.bsmodal = new Modal(data.bsmodal, {
+      keyboard: false,
+    });
+    this.bsElement = data.bsmodal;
   }
 
   //=======================================================================
@@ -132,7 +137,7 @@ export default class Cruds {
             break;
           case "success":
             plugin.form.trigger("reset");
-            plugin.modal ? plugin.modal.modal("hide") : "";
+            plugin.modal ? plugin.bsmodal.hide() : "";
             if (params.swal) {
               Swal.fire("Success!", response.msg, "success").then(() => {
                 if (params.datatable == true) {
@@ -406,13 +411,14 @@ export default class Cruds {
   //clean form
   //=======================================================================
   _clean_form = (data = {}) => {
-    let modal = this.modal;
-    let form = this.form;
-    let select = data.select ? data.select : this.select;
+    const modal = this.modal;
+    const form = this.form;
+    const select = data.select ? data.select : this.select;
+    const bsElement = this.bsElement;
     //remove invalid input on input focus
     input.removeInvalidInput(modal);
     //clean form on hide
-    modal.on("hide.bs.modal", function () {
+    bsElement.addEventListener("hide.bs.modal", function () {
       if (modal.find(".is-invalid").length != 0) {
         input.reset_invalid_input(modal);
       }

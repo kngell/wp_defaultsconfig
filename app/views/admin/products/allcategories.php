@@ -63,7 +63,7 @@
             <div class="modal-body">
                 <form action="#" method="post" id="Categorie-frm" class="px-3 needs-validation" novalidate
                     enctype="multipart/form-data">
-                    <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'Categorie-frm', $_SESSION[TOKEN_NAME])); ?>
+                    <?= FH::csrfInput('csrftoken', (new Token())->generate_token(8)); ?>
                     <input type="hidden" name="operation" id="operation">
                     <input type="hidden" name="catID" id="catID">
                     <input type="hidden" name="date_enreg" id="date_enreg">

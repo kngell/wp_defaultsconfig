@@ -3,6 +3,9 @@
 //=======================================================================
 module.exports = {
   entry: {
+    //=======================================================================
+    //Globals
+    //=======================================================================
     //Front pages
     "css/main/frontend/main": {
       import: ["css/main/frontend/main.sass"],
@@ -13,6 +16,9 @@ module.exports = {
       import: ["css/plugins_entries/homeplugins.scss"],
       dependOn: "css/librairies/frontlib",
     },
+    //=======================================================================
+    //Homes Management pages
+    //=======================================================================
     //Index page css ecommerce
     "css/custom/home/home": {
       import: ["css/custom/home/index.sass"],
@@ -33,24 +39,9 @@ module.exports = {
       import: ["css/custom/home/cart/cart.sass"],
       dependOn: "css/librairies/frontlib",
     },
-    //Ecommerce - Account Page
-    "css/custom/home/account/account": {
-      import: ["css/custom/home/account/account.sass"],
-      dependOn: "css/librairies/frontlib",
-    },
-    //Ecommerce - Account Page
-    "css/custom/home/account/profile": {
-      import: ["css/custom/home/account/profile.scss"],
-      dependOn: "css/librairies/frontlib",
-    },
     //Ecommerce - Promotions Page
     "css/custom/home/promotions/promotions": {
       import: ["css/custom/home/promotions/promotions.sass"],
-      dependOn: "css/librairies/frontlib",
-    },
-    //Ecommerce - Promotions Page
-    "css/custom/home/account/payment": {
-      import: ["css/custom/home/account/payment.sass"],
       dependOn: "css/librairies/frontlib",
     },
     //Ecommerce - Boutique Page
@@ -58,9 +49,40 @@ module.exports = {
       import: ["css/custom/home/boutique/boutique.sass"],
       dependOn: "css/librairies/frontlib",
     },
+    //=======================================================================
+    //Users Management pages
+    //=======================================================================
+    //Ecommerce - Account Page
+    "css/custom/users/account/account": {
+      import: ["css/custom/users/account/account.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //Ecommerce - Account Page
+    "css/custom/users/account/profile": {
+      import: ["css/custom/users/account/profile.scss"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //Ecommerce - Login Page
+    "css/custom/users/account/login": {
+      import: ["css/custom/users/account/login.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //Ecommerce - Reset password
+    "css/custom/users/account/resetpassword": {
+      import: ["css/custom/users/account/resetpassword.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
+    //=======================================================================
+    //Users Checkout pages
+    //=======================================================================
+    //Ecommerce - Payement page
+    "css/custom/users/checkout/payment": {
+      import: ["css/custom/users/checkout/payment.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
     //Ecommerce - Checkout Page
-    "css/custom/home/account/checkout": {
-      import: ["css/custom/home/account/checkout.sass"],
+    "css/custom/users/checkout/checkout": {
+      import: ["css/custom/users/checkout/checkout.sass"],
       dependOn: "css/librairies/frontlib",
     },
   },

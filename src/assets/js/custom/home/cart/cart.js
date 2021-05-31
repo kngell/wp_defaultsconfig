@@ -11,6 +11,7 @@ const responsive = {
 };
 import { Call_controller, displayAllDetails, Call } from "corejs/form_crud";
 import user_cart from "corejs/user_cart";
+import OP from "corejs/operator";
 class Cart {
   constructor(element) {
     this.element = element;
@@ -31,6 +32,7 @@ class Cart {
     //=======================================================================
     let display = new user_cart(phpPlugin.wrapper, phpPlugin.header);
     display._display_cart();
+    const operation = new OP();
     //=======================================================================
     //Owl carousel
     //=======================================================================
@@ -51,7 +53,7 @@ class Cart {
         .find("#deal-price")
         .html(function (i, d_price) {
           let p_price = parseFloat(
-            display._parseLocaleNumber(
+            operation._parseLocaleNumber(
               elt.parents(".row").first().last().find(".product_price").html(),
               "de"
             )
@@ -59,140 +61,126 @@ class Cart {
           if (d_price.startsWith("EUR")) {
             d_price = parseFloat(d_price.match(/[0-9]+/g)[0]);
           } else {
-            d_price = parseFloat(display._parseLocaleNumber(d_price, "de"));
+            d_price = parseFloat(operation._parseLocaleNumber(d_price, "de"));
           }
-          console.log(d_price, " ", p_price);
-          return display._currency().format(d_price - p_price);
+          return operation._currency().format(d_price - p_price);
         });
     }
     //=======================================================================
     //Qty section
     //=======================================================================
-    phpPlugin.wrapper.find("#cart_items").on("click", ".qty-up", function (e) {
-      let input = $(this).next();
-      let item_id = $(this)
-        .parents(".qty")
-        .find("form")
-        .find("input[name=item_id]")
-        .val();
-      //change price using ajax
-      var data = {
-        table: "products",
-        id: item_id,
-        user: "guest",
-        url: "forms/showDetails",
-        data_type: "values",
-        return_mode: "details",
-        params: $(this),
-      };
-      displayAllDetails(data, display_product);
-      function display_product(response, elt) {
-        if (input.val() >= 1 && input.val() <= 9) {
-          input.val(function (i, oldval) {
-            Call({
-              url: "guests/call",
-              params: {
-                qty_up: "ok",
-                item_id: item_id,
-                qty: parseInt(oldval) + 1,
-                method: "update_cart",
-                table: "cart",
-              },
-            });
-            return ++oldval;
-          });
+
+    function get_product(item_id, params, qty) {
+      let review_price = true;
+      if (review_price) {
+        var data = {
+          table: "cart",
+          id: item_id,
+          user: "guest",
+          url: "forms/showDetails",
+          data_type: "values",
+          model_method: "update_UserCartPrice",
+          params: params,
+          qty: qty,
+        };
+        displayAllDetails(data, display_product);
+        function display_product(response, elt) {
           if (response.result == "success") {
-            // 1- Increase price of the product
-            let qty = parseInt(elt.next().val());
             elt
-              .parents(".qty")
+              .parents(".cart-qty")
               .parent()
               .next()
               .find(".product_price")
               .html(function () {
-                return display
+                return operation
                   ._currency()
-                  .format(parseFloat(response.msg.p_regular_price * qty));
+                  .format(parseFloat(response.msg[0].p_regular_price * qty));
               });
-            // 2- Set subtotal price
+            // 2- update subtotal price
             phpPlugin.wrapper
               .find("#deal-price")
               .html(function (i, deal_price) {
-                return display
+                return operation
                   ._currency()
                   .format(
-                    parseFloat(response.msg.p_regular_price) +
-                      display._parseLocaleNumber(deal_price, "de")
+                    operation._parseLocaleNumber(deal_price, "de") -
+                      (parseInt(response.msg[2]) - qty) *
+                        parseFloat(response.msg[0].p_regular_price)
                   );
               });
+            // update Taxes
+            $.each(response.msg[1], function (key, val) {
+              $("." + key + " .value").html(function (i, tax) {
+                const old_tax = parseInt(val[0]);
+                //update TTC
+                phpPlugin.wrapper
+                  .find("#total-price")
+                  .html(function (i, t_price) {
+                    const old_price = operation._parseLocaleNumber(
+                      t_price,
+                      "de"
+                    );
+                    const old_tax = operation._parseLocaleNumber(tax, "de");
+                    return operation
+                      ._currency()
+                      .format(
+                        old_price -
+                          old_tax +
+                          val[0] -
+                          (parseInt(response.msg[2]) - qty) *
+                            parseFloat(response.msg[0].p_regular_price)
+                      );
+                  });
+
+                return operation._currency().format(val[0]);
+              });
+            });
           }
         }
-      } //closing Ajax call
+      }
+    }
+    // Qty up
+    phpPlugin.wrapper.find("#cart_items").on("click", ".qty-up", function (e) {
+      const input = $(this).next();
+      const item_id = $(this)
+        .parents(".cart-qty")
+        .find("form")
+        .find("input[name=item_id]")
+        .val();
+      input.val(function (i, oldval) {
+        return !isNaN(oldval) ? ++oldval : oldval;
+      });
+      operation._wait(get_product(item_id, $(this), input.val()), 2000);
     });
     // Qty down
     phpPlugin.wrapper
       .find("#cart_items")
       .on("click", ".qty-down", function (e) {
         e.preventDefault();
-        let input = $(this).prev();
-        let item_id = $(this)
-          .parents(".qty")
+        const input = $(this).prev();
+        const item_id = $(this)
+          .parents(".cart-qty")
           .find("form")
           .find("input[name=item_id]")
           .val();
-        //change price using ajax
-        var data = {
-          table: "products",
-          id: item_id,
-          user: "guest",
-          url: "forms/showDetails",
-          data_type: "values",
-          return_mode: "details",
-          params: $(this),
-        };
-        displayAllDetails(data, display_product);
-        function display_product(response, elt) {
-          if (input.val() > 1 && input.val() <= 10) {
-            input.val(function (i, oldval) {
-              Call({
-                url: "guests/call",
-                params: {
-                  qty_up: "ok",
-                  item_id: item_id,
-                  qty: parseInt(oldval) - 1,
-                  method: "update_cart",
-                  table: "cart",
-                },
-              });
-              return --oldval;
-            });
-            if (response.result == "success") {
-              // 1- Increase price of the product
-              let qty = parseInt(elt.prev().val());
-              elt
-                .parents(".qty")
-                .parent()
-                .next()
-                .find(".product_price")
-                .html(function () {
-                  return display
-                    ._currency()
-                    .format(parseFloat(response.msg.p_regular_price * qty));
-                });
-              // 2- Set subtotal price
-              phpPlugin.wrapper
-                .find("#deal-price")
-                .html(function (i, deal_price) {
-                  return display
-                    ._currency()
-                    .format(
-                      display._parseLocaleNumber(deal_price, "de") -
-                        parseFloat(response.msg.p_regular_price)
-                    );
-                });
-            }
-          }
-        } //closing
+        input.val(function (i, oldval) {
+          return !isNaN(oldval) ? --oldval : oldval;
+        });
+        operation._wait(get_product(item_id, $(this), input.val()), 2000);
+      });
+    // Qty dManual add
+
+    phpPlugin.wrapper
+      .find("#cart_items")
+      .on("input", ".qty_input", function (e) {
+        e.preventDefault();
+        const item_id = $(this)
+          .parents(".cart-qty")
+          .find("form")
+          .find("input[name=item_id]")
+          .val();
+        const input = $(this);
+        operation._wait(get_product(item_id, $(this), input.val()), 2000);
       });
     //=======================================================================
     //Delete cart or wisjlist
@@ -266,7 +254,7 @@ class Cart {
     //=======================================================================
     phpPlugin.wrapper.on(
       "click",
-      "#cart_items .qty button[type=button], #wishlist-items .qty button[type=button]",
+      "#cart_items .cart-qty button[type=button], #wishlist-items .cart-qty button[type=button]",
       function (e) {
         e.preventDefault();
         let method = "";
@@ -283,7 +271,7 @@ class Cart {
             btn_bg = "btn-success";
           }
         }
-        $(this).html("Please wait....");
+        $(this).html("Wait...");
         var data = {
           url: "guests/toggleWishlistAndcCart",
           frm: $(this).prev(),
@@ -306,7 +294,6 @@ class Cart {
                 phpPlugin.wrapper.find("#wishlist").hide();
               }
             }
-            console.log(btn_bg);
             phpPlugin.wrapper
               .find("#new-phones")
               .find(

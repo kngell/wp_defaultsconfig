@@ -28,7 +28,7 @@ class FormsController extends Controller
             if ($output) {
                 $this->jsonResponse(['result' => 'success', 'msg' => $output]);
             } else {
-                $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('info text-center', H::get_errorMsg($this->model_instance[$table], $action, $this->_method))]);
+                $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('info text-center', 'H::get_errorMsg($this->model_instance[$table], $action, $this->_method)')]);
             }
         }
     }
@@ -41,7 +41,7 @@ class FormsController extends Controller
     {
         if ($this->request->exists('post')) {
             $table = $this->request->getAll('table');
-            $_REQUEST['method'] = 'showDetails';
+            $_REQUEST['method'] = !isset($_REQUEST['method']) ? 'showDetails' : $_REQUEST['method'];
             $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
             $output = FH::getShowAllData($this->model_instance[$table], $this->request, $this->request->getAll());
             if ($output) {
@@ -59,31 +59,30 @@ class FormsController extends Controller
     {
         if ($this->request->exists('post')) {
             $table = $this->request->getAll('table');
-            $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
-            // $categories = (array_key_exists('categorie', $_REQUEST)) ? array_values($_REQUEST['categorie']) : '';
             $data = $this->request->getAll();
-            //$posturl = ($table == 'posts') ? H_upload::uploadPostUrl($data['postContent']) : '';
-            $this->model_instance[$table]->assign($data);
-            method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
-            if ($this->model_instance[$table]->validationPasses()) {
-                $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
-                $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
-                if ($file['success']) {
-                    $this->model_instance[$table] = $file['msg'];
-                    if ($LastID = $this->model_instance[$table]->save($data)) {
-                        H_upload::manage_uploadImage($LastID, $table, $data);
-                        (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID->get_lastID() : '';
-                        (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
-                        $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $table . ' has been added');
-                        ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
-                    } else {
-                        $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'Le formulaire est vide!')]);
+            if ((new Token())->validateToken($data['csrftoken'])) {
+                $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
+                $this->model_instance[$table]->assign($data);
+                method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
+                if ($this->model_instance[$table]->validationPasses()) {
+                    $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
+                    $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
+                    if ($file['success']) {
+                        $this->model_instance[$table] = $file['msg'];
+                        if ($LastID = $this->model_instance[$table]->save($data)) {
+                            H_upload::manage_uploadImage($LastID, $table, $data);
+                            (!empty($categories)) ? $this->model_instance[$table]->postID = $LastID->get_lastID() : '';
+                            (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
+                            $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A ' . $table . ' has been added');
+                            ($table == 'comments') ? $this->jsonResponse(['result' => 'success', 'msg' => $this->commentResponse($table, $this->model_instance[$table], $LastID)]) : $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
+                        } else {
+                            $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'Le formulaire est vide!')]);
+                        }
                     }
+                } else {
+                    $errors = H::Object_Keys_format($this->model_instance[$table]->getErrorMessages(), H::get_Newkeys($this->model_instance[$table], $this->request->getAll('frm_name')));
+                    $this->jsonResponse(['result' => 'error-field', 'msg' => $errors]);
                 }
-            } else {
-                $errors = H::Object_Keys_format($this->model_instance[$table]->getErrorMessages(), H::get_Newkeys($this->model_instance[$table], $this->request->getAll('frm_name')));
-                $this->jsonResponse(['result' => 'error-field', 'msg' => $errors]);
             }
         }
     }
@@ -134,15 +133,16 @@ class FormsController extends Controller
     public function edit()
     {
         if ($this->request->exists('post')) {
-            $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
-            $table = $this->request->getAll('table');
-            $t_options = $this->request->getAll('tbl_options');
-            $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            $this->get_options_model($t_options);
-            if ($item = $this->model_instance[$table]->getDetails((int)$this->request->getAll('id'))) {
-                $this->jsonResponse(['result' => 'success', 'msg' => ['items' => $item, 'selectedOptions' => $this->get_options($t_options, $item)]]);
-            } else {
-                $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
+            if ((new Token())->validateToken($this->request->getAll('csrftoken'))) {
+                $table = $this->request->getAll('table');
+                $t_options = $this->request->getAll('tbl_options');
+                $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
+                $this->get_options_model($t_options);
+                if ($item = $this->model_instance[$table]->getDetails((int)$this->request->getAll('id'))) {
+                    $this->jsonResponse(['result' => 'success', 'msg' => ['items' => $item, 'selectedOptions' => $this->get_options($t_options, $item)]]);
+                } else {
+                    $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
+                }
             }
         }
     }
@@ -170,36 +170,37 @@ class FormsController extends Controller
     public function update()
     {
         if ($this->request->exists('post')) {
-            $this->request->csrfCheck($this->request->getAll('frm_name'), $this->request->getAll('csrftoken'));
-            $table = $this->request->getAll('table');
-            $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
-            $colID = $this->model_instance[$this->request->getAll('table')]->get_colID();
-            $this->model_instance[$table]->set_SoftDelete(true);
-            $categories = ($table === 'posts' && array_key_exists('categorie', $_REQUEST)) ? array_values($_REQUEST['categorie']) : '';
             $data = $this->request->getAll();
-            $this->model_instance[$table]->assign($this->model_instance[$table]->getDetails($data[$colID]));
-            AuthManager::check_UserSession();
-            $this->model_instance[$table]->assign($data);
-            $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
-            $this->model_instance[$table]->id = $data[$colID];
-            method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
-            if ($this->model_instance[$table]->validationPasses()) {
-                $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
-                if ($file['success']) {
-                    $this->model_instance[$table] = $file['msg'];
-                    if ($this->model_instance[$table]->save($data)) {
-                        H_upload::manage_uploadImage($this->model_instance[$table]->$colID, $table, $data);
-                        (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
-                        $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A' . $table . ' has been updated');
-                        $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
+            if ((new Token())->validateToken($data['csrftoken'])) {
+                $table = $data['table'];
+                $this->get_model(str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . 'Manager', $table);
+                $colID = $this->model_instance[$this->request->getAll('table')]->get_colID();
+                $this->model_instance[$table]->set_SoftDelete(true);
+                $categories = ($table === 'posts' && array_key_exists('categorie', $_REQUEST)) ? array_values($_REQUEST['categorie']) : '';
+                $this->model_instance[$table]->assign($this->model_instance[$table]->getDetails($data[$colID]));
+                AuthManager::check_UserSession();
+                $this->model_instance[$table]->assign($data);
+                $action = ($table == 'users' && isset($_REQUEST['action'])) ? $this->request->getAll('action') : '';
+                $this->model_instance[$table]->id = $data[$colID];
+                method_exists('Form_rules', $table) ? $this->model_instance[$table]->validator($data, Form_rules::$table()) : '';
+                if ($this->model_instance[$table]->validationPasses()) {
+                    $file = H_upload::upload_files($_FILES, $this->model_instance[$table]);
+                    if ($file['success']) {
+                        $this->model_instance[$table] = $file['msg'];
+                        if ($this->model_instance[$table]->save($data)) {
+                            H_upload::manage_uploadImage($this->model_instance[$table]->$colID, $table, $data);
+                            (!empty($categories)) ? $this->model_instance[$table]->saveCategories($categories, 'post_categorie') : '';
+                            $this->model_instance[$table]->notify(AuthManager::currentUser()->userID, $this->request->getAll('notification'), 'A' . $table . ' has been updated');
+                            $this->jsonResponse(['result' => 'success', 'msg' => $this->model_instance[$table]->get_successMessage($this->_method, $action)]);
+                        } else {
+                            $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
+                        }
                     } else {
-                        $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger', 'Server encountered errors!')]);
+                        $this->jsonResponse(['result' => 'error-file', 'msg' => $file['msg']]);
                     }
                 } else {
-                    $this->jsonResponse(['result' => 'error-file', 'msg' => $file['msg']]);
+                    $this->jsonResponse(['result' => 'error-field', 'msg' => $this->model_instance[$table]->getErrorMessages()]);
                 }
-            } else {
-                $this->jsonResponse(['result' => 'error-field', 'msg' => $this->model_instance[$table]->getErrorMessages()]);
             }
         }
     }

@@ -10,8 +10,7 @@
       "promotions",
       "sitemap",
       "boutique",
-      "details",
-      "checkout"
+      "details"
     ],
     "AdminController": ["login"],
     "AuthController": ["*"],
@@ -22,7 +21,15 @@
     "NewslettersController": ["*"],
     "FormsController": ["showAll", "showDetails"],
     "GuestsController": ["*"],
-    "AssetsController": ["*"]
+    "AssetsController": ["*"],
+    "LoginController": ["*"],
+    "UsersController": [
+      "checkout",
+      "account",
+      "emailverified",
+      "resetpassword",
+      "resetpassword"
+    ]
   },
   "LoggedIn": {
     "denied": {
@@ -38,7 +45,7 @@
     "AssocController": ["*"],
     "CommentsController": ["*"],
     "AssetsController": ["*"],
-    "HomeController": ["profile", "account", "payment"]
+    "UsersController": ["profile", "payment"]
   },
   "admin": {
     "denied": {},

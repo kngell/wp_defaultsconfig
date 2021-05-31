@@ -2,19 +2,18 @@ import { BASE_URL, isIE } from "./config";
 
 //display all details
 export function displayAllDetails(data, gestion) {
+  const form_data = new FormData();
+  form_data.append("isIE", isIE());
+  $.each(data, function (key, val) {
+    form_data.append(key, val);
+  });
   $.ajax({
     url: BASE_URL + data.url,
-    method: "post",
-    data: {
-      table: data.table,
-      id: data.id,
-      user: data.user ? data.user : "",
-      session_id: data.session_id ? data.session_id : "",
-      data_type: data.data_type ? data.data_type : "",
-      return_mode: data.return_mode ? data.return_mode : "",
-      token: data.token ? data.token : "",
-      frm_name: data.frm_name ? data.frm_name : "",
-    },
+    method: "POST",
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
     success: function (response) {
       gestion(response, data.params ? data.params : "");
     },
@@ -34,21 +33,17 @@ export function editForm(data, gestion) {
 
 //display all Items
 export function displayAllItems(data, gestion) {
+  const form_data = new FormData();
+  form_data.append("isIE", isIE());
+  $.each(data, function (key, val) {
+    form_data.append(key, val);
+  });
   $.ajax({
     url: BASE_URL + data.url,
-    method: "post",
-    data: {
-      table: data.table,
-      id: data.id != "" ? data.id : "",
-      start: 0,
-      max: data.max != "" ? data.max : "",
-      user: data.user != "" ? data.user : "",
-      query: data.query != "" ? data.query : "",
-      page: data.page != "" ? data.page : "",
-      pagination: data.pagination != "" ? data.pagination : "",
-      data_type: data.data_type ? data.data_type : "",
-      return_mode: data.return_mode ? data.return_mode : "",
-    },
+    method: "POST",
+    contentType: false,
+    processData: false,
+    data: form_data,
     success: function (response) {
       gestion(response, data.params ? data.params : "");
     },
@@ -58,29 +53,20 @@ export function displayAllItems(data, gestion) {
 //add Item
 export function Add(data, gestion) {
   var formData = new FormData(data.frm[0]);
-  formData.append("table", data.table);
-  formData.append("notification", data.notification);
-  formData.append("frm_name", data.frm_name);
-  if (data.hasOwnProperty("start_date"))
-    formData.append("start_date", data.start_date);
-  if (data.hasOwnProperty("end_date"))
-    formData.append("end_date", data.end_date);
-  if (data.hasOwnProperty("imageUrlsAry"))
-    formData.append("imageUrlsAry", data.imageUrlsAry);
-  if (data.hasOwnProperty("select2")) formData.append("select2", data.select2);
-  if (data.hasOwnProperty("categorie"))
-    formData.append("custom_categorie", data.categorie);
-  if (data.hasOwnProperty("files")) {
-    for (let i = 0; i < data.files.length; i++) {
-      formData.append(data.files[i].name, data.files[i]);
-    }
-  }
-  if (data.hasOwnProperty("select2")) {
-    $(data.select2).each(function (key, val) {
-      console.log(this);
+  formData.append("isIE", isIE());
+  $.each(data, function (key, val) {
+    if (typeof val === "object") {
+      for (const [k, v] of Object.entries(val)) {
+        formData.append(k, JSON.stringify(v));
+      }
+    } else if (val instanceof Array) {
+      for (let i = 0; i < val.length; i++) {
+        formData.append(val[i].name, data.files[i]);
+      }
+    } else {
       formData.append(key, val);
-    });
-  }
+    }
+  });
   $.ajax({
     url: BASE_URL + data.url,
     method: "post",
@@ -98,31 +84,19 @@ export function Call_controller(data, gestion) {
   var formData = new FormData(data.frm[0]);
   formData.append("frm_name", data.frm_name);
   formData.append("isIE", isIE());
-  if (data.table) formData.append("table", data.table);
-  if (data.notification) formData.append("notification", data.notification);
-  if (data.url_data) formData.append("url_data", data.url_data);
-  if (data.action) formData.append("action", data.action);
-  if (data.imageUrlsAry) formData.append("imageUrlsAry", data.imageUrlsAry);
-  if (data.freedata) formData.append("freedata", data.freedata);
-  if (data.start_date) formData.append("start_date", data.start_date);
-  if (data.end_date) formData.append("end_date", data.end_date);
-  if (data.id) formData.append("id", data.id);
-  if (data.user_id) formData.append("id", data.user_id);
-  if (data.method) formData.append("method", data.method);
-  if (data.hasOwnProperty("select2")) {
-    for (const [key, value] of Object.entries(data.select2)) {
-      formData.append(key, JSON.stringify(value));
+  $.each(data, function (key, val) {
+    if (typeof val === "object") {
+      for (const [k, v] of Object.entries(val)) {
+        formData.append(k, JSON.stringify(v));
+      }
+    } else if (val instanceof Array) {
+      for (let i = 0; i < val.length; i++) {
+        formData.append(val[i].name, data.files[i]);
+      }
+    } else {
+      formData.append(key, val);
     }
-  }
-  if (data.hasOwnProperty("categorie"))
-    formData.append("custom_categorie", data.categorie);
-  if (data.hasOwnProperty("tbl_options"))
-    formData.append("tbl_options", data.tbl_options);
-  if (data.hasOwnProperty("files")) {
-    for (let i = 0; i < data.files.length; i++) {
-      formData.append(data.files[i].name, data.files[i]);
-    }
-  }
+  });
   $.ajax({
     url: BASE_URL + data.url,
     method: "POST",
@@ -132,6 +106,9 @@ export function Call_controller(data, gestion) {
     data: formData,
     success: function (response) {
       gestion(response, data.params ? data.params : "");
+    },
+    error: function (request, status, error) {
+      console.log(request.responseText, error);
     },
   });
 }

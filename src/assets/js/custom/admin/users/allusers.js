@@ -27,6 +27,7 @@ class AllUsers {
       form: phpPlugin.modalform,
       modal: phpPlugin.modalbox,
       select_tag: ".group",
+      bsmodal: document.getElementById("modal-box"),
     });
     //Select2 ajax
     new select2()._init({

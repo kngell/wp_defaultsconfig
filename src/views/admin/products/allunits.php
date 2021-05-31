@@ -60,7 +60,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="#" method="post" id="add-units-frm" class="px-3 needs-validation" novalidate>
-                        <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'add-units-frm', $_SESSION[TOKEN_NAME])); ?>
+                        <?= FH::csrfInput('csrftoken', (new Token())->generate_token(8)); ?>
                         <input type="hidden" name="operation" id="operation">
                         <input type="hidden" name="unID" id="unID">
                         <input type="hidden" name="created_at" id="created_at">

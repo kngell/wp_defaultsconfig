@@ -1,18 +1,10 @@
 import { displayAllDetails } from "corejs/form_crud";
-
+import OP from "corejs/operator";
 export default class User_cart {
   constructor(wrapper, header) {
     this.wrapper = wrapper;
     this.header = header;
   }
-  //=======================================================================
-  //Currency
-  //=======================================================================
-  _currency = () =>
-    new Intl.NumberFormat("de-DE", {
-      style: "currency",
-      currency: "EUR",
-    });
 
   //=======================================================================
   //Display user cart items
@@ -25,6 +17,7 @@ export default class User_cart {
       url: "forms/showDetails",
       data_type: "template",
     };
+    const operation = new OP();
     displayAllDetails(data, display_cart);
     function display_cart(response) {
       if (response.result == "success") {
@@ -60,40 +53,17 @@ export default class User_cart {
           plugin.wrapper.find("#wishlist").show().fadeIn().delay(500);
         }
         setTimeout(function () {
-          plugin.wrapper.find("#deal-price").html(function (i, d_price) {
-            return plugin
-              ._currency()
-              .format(parseFloat(d_price.match(/[0-9]+/g)[0]));
+          operation._format_money({
+            wrapper: plugin.wrapper,
+            fields: [
+              "#deal-price",
+              ".product_price",
+              ".res-tax-item .value",
+              "#total-price",
+            ],
           });
-          plugin.wrapper.find(".product_price").html(function (i, p_price) {
-            return plugin
-              ._currency()
-              .format(parseFloat(p_price.match(/[0-9]+/g)[0]));
-          });
-        }, 200);
+        }, 500);
       }
     }
-  };
-  //=======================================================================
-  //Parse number
-  //=======================================================================
-  /**
-   * Parse a localized number to a float.
-   * @param {string} stringNumber - the localized number
-   * @param {string} locale - [optional] the locale that the number is represented in. Omit this parameter to use the current locale.
-   */
-  _parseLocaleNumber = (stringNumber, locale) => {
-    var thousandSeparator = Intl.NumberFormat(locale)
-      .format(11111)
-      .replace(/\p{Number}/gu, "");
-    var decimalSeparator = Intl.NumberFormat(locale)
-      .format(1.1)
-      .replace(/\p{Number}/gu, "");
-
-    return parseFloat(
-      stringNumber
-        .replace(new RegExp("\\" + thousandSeparator, "g"), "")
-        .replace(new RegExp("\\" + decimalSeparator), ".")
-    );
   };
 }

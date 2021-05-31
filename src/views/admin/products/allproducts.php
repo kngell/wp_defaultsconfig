@@ -86,7 +86,7 @@
                 <div class="modal-body">
                     <form action="#" method="post" id="new-product-frm" class="px-3 needs-validation"
                         enctype='multipart/form-data' novalidate>
-                        <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'new-product-frm', $_SESSION[TOKEN_NAME])); ?>
+                        <?= FH::csrfInput('csrftoken', (new Token())->generate_token(8)); ?>
                         <input type="hidden" name="operation" id="operation">
                         <input type="hidden" name="pdtID" id="pdtID">
                         <input type="hidden" name="created_at" id="created_at">
@@ -350,10 +350,8 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group mb-3">
-                                                    <label for="company">Company</label>
-                                                    <select class="form-select p_company select"
-                                                        aria-label=".form-select Default" name="p_company"
-                                                        id="p_company">
+                                                    <select class="form-select p_company" name="p_company"
+                                                        id="p_company" placeholder=" ">
                                                     </select>
                                                 </div>
                                             </div>
@@ -363,7 +361,6 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group mb-3">
-                                                    <label for="warehouse">Warehouse</label>
                                                     <select class="form-select p_warehouse"
                                                         aria-label=".form-select Default" name="p_warehouse"
                                                         id="p_warehouse">

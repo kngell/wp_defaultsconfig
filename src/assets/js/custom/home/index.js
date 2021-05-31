@@ -11,6 +11,8 @@ const responsive = {
   },
 };
 import imageLoaded from "corejs/waitfor";
+import banner1 from "img/banner1-cr-500x150.jpg";
+import banner2 from "img/banner2-cr-500x150.jpg";
 class Home {
   constructor(element) {
     this.element = element;

@@ -1,4 +1,4 @@
-import { Toast, Popover, Modal, Dropdown } from "bootstrap";
+import { Toast, Popover, Modal, Dropdown, Button, Nav } from "bootstrap";
 //=======================================================================
 //Jquery passive event
 //=======================================================================

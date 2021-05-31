@@ -28,8 +28,8 @@ define('CUSTOM_VALIDATOR', ROOT . DS . 'app' . DS . 'custom_validator' . DS);
 // -----------------------------------------------------------------------
 // URL ROOT
 // -----------------------------------------------------------------------
-define('URLROOT', 'https://localhost' . US . 'kngell_ecommerce' . US);
-define('ASSET_SERVICE_PROVIDER', 'https://localhost');
+define('URLROOT', 'http://localhost' . US . 'kngell_ecommerce' . US);
+define('ASSET_SERVICE_PROVIDER', 'http://localhost');
 // -----------------------------------------------------------------------
 // SITE NAME
 // -----------------------------------------------------------------------
@@ -77,9 +77,19 @@ define('REMEMBER_ME_COOKIE_NAME', 'hash'); //Cookies for logged in user remember
 define('VISITOR_COOKIE_NAME', 'gcx_kngell_eshop01'); // Cookies for visitors tracking
 define('COOKIE_EXPIRY', 60 * 60 * 24 * 360); //time expiry remember me cookies expiry 2592000
 define('TOKEN_NAME', 'token');
-define('USERNAME', 'admin@kngell.com');
-define('PASSWORD', 'Akonoakono169&169');
+define('SERIAL', 'serialx21589874');
+define('SALT', 'xslsaltiduser');
 define('REDIRECT', 'page_to_redirect');//Store current page to redirect on logout;
+define('SMTP_HOST', 'mail.kngell.com');
+define('SMTP_PORT', 465);
+define('SMTP_USERNAME', 'admin@kngell.com');
+define('SMTP_PASSWORD', 'Akonoakono169&169');
+define('SMTP_FROM', 'admin@kngell.com');
+define('SMTP_FROM_NAME', 'K\'nGELL Consulting & Services');
+define('MAX_LOGIN_ATTEMPTS_PER_HOUR', 5);
+define('MAX_EMAIL_VERIFICATION_PER_DAY', 3);
+define('PASSWORD_RESET_REQUEST_EXPIRY_TIME', 60 * 60);
+define('MAX_PW_RESET_REQUESTS_PER_DAY', 3);
 // -----------------------------------------------------------------------
 // EMAILS
 // -----------------------------------------------------------------------
@@ -116,3 +126,12 @@ define('PAYPAL_SANDBOX', true);
 // CHECKOUT
 // -----------------------------------------------------------------------
 define('ACCOUNT_REQUIRED', true);
+// -----------------------------------------------------------------------
+// Time zone cookies
+// -----------------------------------------------------------------------
+date_default_timezone_set('UTC');
+// session_set_cookie_params(['samesite' => 'Strict']);
+// -----------------------------------------------------------------------
+// Form
+// -----------------------------------------------------------------------
+define('CSRF_TOKEN_SECRET', 'sdgdsfdsffgfgglkglqhgfjgqe46454878');

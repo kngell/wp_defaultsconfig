@@ -10,7 +10,7 @@ class HomeController extends Controller
             $this->view_instance->set_siteTitle("K'nGELL Ingénierie Logistique");
             //Ecommerce products
             $this->view_instance->products = ($this->get_model('ProductsManager', 'products')['products'])->get_Products();
-            $this->view_instance->user_cart = ($this->get_model('CartManager', 'cart')['cart'])->CheckDuplicateTems() ?? [];
+            $this->view_instance->user_cart = ($this->get_model('CartManager', 'cart')['cart'])->get_userCart('checkout') ?? [];
             $this->view_instance->search_box = file_get_contents(FILES . 'template' . DS . 'base' . DS . 'search_box.php');
         }
     }
@@ -62,32 +62,6 @@ class HomeController extends Controller
         $this->view_instance->render('home' . DS . 'cart' . DS . 'cart');
     }
 
-    //page account
-    public function account()
-    {
-        $this->view_instance->set_pageTitle('Account');
-        $this->view_instance->set_siteTitle('Account');
-        $this->view_instance->set_viewData($this->get_model('UsersManager'));
-        $this->view_instance->render('home' . DS . 'account' . DS . 'account');
-    }
-
-    //page account
-    public function checkout()
-    {
-        $this->view_instance->set_pageTitle('Checkout');
-        $this->view_instance->set_siteTitle('Checkout');
-        $this->view_instance->render('home' . DS . 'account' . DS . 'checkout');
-    }
-
-    //page profile
-    public function profile()
-    {
-        // dd(($this->get_model('UsersManager')['users'])->get_Tables_Column('commandes'));
-        $this->view_instance->set_pageTitle('Profile');
-        $this->view_instance->set_siteTitle('Profile');
-        $this->view_instance->render('home' . DS . 'account' . DS . 'profile');
-    }
-
     // Promotions page
     public function promotions()
     {
@@ -109,12 +83,5 @@ class HomeController extends Controller
     {
         $this->view_instance->set_pageTitle('Sitemap');
         $this->view_instance->render('home' . DS . 'sitemap' . DS . 'sitemap');
-    }
-
-    //Payment
-    public function payment()
-    {
-        $this->view_instance->set_pageTitle('Payment Paypal');
-        $this->view_instance->render('home' . DS . 'account' . DS . 'payment');
     }
 }

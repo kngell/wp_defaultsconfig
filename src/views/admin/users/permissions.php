@@ -58,7 +58,7 @@
             </div>
             <div class="modal-body">
                 <form action="#" method="post" id="groups-and-permissions-frm" class="px-3 needs-validation">
-                    <?= FH::csrfInput('csrftoken', hash_hmac('sha256', 'groups-and-permissions-frm', $_SESSION[TOKEN_NAME])); ?>
+                    <?= FH::csrfInput('csrftoken', (new Token())->generate_token(8)); ?>
                     <input type="hidden" name="operation" id="operation">
                     <input type="hidden" name="grID" id="grID">
                     <input type="hidden" name="date_enreg" id="date_enreg">

@@ -1,29 +1,6 @@
 <?php
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-use \SendGrid\Mail\Mail;
-
 class H
 {
-    private static $_mail_instance = null;
-
-    private static $_fb_instance = null;
-
-    //=======================================================================
-    //Getters
-    //=======================================================================
-    //mailling instance
-    public static function getMailingInstance()
-    {
-        if (!isset(self::$_mail_instance)) {
-            self::$_mail_instance = new PHPMailer();
-        }
-
-        return self::$_mail_instance;
-    }
-
     //=======================================================================
     //Search Files
     //=======================================================================
@@ -44,43 +21,9 @@ class H
                     }
                 }
             }
-
             return $results;
         }
-
         return false;
-    }
-
-    //=======================================================================
-    //Rename Keys of Objects
-    //=======================================================================
-    public static function Object_Keys_format($source, $item)
-    {
-        $S = $source;
-        if (isset($item)) {
-            foreach ($source as $key => $val) {
-                foreach ($item as $k => $v) {
-                    if ($key == $k) {
-                        $S = self::_rename_arr_key($key, $v, $S);
-                    }
-                }
-            }
-        }
-
-        return $S;
-    }
-
-    //internal rename keys helper
-    private static function _rename_arr_key($oldkey, $newkey, $arr = [])
-    {
-        if (array_key_exists($oldkey, $arr)) {
-            $arr[$newkey] = $arr[$oldkey];
-            unset($arr[$oldkey]);
-
-            return $arr;
-        } else {
-            return false;
-        }
     }
 
     //=======================================================================
@@ -250,57 +193,6 @@ class H
         return $vsData;
     }
 
-    // Facebook Helpers
-    // public static function get_Fb_Instance($token = '')
-    // {
-    //     if (!isset(self::$_fb_instance)) {
-    //         self::$_fb_instance = new \Facebook\Facebook([
-    //         'app_id' => FB_APP_ID,
-    //         'app_secret' => FB_APP_SECRET,
-    //         'default_graph_version' => FB_GRAPH_VERSION,
-    //         'default_access_token' => $token,
-    //     ]);
-    //     }
-    //     return self::$_fb_instance;
-    // }
-    // public static function makeFacebookApiCall($endpoint, $params)
-    // {
-    //     $ch = curl_init();
-    //     curl_setopt($ch, CURLOPT_URL, $endpoint . '?' . http_build_query($params));
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-    //     $fbResponse = curl_exec($ch);
-    //     $fbResponse = json_decode($fbResponse, true);
-    //     curl_close($ch);
-
-    //     return [
-    //         'endpoint'=>$endpoint,
-    //         'params'=>$params,
-    //         'has-errors'=>isset($fbResponse['error']) ? true : false,
-    //         'error_message'=>isset($fbResponse['error']) ? $fbResponse['error']['message'] : '',
-    //         'fb_response'=>$fbResponse
-    //     ];
-    // }
-    // public static function getFacebookLoginUrl()
-    // {
-    //     $fb = self::get_Fb_Instance();
-    //     $helper = $fb->getRedirectLoginHelper();
-    //     $data = ['email'];
-    //     return $helper->getLoginUrl(FB_LOGIN_URL, $data);
-    // }
-
-    // public static function getAccessTokenWithCode($code)
-    // {
-    //     $endpoint = 'https://www.facebook.com/'. FB_GRAPH_VERSION .'/oauth/access_token';
-    //     $params = [
-    //         'client_id'=>FB_APP_ID,
-    //         'redirect_uri'=>FB_LOGIN_URL,
-    //         'state'=>FB_GRAPH_STATE,
-    //         'code'=>$code
-    //     ];
-    //     return self::makeFacebookApiCall($endpoint, $params);
-    // }
     public static function setQueryData($by_user)
     {
         if ($by_user) {
@@ -309,108 +201,6 @@ class H
             return ['return_mode' => 'class'];
         }
     }
-
-    //=======================================================================
-    //Sinding Email
-    //=======================================================================
-    public static function sendmailgrid($to, $subject, $body)
-    {
-        header('Access-Control-Allow-Origin: *');
-        $email = new \SendGrid\Mail\Mail();
-        $email->setFrom('admin@kngell.com', "K'nGELL Consulting & Services");
-        $email->setSubject($subject);
-        $email->addTo($to);
-        //$email->addContent("text/plain", "and easy to do anywhere, even with PHP");
-        $email->addContent('text/html', $body);
-        $sendgrid = new \SendGrid(EMAIL_KEY);
-        try {
-            $response = $sendgrid->send($email);
-            if ($response->statusCode() == 202) {
-                return true;
-            }
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public static function sendEmailPHP($email, $subject, $body)
-    {
-        ini_set('dysplay_errors', 1);
-        error_reporting(E_ALL);
-        $from = 'no-reply@mydomain.com';
-        $headers = 'From :' . $from;
-        $headers .= PHP_EOL;
-        $headers .= 'Return-Path: ' . $email;
-        $headers .= PHP_EOL;
-        $headers .= 'Reply-To: ' . $email;
-        $headers .= PHP_EOL;
-        $headers .= 'MIME-Version: 1.0' . PHP_EOL;
-        $headers .= 'Content-Type: multipart/mixed;' . PHP_EOL;
-        $headers .= ' boundary="boundary_sdfsfsdfs345345sfsgs"';
-        if (mail($email, $subject, $body, $headers)) {
-            return;
-        }
-
-        return 'Server encountered errors!<br>Please try later.';
-    }
-
-    public static function sendEmail($email, $subject, $body)
-    {
-        $mail = self::getMailingInstance();
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            ],
-        ];
-        try {
-            //Server settings
-            //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-            $mail->CharSet = 'UTF-8';
-            $mail->Encoding = 'base64';
-            //$mail->isSMTP();
-            //$mail->Host       = 'mail.kngell.com';
-            //$mail->SMTPAuth   = true;
-            //$mail->Username = USERNAME;
-            //$mail->Password = PASSWORD;
-            //$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            //$mail->Port       = 587;
-            //Recipient
-            //$mail->addCustomHeader(Content-Type', 'text/plain;charset=utf-8');
-            $mail->setFrom(NO_REPLY, 'K\'nGELL Consulting');
-            $mail->addAddress($email);     // Add a recipient
-            $mail->isHTML(true);
-            $mail->Subject = $subject;
-            $mail->Body = $body;
-            //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-            //DKIM
-            //$mail->Priority = 3;
-            //$mail->From = 'admin@kngell.com';
-            //$mail->Sender = 'admin@kngell.com';
-            //$mail->FromName = 'K\'nGELL Consulting & Services';
-            //$mail->DKIM_domain = 'default._domainkey.kngell.com';
-            //$mail->DKIM_private = file_get_contents(FILES .'dkim' . DS .'privateKey.txt');
-            //$mail->DKIM_selector = 'default';
-            //$mail->DKIM_passphrase = '';
-            //$mail->DKIM_identity = $mail->From;
-            //$mail->Encoding = "base64";
-            if ($mail->send()) {
-                return true;
-            }
-        } catch (Exception $e) {
-            return $mail->ErrorInfo;
-        }
-    }
-
-    // public static function get_Table($table, $user)
-    // {
-    //     if ($user =="admin") {
-    //         return $table.'TableAdmin';
-    //     }
-    //     return $table.'Table';
-    // }
 
     public static function get_Newkeys($m, $frm_name)
     {
@@ -439,106 +229,6 @@ class H
                 break;
             default:
                 return;
-                break;
-        }
-    }
-
-    //get Success message
-    public static function get_successMsg($m, $action, $method)
-    {
-        switch ($m->get_tableName()) {
-                //Home
-            case 'contacts':
-                return 'Votre message a été envoyé. </br> Vous recevrez une réponse sous 48h ouvrées.';
-                break;
-                //admin home
-            case 'offre_emploi':
-                return 'Votre offre d\'emploi est bien enregistrée!';
-                break;
-            case 'candidatures':
-                return 'Votre candidature est bien enregistrée!';
-                break;
-            case 'sessions_formations':
-                if ($method == 'Add') {
-                    return 'La session de formation est enregistrée';
-                } else {
-                    return 'La session a été mise à jour.';
-                }
-                break;
-            case 'inscription_formation':
-                return 'Votre réservation est prise en compte. voous recevrez de plus amples informations dans les 48h.';
-                break;
-            case 'newsletters':
-                return 'Votre email est bien eregistré!';
-                break;
-            case 'users':
-                if ($method == 'update') {
-                    if ($action == 'updateuser') {
-                        return 'Votre profil a bien été mis à jour!';
-                    } else {
-                        return 'Votre profil est bien enregistré';
-                    }
-                }
-                break;
-            case 'adherents':
-                if ($method == 'update') {
-                    return 'l\'adhérent a été mis à jour avec success!';
-                } else {
-                    return 'Adhérent ajouté avec success!';
-                }
-                break;
-            case 'posts':
-                if ($method == 'Add') {
-                    return 'Votre article est bien enregistré!';
-                } else {
-                    return 'Votre article a été mis à jour!';
-                }
-                break;
-            case 'realisations':
-                if ($method == 'Add') {
-                    return 'Votre réalisation est bien enregistré!';
-                } else {
-                    return 'Votre  réalisation a été mis à jour!';
-                }
-                break;
-            case 'categories':
-                if ($method == 'Add') {
-                    return 'Categorie ajoutée avec succes!';
-                } else {
-                    return 'La Categorie a été mis à jour!';
-                }
-                break;
-            case 'comments':
-                return;
-                break;
-            case 'cart':
-                return $m->output_shopping_template($m->item_id);
-            break;
-            default:
-                return 'Votre requête est bien prise en compte.';
-                break;
-        }
-    }
-
-    //get Error message
-    public static function get_errorMsg($m, $action, $method)
-    {
-        switch ($m->get_tableName()) {
-            case 'realisations':
-                return 'Il n\'y a pas de réalisations enregistrées.';
-                break;
-            case 'programme_formation':
-                return 'Aucun programme n\'est enregistré.';
-                break;
-            case 'sessions_formations':
-                if ($action == 'frontend') {
-                    return "Aucune session de formation n'est programmée!";
-                }
-
-                return 'Aucun programme n\'est enregistré.';
-                break;
-            default:
-                return 'Votre requête est bien prise en compte.';
                 break;
         }
     }

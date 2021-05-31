@@ -2,6 +2,7 @@ import { get_visitors_data, send_visitors_data } from "corejs/visitors";
 import log_reg from "corejs/logregloader";
 import "focus-within-polyfill";
 import { select2AjaxParams } from "corejs/form_crud";
+import { Modal } from "bootstrap";
 // import "smartWizard";
 // import { isIE } from "corejs/config";
 
@@ -20,6 +21,17 @@ class HomePlugin {
     this.header = this.element.find("#header");
     this.navigation = this.element.find(".navigation");
     this.wrapper = this.element.find(".tab-content");
+
+    // // Bootstrap modal
+    // this.login_modal = new Modal(this.bs_login_box, {
+    //   keyboard: false,
+    // });
+    // this.register_modal = new Modal(this.bs_register_box, {
+    //   keyboard: false,
+    // });
+    // this.forgot_modal = new Modal(this.bs_forgot_box, {
+    //   keyboard: false,
+    // });
   };
   _setupEvents = () => {
     var phpPlugin = this;

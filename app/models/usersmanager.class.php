@@ -47,7 +47,10 @@ class UsersManager extends Model
     public function get_single_user($id)
     {
         $tables = ['users' => ['*'], 'user_extra_data' => ['*'], 'address_book' => ['*']];
-        $data = ['join' => 'INNER JOIN', 'rel' => ['userID', 'userID', 'relID'], 'where' => ['userID' => ['value' => $id, 'tbl' => 'users'], 'relID' => ['value' => $id, 'tbl' => 'address_book'], 'tbl' => ['value' => $this->_table, 'tbl' => 'address_book']]];
+        $data = ['join' => 'LEFT JOIN',
+            'rel' => [['userID', 'userID'], ['userID', 'relID'], 'params' => ['relID| = ' . $id . '|address_book', 'tbl| = "' . $this->_table . '"|address_book']],
+            'where' => ['userID' => ['value' => $id, 'tbl' => 'users']]
+        ];
         $user = $this->getAllItem($data, $tables)->get_results();
         return $user ? current($user) : null;
     }
@@ -56,7 +59,7 @@ class UsersManager extends Model
     public function get_users($method, $start = '', $limit = '', $html = true)
     {
         $tables = ['groups' => ['*'], 'group_user' => ['userID']];
-        $data = ['join' => 'INNER JOIN', 'rel' => ['grID', 'groupID'], 'where' => ['name' => ['value' => 'admin', 'tbl' => 'groups']]];
+        $data = ['join' => 'INNER JOIN', 'rel' => [['grID', 'groupID']], 'where' => ['name' => ['value' => 'admin', 'tbl' => 'groups']]];
         $admin_group = (new GroupsManager)->getAllItem($data, $tables)->get_results();
         switch ($method) {
             case 'get_adminUsers':
@@ -82,7 +85,7 @@ class UsersManager extends Model
         }
 
         $tables = ['users' => ['*'], 'group_user' => ['groupID']];
-        $data = isset($where) && !empty($where) ? array_merge(['join' => 'LEFT JOIN', 'rel' => ['userID', 'userID'], 'group_by' => 'userID DESC'], $where) : ['join' => 'LEFT JOIN', 'rel' => ['userID', 'userID'], 'group_by' => 'userID DESC'];
+        $data = isset($where) && !empty($where) ? array_merge(['join' => 'LEFT JOIN', 'rel' => [['userID', 'userID']], 'group_by' => 'userID DESC'], $where) : ['join' => 'LEFT JOIN', 'rel' => [['userID', 'userID']], 'group_by' => 'userID DESC'];
         $data = !empty($limit) ? array_merge($data, ['start' => $start, 'limit' => $limit]) : $data;
         $users = $this->getAllItem($data, $tables)->get_results();
         $btn = [$textClass, $method, $style_restore, $style_edit];
@@ -126,8 +129,8 @@ class UsersManager extends Model
         $template = str_replace('{{phone}}', $user->phone ?? '', $template);
         $template = str_replace('{{delBtnClass}}', $btn[0] ?? '', $template);
         $template = str_replace('{{users_profile}}', PROOT . 'admin' . US . 'profile' . US . $user->userID, $template);
-        $template = str_replace('{{token_d}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'delete_user' . $user->userID, $_SESSION[TOKEN_NAME])), $template);
-        $template = str_replace('{{token_r}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'restore_user' . $user->userID, $_SESSION[TOKEN_NAME])), $template);
+        $template = str_replace('{{token_d}}', FH::csrfInput('csrftoken', (new Token())->generate_token(8)), $template);
+        $template = str_replace('{{token_r}}', FH::csrfInput('csrftoken', (new Token())->generate_token(8)), $template);
         return $template;
     }
 
@@ -158,7 +161,7 @@ class UsersManager extends Model
         if (isset($params['method'])) {
             switch ($params['method']) {
                 case 'get_deletedUsers':
-                    if ((new Input())->csrfCheck($params['frm_name'], $params['csrftoken'])) {
+                    if ((new Token())->validateToken($params['csrftoken'])) {
                         $this->set_SoftDelete(false);
                     }
                     break;
@@ -192,7 +195,7 @@ class UsersManager extends Model
         $template = $temp;
         $template = str_replace('{{nom}}', $user->firstName ?? '' . '&nbsp;' . $user->lastName ?? '', $template);
         $template = str_replace('{{email}}', $user->email ?? '', $template);
-        $template = str_replace(' {{csrftoken}}', FH::csrfInput('csrftoken', hash_hmac('sha256', 'user-profile-frm', $_SESSION[TOKEN_NAME])), $template);
+        $template = str_replace(' {{csrftoken}}', FH::csrfInput('csrftoken', (new Token())->generate_token(8)), $template);
         $template = str_replace('{{firstName}}', $user->firstName ?? '', $template);
         $template = str_replace('{{lastName}}', $user->lastName ?? '', $template);
         $template = str_replace('{{userID}}', AuthManager::$currentLoggedInUser->userID, $template);
@@ -301,7 +304,7 @@ class UsersManager extends Model
                     $groupID = $user_group->save();
                 }
                 $user_roles->userID = $userID;
-                $user_roles->groupID = $user_group->count() > 0 ? current($user_group->get_results())->grID : $groupID->get_lastID();
+                $user_roles->groupID = $user_group->count() > 0 ? current($user_group->get_results())->grID : $groupID['saveID']->get_lastID();
                 if (!$user_roles->save()) {
                     $error = true;
                 }
@@ -317,7 +320,10 @@ class UsersManager extends Model
     public function get_selectedOptions($userID = '')
     {
         $tables = ['groups' => ['*'], 'group_user' => ['userID', 'groupID']];
-        $data = ['join' => 'INNER JOIN', 'rel' => ['grID', 'groupID'], 'where' => ['userID' => $userID ? $userID : $this->userID]];
+        $data = ['join' => 'INNER JOIN',
+            'rel' => [['grID', 'groupID']],
+            'where' => ['userID' => $userID ? $userID : $this->userID]
+        ];
         $user_roles = (new GroupUserManager())->getAllItem($data, $tables);
         $response = [];
         if ($user_roles->count() >= 1) {

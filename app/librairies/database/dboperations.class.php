@@ -61,18 +61,17 @@ class DBOperations extends Database
     //=======================================================================
     public function findFirst($table, $data = [])
     {
-        $this->_error = false;
-        $this->_exec_data = [];
-        $this->_error = false;
-        $this->_exec_data = [];
-        $this->_count = 0;
-        $this->_results = '';
+        // $this->_error = false;
+        // $this->_exec_data = [];
+        // $this->_error = false;
+        // $this->_exec_data = [];
+        // $this->_count = 0;
+        // $this->_results = '';
 
         $sql = $this->query_select_construction($table, $data);
 
         //execute
         if ($q = $this->execQuery($sql, isset($this->_exec_data['where']) ? $this->_exec_data['where'] : [])) {
-            //dd(!$this->_error);
             //Result
             $data = array_merge($data, ['return_type' => 'first']);
             $this->_count = $q->rowCount();
@@ -100,27 +99,37 @@ class DBOperations extends Database
             $all_tables = array_keys($tables);
             foreach ($all_tables  as $table) {
                 if ($tables[$table]) {
-                    foreach ($tables[$table] as $key => $value) {
-                        $separator = $table == end($all_tables) && $value == end($tables[$table]) ? ' ' : ', ';
-                        $sql .= $table . '.' . $value . $separator;
+                    switch (true) {
+                        case !is_array($tables[$table]):
+                            $count = explode('|', $tables[$table]);
+                            $sql .= $count[0] . '(' . $table . '.' . $count[1] . ') AS Number ' ;
+                            break;
+                        default:
+                            foreach ($tables[$table] as $value) {
+                                $separator = $table == end($all_tables) && $value == end($tables[$table]) ? ' ' : ', ';
+                                $sql .= $table . '.' . $value . $separator;
+                            }
+                            break;
                     }
                 }
             }
             $sql .= 'FROM ' . $all_tables[0] . ' ';
+            $i = 0;
+            $op = isset($data['op']) ? $data['op'] : ' AND ';
             if (array_key_exists('join', $data)) {
-                foreach ($all_tables as $index => $tbl) {
-                    if ($index == 0) {
-                        continue;
+                foreach ($data['rel'] as $index => $value) {
+                    $add = ($i > 0) ? ' ' . $op . ' ' : '';
+                    if (is_numeric($index)) {
+                        $sql .= $data['join'] . ' ' . $all_tables[$index + 1] . ' ON ';
+                        $sql .= $all_tables[$index] . '.' . $value[0] . ' = ' . $all_tables[$index + 1] . '.' . $value[1] . ' ';
                     }
-                    switch (true) {
-                        case is_array($data['rel'][$index - 1]):
-                            $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['rel'][$index - 1][count($all_tables) - count($data['rel'])] . ' = ' . $all_tables[$index - 1] . '.' . $data['rel'][$index - 1][count($all_tables) - count($data['rel']) - 1] . ' ';
-                            break;
-
-                        default:
-                        $sql .= $data['join'] . " $tbl ON " . $tbl . '.' . $data['rel'][$index] . ' = ' . $all_tables[$index - 1] . '.' . $data['rel'][$index - 1] . ' ';
-                            break;
+                    if ($index == 'params') {
+                        foreach ($data['rel']['params'] as $key => $value) {
+                            $params = explode('|', $value);
+                            $sql .= $add . $params[2] . '.' . $params[0] . ' ' . $params[1] . ' ';
+                        }
                     }
+                    $i++;
                 }
             }
         }
@@ -153,10 +162,11 @@ class DBOperations extends Database
                     $tbl = isset($value['tbl']) ? $value['tbl'] . '.' : '';
                     switch (true) {
                         case isset($value['operator']) && in_array($value['operator'], ['NOT IN', 'IN']):
-                            $sql .= "$add" . $tbl . $key . ' ' . $value['operator'] . ' (' . ":$key" . ')';
+                            $sql .= "$add" . $tbl . $key . ' ' . $value['operator'] . ' (' . DatabaseHelper::prefixArray($key, $value['value'], $arr) . ')';//":$key"
+                            $data['where']['bind_array'] = $arr;
                             break;
-                        case isset($value['operator']) && $value['operator'] == '!=':
-                            $sql .= "$add" . $tbl . $key . '!=' . ":$key";
+                        case isset($value['operator']) && in_array($value['operator'], ['!=', '>', '<', '>=', '<=']):
+                            $sql .= "$add" . $tbl . $key . $value['operator'] . ":$key";
                             break;
                         default:
                             $sql .= "$add" . $tbl . $key . '=' . ":$key";
@@ -172,8 +182,25 @@ class DBOperations extends Database
             }
         }
         //Goup By
+
         if (array_key_exists('group_by', $data)) {
-            $sql .= ' GROUP BY ' . $data['group_by'];
+            $sql .= ' GROUP BY ';
+            $i = 0;
+            $op = isset($data['op']) ? $data['op'] : ' AND ';
+            if (is_array($data['group_by'])) {
+                foreach ($data['group_by'] as $key => $value) {
+                    $add = ($i > 0) ? ' ' . $op . ' ' : '';
+                    if (is_array($value)) {
+                        $tbl = isset($value['tbl']) ? $value['tbl'] . '.' : '';
+                        $sql .= "$add" . $tbl . $key;
+                    } else {
+                        $sql .= "$add" . $data['group_by'][$key];
+                    }
+                    $i++;
+                }
+            } else {
+                $sql .= $data['group_by'];
+            }
             unset($data['group_by']);
         }
 

@@ -21,7 +21,6 @@ const FileManagerPlugin = require("filemanager-plugin").WebpackFilemanager;
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const PhpConfig = require("./php_config.js");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 //=======================================================================

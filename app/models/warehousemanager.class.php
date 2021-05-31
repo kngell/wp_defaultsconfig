@@ -10,6 +10,7 @@ class WarehouseManager extends Model
     public $whID;
     public $wh_name;
     public $wh_descr;
+    public $country_code;
     public $created_at;
     public $updated_at;
     public $deleted;

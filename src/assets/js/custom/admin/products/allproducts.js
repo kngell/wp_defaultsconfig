@@ -2,6 +2,7 @@ import "plugins/flexadmin/js/ecommerce";
 import Cruds from "corejs/crud_interface";
 import media from "corejs/upload_interface";
 import select2 from "corejs/select2_manager";
+
 class AllProducts {
   constructor(element) {
     this.element = element;
@@ -26,6 +27,7 @@ class AllProducts {
       wrapper: phpPlugin.wrapper,
       form: phpPlugin.modalform,
       modal: phpPlugin.modalbox,
+      bsmodal: document.getElementById("modal-box"),
     });
 
     //=======================================================================

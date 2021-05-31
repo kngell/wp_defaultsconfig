@@ -21,6 +21,7 @@ class Session
         if (self::exists($name)) {
             unset($_SESSION[$name]);
         }
+        session_destroy();
     }
 
     public static function uagent_no_version()

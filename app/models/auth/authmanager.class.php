@@ -16,6 +16,7 @@ class AuthManager extends Model
     public $userName;
     public $email;
     public $password;
+    public $cpassword;
     public $registerDate;
     public $updateAt;
     public $profileImage;
@@ -52,67 +53,58 @@ class AuthManager extends Model
         }
     }
 
+    //=====================================GUETTERS=============================================
     //=======================================================================
-    //Find and check users
+    //Get User email send request
     //=======================================================================
-    public function getAllUsers($deleted)
-    {
-        $data = ['where' => ['deleted' => $deleted], 'return_mode' => 'class', 'order_by' => 'userID DESC'];
-        return $this->find($data);
-    }
 
-    // check if user is logged
-    public function isLoggedIn()
+    public function getUserRequests($email = '', $type = 0, $tt = 0)
     {
-        return $this->_isLoggedIn;
-    }
-
-    //find Password
-    public function findPassword()
-    {
+        $day_ago = $tt ? $tt : time() - 60 * 60 * 24;
+        $tables = ['users' => ['userID', 'firstName', 'lastName', 'verified'], 'users_requests' => 'COUNT|urID'];
         $data = [
-            'where' => ['userID' => $this->userID], 'return_type' => 'single', 'select' => 'password'
+            'join' => 'LEFT JOIN',
+            'rel' => [['userID', 'userID'], 'params' => ['type|=' . $type . '|users_requests', 'timestamp| >=' . $day_ago . '|users_requests']],
+            'where' => ['email' => ['value' => $email, 'tbl' => 'users']],
+            'group_by' => ['userID' => ['tbl' => 'users']]
         ];
-        return $this->findFirst($data);
-    }
-
-    //check current user
-    public static function currentUser()
-    {
-        if (!isset(self::$currentLoggedInUser) && Session::exists(CURRENT_USER_SESSION_NAME)) {
-            self::$currentLoggedInUser = new AuthManager((string) Session::get(CURRENT_USER_SESSION_NAME));
+        $user = $this->getAllItem($data, $tables);
+        if ($user->count() > 0) {
+            $u = current($user->get_results());
+            $u->_count = $user->count();
+            $u->name = $u->firstName . ' ' . $u->lastName;
+            $user = null;
+            return [$u, (int)$u->Number];
         }
-        return self::$currentLoggedInUser;
+        return false;
     }
 
-    public static function check_UserSession($params = [])
+    //=======================================================================
+    //Get Users login attempts
+    //=======================================================================
+    public function getUserLoginattemps($email)
     {
-        if (isset($params['userID'])) {
-            (self::$currentLoggedInUser->userID == $params['userID'] && self::$currentLoggedInUser->email != $params['email']) ? Session::set(CURRENT_USER_SESSION_NAME, $params['email']) : '';
+        $tables = ['users' => ['*'], 'login_attempts' => 'COUNT|laID'];
+        $data = [
+            'join' => 'LEFT JOIN',
+            'rel' => [['userID', 'userID'], 'params' => ['timestamp| >=' . time() - 60 * 60 . '|login_attempts']],
+            'where' => ['email' => ['value' => $email, 'tbl' => 'users']],
+            'group_by' => ['userID' => ['tbl' => 'users']]
+        ];
+        $user = $this->getAllItem($data, $tables);
+        if ($user->count() > 0) {
+            $u = current($user->get_results());
+            $u->_count = $user->count();
+            $u->name = $u->firstName . ' ' . $u->lastName;
+            $user = null;
+            return [$u, (int)$u->Number];
         }
+        return false;
     }
 
     //=======================================================================
-    //Delete and restore users
+    //Login
     //=======================================================================
-    public function deleteUser($id, $complete)
-    {
-        !$complete ? $this->_softDelete = true : '';
-        return $this->delete('UserId', $id);
-    }
-
-    //restore User
-
-    public function restoreUser($id)
-    {
-        $fields = ['deleted' => 0];
-        return $this->update(['userID' => $id], $fields);
-    }
-
-    //=======================================================================
-    //Login / register/ Logout User
-    //=======================================================================
-
     public function login($rememberMe = false)
     {
         $this->id = $this->userID;
@@ -144,6 +136,63 @@ class AuthManager extends Model
         }
         (new UserSessionsManager())->set_userSession($this);
         return  Session::set($this->_sessionName, $this->email) ?? false;
+    }
+
+    // check if user is logged
+    public function isLoggedIn()
+    {
+        return $this->_isLoggedIn;
+    }
+
+    //find Password
+    public function findPassword()
+    {
+        $data = [
+            'where' => ['userID' => $this->userID], 'return_type' => 'single', 'select' => 'password'
+        ];
+        return $this->findFirst($data);
+    }
+
+    //=======================================================================
+    //Check current user state
+    //=======================================================================
+    public static function currentUser()
+    {
+        if (Cookies::exists(VISITOR_COOKIE_NAME) && Session::exists(CURRENT_USER_SESSION_NAME)) {
+            $email = Session::get(CURRENT_USER_SESSION_NAME);
+            $user_session = (new UserSessionsManager())->getAllbyParams(['email' => $email]);
+            if ($user_session->count() > 0 && !isset(self::$currentLoggedInUser)) {
+                $user_session = current($user_session->get_results());
+                if ($user_session->email == Session::get(CURRENT_USER_SESSION_NAME)) {
+                    self::$currentLoggedInUser = new self((string) Session::get(CURRENT_USER_SESSION_NAME));
+                }
+            }
+        }
+        return self::$currentLoggedInUser;
+    }
+
+    public static function check_UserSession($params = [])
+    {
+        if (isset($params['userID'])) {
+            (self::$currentLoggedInUser->userID == $params['userID'] && self::$currentLoggedInUser->email != $params['email']) ? Session::set(CURRENT_USER_SESSION_NAME, $params['email']) : '';
+        }
+    }
+
+    //=======================================================================
+    //Delete and restore users
+    //=======================================================================
+    public function deleteUser($id, $complete)
+    {
+        !$complete ? $this->_softDelete = true : '';
+        return $this->delete('UserId', $id);
+    }
+
+    //restore User
+
+    public function restoreUser($id)
+    {
+        $fields = ['deleted' => 0];
+        return $this->update(['userID' => $id], $fields);
     }
 
     // Register
@@ -186,7 +235,7 @@ class AuthManager extends Model
             $user->save();
             $subject = 'Email verification';
             $body = '<h3>Cliquez sur le lien ci-dessous pour changer pour vérifier votre email</h3>.<p><a href="' . URLROOT . 'users/emailVerified/' . $userData['email'] . '">' . URLROOT . 'users/emailVerified/' . $userData['email'] . '</a><br>KnGELL! </p><p>Vous disposez de 30 minutes pour changer votre mot de pass. Au delà, vous devrez recommencer</p>';
-            H::sendEmail($userData['email'], $subject, $body);
+            H_Email::sendEmail($userData['email'], $subject, $body, $body);
             $user->login();
         } else {
             $user->login();
@@ -278,16 +327,17 @@ class AuthManager extends Model
 
         if ($this->isNew() == true) {
             $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-            $this->salt = hash_hmac('sha256', $this->email, $_SESSION[TOKEN_NAME]);
+            $this->salt = $this->get_unique('salt');
         }
         //Unset Auth providers ???
         unset($this->oauth_provider, $this->oauth_uid,$this->link);
+        if (isset($this->Number)) {
+            unset($this->Number);
+        }
+        if (isset($this->name)) {
+            unset($this->name);
+        }
         return true;
-    }
-
-    //After save
-    public function afterSave($params = [])
-    {
     }
 
     //confirm Email

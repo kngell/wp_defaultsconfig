@@ -225,4 +225,46 @@ class Form_rules
             ],
         ];
     }
+
+    // =======================================================================
+    // Checkout
+    // =======================================================================
+    // Infos contact
+    public static function infos_contact()
+    {
+        return [
+            'firstName' => [
+                'display' => 'First Name',
+                'required' => true,
+                'min' => 2,
+                'max' => 64
+            ],
+            'lastName' => [
+                'display' => 'Last Name',
+                'required' => true,
+                'min' => 2,
+                'max' => 64,
+            ],
+            'email' => [
+                'display' => 'E-Mail',
+                'required' => true,
+                'min' => 2,
+                'max' => 150,
+                'valid_email' => true,
+                'unique' => 'users',
+            ],
+            'address' => [
+                'display' => 'Adresse',
+                'required' => true,
+            ],
+            'ville' => [
+                'display' => 'Ville',
+                'required' => true,
+            ],
+            'zip_code' => [
+                'display' => 'Code Postal',
+                'required' => true,
+            ],
+        ];
+    }
 }

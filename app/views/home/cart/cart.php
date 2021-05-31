@@ -11,7 +11,7 @@
     <?php require_once VIEW . 'home/cart/partials/_shopping_cart.php'?>
     <!-- !Shpoping cart -->
     <!-- Wishlist  -->
-    <?php require_once VIEW . 'home/partials/_wishlist.php'?>
+    <?php require_once VIEW . 'home/cart/partials/_wishlist.php'?>
     <!-- !Wishlist -->
     <!-- New Phones -->
     <?php require_once VIEW . 'home/partials/_new_products.php'?>

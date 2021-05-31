@@ -34,11 +34,6 @@ abstract class Controller extends Application
         if ($files) {
             return !isset($this->view_instance) ? new View($viewName, $data) : $this->view_instance;
         }
-        // if (in_array($this->_controller, ['AdminController', 'HomeController'])) {
-        //     $this->_controller = 'RestrictedController';
-        //     $this->_method = 'index';
-        //     return new View('restricted' . DS . 'index', $data);
-        // }
         return isset($this->view_instance) ? $this->view_instance : null;
     }
 
@@ -47,7 +42,6 @@ abstract class Controller extends Application
     {
         if (!empty($modelName) && class_exists($modelName)) {
             if (file_exists($modelName == 'AuthManager' ? MODEL . 'auth' . DS : MODEL . strtolower($modelName) . '.class.php')) {
-                // require_once MODEL . strtolower($modelName) . '.class.php';
                 if (!empty($model) && !isset($this->model_instance[$model])) {
                     $this->model_instance[$model] = new $modelName();
                 } elseif (!isset($this->model_instance)) {

@@ -179,6 +179,9 @@ class FH
                     case isset($params['data_type']) && $params['data_type'] == 'values': //values or html template
                         if (isset($params['return_mode']) && $params['return_mode'] == 'details') { // Detals or all
                             return $model->getDetails($request->getAll('id'));
+                        } elseif (isset($params['model_method']) && !empty($params['model_method'])) {
+                            $method = $params['model_method'];
+                            return $model->$method($params);
                         } elseif (isset($params['return_mode']) && $params['return_mode'] == 'index') {
                             return $model->getAllbyIndex($request->getAll('id'));
                         } else {

@@ -59,7 +59,7 @@ import "views/home/partials/_empty_cart_template.php";
 import "views/home/partials/_new_products.php";
 import "views/home/partials/_special_price.php";
 import "views/home/partials/_top_sales.php";
-import "views/home/partials/_wishlist.php";
+
 //home Pages ecommerce product
 import "views/home/product/product.php";
 import "views/home/product/details.php";
@@ -68,12 +68,23 @@ import "views/home/product/partials/_not_found_product.php";
 //home Pages ecommerce Cart
 import "views/home/cart/cart.php";
 import "views/home/cart/partials/_shopping_cart.php";
-// home pages ecommerce account
-import "views/home/account/account.php";
-import "views/home/account/payment.php";
-import "views/home/account/checkout.php";
+import "views/home/cart/partials/_wishlist.php";
 // home pages ecommerce promotions
 import "views/home/promotions/promotions.php";
 import "views/home/sitemap/sitemap.php";
 // home pages ecommerce boutique
 import "views/home/boutique/boutique.php";
+//=======================================================================
+//Users Management pages
+//=======================================================================
+// Users pages ecommerce account
+import "views/users/account/account.php";
+import "views/users/account/partials/_login.php";
+import "views/users/account/partials/_register.php";
+import "views/users/account/login.php";
+import "views/users/account/emailverified.php";
+import "views/users/account/resetpassword.php";
+
+// Users checkout
+import "views/users/checkout/payment.php";
+import "views/users/checkout/checkout.php";

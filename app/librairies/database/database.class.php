@@ -60,15 +60,22 @@ abstract class Database
 
             //Bind the datas whitch left
             if (!empty($data)) {
-                //dd( $data );
+                if (isset($data['bind_array'])) {
+                    $bind_arr = $data['bind_array'];
+                    unset($data['bind_array']);
+                }
                 foreach ($data as $key => $val) {
                     if (is_array($val)) {
                         switch (true) {
-                            case isset($val['operator']) && $val['operator'] == '!=':
+                            case isset($val['operator']) && in_array($val['operator'], ['!=', '>', '<', '>=', '<=']):
                                 $this->bind(":$key", $val['value']);
                                 break;
                             case isset($val['operator']) && in_array($val['operator'], ['NOT IN', 'IN']):
-                                $this->bind(":$key", implode("', '", $val['value']));
+                                if (isset($bind_arr)) {
+                                    foreach ($bind_arr as $k => $v) {
+                                        $this->bind(":$k", $v);//implode("', '", $val['value'])
+                                    }
+                                }
                                 break;
                             default:
                                 $this->bind(":$key", $val['value']);
